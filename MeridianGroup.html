@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Meridian Group — Strategy & Technology Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+/* ─── TOKENS ─────────────────────────────────── */
+:root{
+  --dark:#0B1929; --navy:#152B3E; --cream:#F3EDE2; --white:#FAFAF7;
+  --amber:#E8A847; --amber-d:#C8852A; --mist:#8AA4BE;
+  --text-d:#0D1E2C; --text-l:#E2DAD0; --text-m:#7A9CB8;
+  --bd:#rgba(255,255,255,.08); --bl:rgba(14,31,46,.1);
+  --ff-h:'Syne',sans-serif; --ff-b:'DM Sans',sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1); --spring:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--ff-b);color:var(--text-d);background:var(--white);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* ─── NAV ───────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;
+  justify-content:space-between;padding:1.25rem 3rem;transition:.4s var(--ease)}
+.nav.scrolled{background:rgba(11,25,41,.92);backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-logo{font-family:var(--ff-h);font-size:1.3rem;font-weight:800;
+  color:var(--white);letter-spacing:-.03em}
+.nav-logo em{color:var(--amber);font-style:normal}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{font-size:.875rem;color:rgba(255,255,255,.55);
+  transition:color .3s;font-weight:400}
+.nav-links a:hover{color:#fff}
+.nav-cta{font-size:.85rem;font-weight:600;color:var(--dark);background:var(--amber);
+  padding:.55rem 1.3rem;border-radius:100px;
+  transition:background .3s,transform .3s}
+.nav-cta:hover{background:#f0b94e;transform:translateY(-1px)}
+.nav-burger{display:none;flex-direction:column;gap:5px;background:0;border:0;
+  cursor:pointer;padding:4px}
+.nav-burger span{width:22px;height:2px;background:#fff;border-radius:2px;
+  transition:.3s var(--ease)}
+@media(max-width:860px){
+  .nav-links,.nav-cta{display:none}
+  .nav-burger{display:flex}
+}
+/* Mobile overlay */
+.mobile-nav{position:fixed;inset:0;z-index:199;background:var(--dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2rem;transform:translateX(100%);transition:.4s var(--spring)}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav a{font-family:var(--ff-h);font-size:2rem;color:#fff;font-weight:700}
+.mobile-nav a:hover{color:var(--amber)}
+.mobile-nav .close-btn{position:absolute;top:1.5rem;right:2rem;font-size:2rem;
+  color:#fff;background:0;border:0;cursor:pointer}
+
+/* ─── HERO ───────────────────────────────────── */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;
+  background:var(--dark);overflow:hidden}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-glow{position:absolute;width:70vw;height:70vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(22,43,62,.7) 0%,transparent 70%);
+  top:-15%;right:-15%;pointer-events:none}
+.hero-glow2{position:absolute;width:40vw;height:40vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,168,71,.06) 0%,transparent 70%);
+  bottom:0;left:10%;pointer-events:none}
+.hero-inner{position:relative;z-index:2;max-width:1160px;margin:0 auto;
+  padding:9rem 3rem 5rem;display:grid;
+  grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center;width:100%}
+.hero-left{display:flex;flex-direction:column;gap:1.4rem}
+.hero-eyebrow{font-size:.75rem;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--amber)}
+.hero-h1{font-family:var(--ff-h);font-size:clamp(2.8rem,5.5vw,5.2rem);
+  font-weight:800;color:var(--white);line-height:1.0;letter-spacing:-.03em}
+.hero-h1 .line{overflow:hidden;display:block}
+.hero-h1 .word{display:block;transform:translateY(110%);opacity:0;
+  transition:transform .9s var(--spring),opacity .9s ease}
+.hero-h1 .word.up{transform:translateY(0);opacity:1}
+.hero-h1 .line:nth-child(1) .word{transition-delay:.1s}
+.hero-h1 .line:nth-child(2) .word{transition-delay:.25s}
+.hero-h1 .line:nth-child(3) .word{transition-delay:.4s}
+.hero-sub{font-size:1.05rem;font-weight:300;color:var(--text-m);line-height:1.8;
+  max-width:44ch;opacity:0;transform:translateY(18px);
+  transition:opacity .8s ease .6s,transform .8s ease .6s}
+.hero-sub.show{opacity:1;transform:translateY(0)}
+.hero-btns{display:flex;gap:.9rem;flex-wrap:wrap;opacity:0;transform:translateY(18px);
+  transition:opacity .8s ease .75s,transform .8s ease .75s}
+.hero-btns.show{opacity:1;transform:translateY(0)}
+/* Hero right cards */
+.hero-right{display:flex;flex-direction:column;gap:1.2rem;align-items:flex-end;
+  opacity:0;transform:translateX(36px);
+  transition:opacity .9s ease .5s,transform .9s var(--spring) .5s}
+.hero-right.show{opacity:1;transform:translateX(0)}
+.hero-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+  border-radius:18px;padding:1.5rem 1.75rem;backdrop-filter:blur(10px);width:260px;
+  transition:border-color .3s,background .3s}
+.hero-card:hover{border-color:rgba(232,168,71,.3);background:rgba(255,255,255,.06)}
+.hc-label{font-size:.7rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mist);margin-bottom:.4rem}
+.hc-val{font-family:var(--ff-h);font-size:2.6rem;font-weight:800;
+  color:var(--white);line-height:1}
+.hc-val .sfx{color:var(--amber)}
+.hc-desc{font-size:.8rem;color:rgba(138,164,190,.7);margin-top:.35rem}
+
+/* ─── BUTTONS ─────────────────────────────────── */
+.btn-a{display:inline-flex;align-items:center;gap:.5rem;background:var(--amber);
+  color:var(--dark);font-family:var(--ff-b);font-size:.9rem;font-weight:600;
+  padding:.8rem 1.9rem;border-radius:100px;
+  transition:all .3s var(--ease);border:2px solid transparent}
+.btn-a:hover{background:#f0b94e;transform:translateY(-2px);
+  box-shadow:0 10px 28px rgba(232,168,71,.35)}
+.btn-b{display:inline-flex;align-items:center;gap:.5rem;background:transparent;
+  color:var(--text-l);font-family:var(--ff-b);font-size:.9rem;font-weight:400;
+  padding:.8rem 1.9rem;border-radius:100px;
+  border:1.5px solid rgba(255,255,255,.2);transition:all .3s var(--ease)}
+.btn-b:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.35);
+  transform:translateY(-2px)}
+.btn-dark{display:inline-flex;align-items:center;gap:.5rem;background:var(--dark);
+  color:var(--white);font-family:var(--ff-b);font-size:.9rem;font-weight:600;
+  padding:.9rem 2.1rem;border-radius:100px;
+  transition:all .3s var(--ease)}
+.btn-dark:hover{background:var(--navy);transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(11,25,41,.3)}
+
+/* ─── TICKER ─────────────────────────────────── */
+.ticker{background:var(--amber);padding:.85rem 0;overflow:hidden}
+.ticker-track{display:inline-flex;white-space:nowrap;
+  animation:ticker 28s linear infinite}
+.ticker-item{display:inline-flex;align-items:center;gap:1.8rem;padding:0 1.8rem;
+  font-family:var(--ff-h);font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dark)}
+.ticker-sep{width:4px;height:4px;background:rgba(11,25,41,.3);border-radius:50%;flex-shrink:0}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ─── COMMON SECTION ──────────────────────────── */
+.si{max-width:1160px;margin:0 auto;padding:0 3rem}
+.sh{display:flex;flex-direction:column;gap:.9rem;margin-bottom:3.5rem}
+.sh.c{align-items:center;text-align:center}
+.eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--amber)}
+.sec-title{font-family:var(--ff-h);font-size:clamp(1.9rem,3.5vw,2.85rem);
+  font-weight:700;letter-spacing:-.025em;color:inherit;line-height:1.1}
+.sec-sub{font-size:1rem;font-weight:300;line-height:1.8;
+  max-width:55ch;color:inherit;opacity:.65}
+
+/* ─── SERVICES ───────────────────────────────── */
+#services{padding:7rem 0;background:var(--cream)}
+.srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.srv-card{background:var(--white);border-radius:20px;padding:2.2rem;
+  border:1px solid rgba(14,31,46,.08);
+  transition:transform .35s var(--spring),box-shadow .35s,border-color .35s;
+  cursor:default;position:relative;overflow:hidden}
+.srv-card::after{content:'';position:absolute;inset:0;border-radius:20px;
+  background:linear-gradient(135deg,var(--amber),transparent 60%);
+  opacity:0;transition:opacity .35s}
+.srv-card:hover{transform:translateY(-7px);
+  box-shadow:0 28px 60px rgba(14,31,46,.11);border-color:transparent}
+.srv-card:hover::after{opacity:.05}
+.srv-ico{width:50px;height:50px;border-radius:13px;
+  background:rgba(232,168,71,.13);display:flex;align-items:center;
+  justify-content:center;margin-bottom:1.4rem;font-size:1.35rem;
+  transition:background .35s;position:relative;z-index:1}
+.srv-card:hover .srv-ico{background:rgba(232,168,71,.22)}
+.srv-card h3{font-family:var(--ff-h);font-size:1.05rem;font-weight:700;
+  color:var(--text-d);margin-bottom:.65rem;position:relative;z-index:1}
+.srv-card p{font-size:.875rem;color:#6B7E8E;line-height:1.72;
+  position:relative;z-index:1}
+.srv-more{display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.82rem;font-weight:500;color:var(--amber-d);
+  margin-top:1.2rem;transition:gap .3s;position:relative;z-index:1}
+.srv-card:hover .srv-more{gap:.65rem}
+
+/* ─── STATS ──────────────────────────────────── */
+#stats{padding:6rem 0;background:var(--dark)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem}
+.stat-box{border:1px solid rgba(255,255,255,.07);border-radius:20px;
+  padding:2.5rem 1.5rem;text-align:center;
+  transition:border-color .35s,background .35s}
+.stat-box:hover{border-color:rgba(232,168,71,.28);
+  background:rgba(255,255,255,.02)}
+.stat-num{font-family:var(--ff-h);font-size:3.2rem;font-weight:800;
+  color:var(--white);line-height:1;margin-bottom:.5rem}
+.stat-num .sfx{color:var(--amber)}
+.stat-lbl{font-size:.82rem;color:var(--mist);font-weight:400;letter-spacing:.04em}
+
+/* ─── ABOUT ──────────────────────────────────── */
+#about{padding:7rem 0;background:var(--white)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5.5rem;align-items:center}
+.about-img-wrap{position:relative;border-radius:24px;
+  overflow:hidden;aspect-ratio:4/3}
+.about-img-bg{width:100%;height:100%;
+  background:linear-gradient(135deg,#DEDAD4 0%,#C8C2B6 100%);
+  display:flex;align-items:center;justify-content:center}
+.about-img-bg svg{width:72px;height:72px;opacity:.25}
+.about-badge{position:absolute;bottom:1.5rem;left:1.5rem;
+  background:var(--dark);border-radius:14px;padding:.9rem 1.3rem;
+  display:flex;flex-direction:column;gap:.2rem}
+.ab-num{font-family:var(--ff-h);font-size:1.6rem;font-weight:800;
+  color:var(--amber);line-height:1}
+.ab-txt{font-size:.73rem;color:var(--mist)}
+.about-text{display:flex;flex-direction:column;gap:1.3rem}
+.about-text p{font-size:.97rem;font-weight:300;line-height:1.85;color:#5A6E7E}
+.about-list{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.about-list li{display:flex;align-items:center;gap:.75rem;
+  font-size:.9rem;color:var(--text-d);font-weight:400}
+.about-list li::before{content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--amber);flex-shrink:0}
+
+/* ─── WORK ──────────────────────────────────── */
+#work{padding:7rem 0;background:var(--cream)}
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.work-card{border-radius:20px;overflow:hidden;background:var(--white);
+  transition:transform .35s var(--spring),box-shadow .35s}
+.work-card:hover{transform:translateY(-8px);
+  box-shadow:0 32px 72px rgba(14,31,46,.14)}
+.work-img{aspect-ratio:16/9;display:flex;align-items:flex-end;
+  padding:1rem;position:relative;overflow:hidden}
+.work-card:nth-child(1) .work-img{background:linear-gradient(140deg,#112840,#091A2A)}
+.work-card:nth-child(2) .work-img{background:linear-gradient(140deg,#1E1040,#0F0824)}
+.work-card:nth-child(3) .work-img{background:linear-gradient(140deg,#0E2C1A,#071A0F)}
+.work-tag{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);position:relative;z-index:1}
+.work-body{padding:1.6rem}
+.work-cat{font-size:.72rem;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--amber-d);margin-bottom:.55rem}
+.work-body h3{font-family:var(--ff-h);font-size:1rem;color:var(--text-d);
+  margin-bottom:.55rem;font-weight:700}
+.work-body p{font-size:.85rem;color:#6B7E8E;line-height:1.72;margin-bottom:.9rem}
+.work-result{display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.78rem;font-weight:500;color:var(--text-d);
+  background:var(--cream);padding:.32rem .75rem;border-radius:100px}
+.work-result::before{content:'↑';color:#20A864;font-weight:700}
+
+/* ─── TESTIMONIALS ──────────────────────────── */
+#testimonials{padding:7rem 0;background:var(--dark);overflow:hidden}
+.tst-inner{max-width:740px;margin:0 auto;padding:0 3rem;text-align:center}
+.tst-track{position:relative;min-height:220px;margin-bottom:2.5rem}
+.tst-item{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;gap:1.4rem;opacity:0;transform:translateY(14px);
+  transition:opacity .6s ease,transform .6s ease;pointer-events:none}
+.tst-item.on{opacity:1;transform:translateY(0);pointer-events:auto;position:relative}
+.tst-q{font-size:clamp(1rem,2.2vw,1.3rem);font-weight:300;
+  color:var(--text-l);line-height:1.75;font-style:italic}
+.tst-q::before{content:'\201C';font-family:var(--ff-h);font-size:3.5rem;
+  color:var(--amber);line-height:0;vertical-align:-.55rem;margin-right:.15rem}
+.tst-author{display:flex;flex-direction:column;align-items:center;gap:.2rem}
+.tst-name{font-weight:600;color:var(--white);font-size:.92rem}
+.tst-role{font-size:.78rem;color:var(--mist)}
+.tst-dots{display:flex;justify-content:center;gap:.55rem}
+.tdot{width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+  cursor:pointer;transition:all .35s}
+.tdot.on{background:var(--amber);border-color:var(--amber);
+  width:24px;border-radius:4px}
+
+/* ─── CTA BANNER ─────────────────────────────── */
+#contact{padding:7rem 3rem;background:var(--amber);text-align:center}
+.cta-inner{max-width:680px;margin:0 auto;display:flex;
+  flex-direction:column;align-items:center;gap:1.4rem}
+.cta-title{font-family:var(--ff-h);font-size:clamp(2rem,5vw,3.4rem);
+  font-weight:800;color:var(--dark);letter-spacing:-.03em;line-height:1.05}
+.cta-sub{font-size:1rem;font-weight:300;color:rgba(11,25,41,.65);
+  max-width:50ch;line-height:1.75}
+
+/* ─── FOOTER ─────────────────────────────────── */
+footer{background:var(--dark);padding:5rem 0 2.5rem}
+.footer-inner{max-width:1160px;margin:0 auto;padding:0 3rem}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;
+  gap:2.5rem;padding-bottom:3rem;
+  border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:2rem}
+.footer-brand{display:flex;flex-direction:column;gap:1rem}
+.footer-logo{font-family:var(--ff-h);font-size:1.3rem;font-weight:800;color:#fff}
+.footer-logo em{color:var(--amber);font-style:normal}
+.footer-tagline{font-size:.875rem;font-weight:300;color:var(--mist);
+  line-height:1.65;max-width:28ch}
+.footer-col h4{font-family:var(--ff-b);font-size:.7rem;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:1.1rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.footer-col ul a{font-size:.85rem;color:#6A8CA6;transition:color .3s}
+.footer-col ul a:hover{color:#fff}
+.footer-bot{display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:.78rem;color:var(--mist)}
+.footer-legal{display:flex;gap:1.4rem}
+.footer-legal a{font-size:.78rem;color:var(--mist);transition:color .3s}
+.footer-legal a:hover{color:#fff}
+
+/* ─── REVEAL ANIMATIONS ───────────────────────── */
+.rev{opacity:0;transform:translateY(28px);
+  transition:opacity .8s var(--spring),transform .8s var(--spring)}
+.rev.vis{opacity:1;transform:translateY(0)}
+.rev.d1{transition-delay:.1s} .rev.d2{transition-delay:.18s}
+.rev.d3{transition-delay:.26s} .rev.d4{transition-delay:.34s}
+.rev.d5{transition-delay:.42s} .rev.d6{transition-delay:.5s}
+
+/* ─── ADMIN MODE ──────────────────────────────── */
+.admin-fab{position:fixed;bottom:1.8rem;right:1.8rem;z-index:9999;
+  width:50px;height:50px;border-radius:50%;background:var(--dark);
+  border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.2rem;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  transition:all .3s var(--ease)}
+.admin-fab:hover{background:var(--navy);transform:scale(1.07)}
+.admin-fab.on{background:var(--amber);color:var(--dark);
+  border-color:var(--amber);box-shadow:0 4px 20px rgba(232,168,71,.4)}
+#admin-bar{display:none;position:fixed;top:.9rem;left:50%;
+  transform:translateX(-50%);z-index:9998;
+  background:rgba(10,22,36,.96);backdrop-filter:blur(18px);
+  border:1px solid rgba(232,168,71,.28);border-radius:100px;
+  padding:.55rem 1rem;align-items:center;gap:.85rem;
+  box-shadow:0 8px 36px rgba(0,0,0,.45);white-space:nowrap}
+.ab-label{font-size:.72rem;font-weight:600;letter-spacing:.1em;
+  color:var(--amber);text-transform:uppercase;
+  display:flex;align-items:center;gap:.35rem}
+.ab-label::before{content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--amber);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.ab-sep{width:1px;height:18px;background:rgba(255,255,255,.1)}
+.ab-btn{font-family:var(--ff-b);font-size:.78rem;font-weight:500;
+  color:rgba(255,255,255,.65);background:0;border:0;cursor:pointer;
+  padding:.28rem .6rem;border-radius:6px;transition:all .25s}
+.ab-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.ab-btn.save{background:var(--amber);color:var(--dark);font-weight:600;
+  padding:.28rem .85rem}
+.ab-btn.save:hover{background:#f0b94e}
+/* Editable highlight */
+body.admin .editable{outline:2px dashed rgba(232,168,71,.45);
+  outline-offset:3px;border-radius:3px;cursor:text;min-width:1em;
+  position:relative;transition:outline-color .25s,background .25s}
+body.admin .editable:hover{outline-color:var(--amber);
+  background:rgba(232,168,71,.06)}
+body.admin .editable:focus{outline:2px solid var(--amber);
+  background:rgba(232,168,71,.06)}
+/* Toast */
+#toast{position:fixed;bottom:5.5rem;right:1.8rem;z-index:9999;
+  background:#1AA86A;color:#fff;font-size:.82rem;font-weight:500;
+  padding:.65rem 1.1rem;border-radius:10px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .3s,transform .3s;pointer-events:none}
+#toast.show{opacity:1;transform:translateY(0)}
+
+/* ─── SCROLLBAR ──────────────────────────────── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:var(--navy);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--mist)}
+
+/* ─── RESPONSIVE ─────────────────────────────── */
+@media(max-width:860px){
+  .nav{padding:1.1rem 1.5rem}
+  .hero-inner{grid-template-columns:1fr;padding:7.5rem 1.5rem 4rem}
+  .hero-right{flex-direction:row;flex-wrap:wrap;align-items:flex-start}
+  .hero-card{width:calc(50% - .6rem)}
+  .si{padding:0 1.5rem}
+  .srv-grid{grid-template-columns:1fr 1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .about-grid{grid-template-columns:1fr;gap:3rem}
+  .work-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
+  .footer-brand{grid-column:1/-1}
+  #contact{padding:5rem 1.5rem}
+  .tst-inner{padding:0 1.5rem}
+}
+@media(max-width:540px){
+  .srv-grid{grid-template-columns:1fr}
+  .hero-card{width:100%}
+  .footer-top{grid-template-columns:1fr}
+  .footer-bot{flex-direction:column;gap:.75rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ── ADMIN FAB ── -->
+<button class="admin-fab" id="admin-fab" title="Admin mode (Ctrl+Shift+A)">⚙</button>
+
+<!-- ── ADMIN BAR ── -->
+<div id="admin-bar">
+  <span class="ab-label">Admin Mode</span>
+  <span class="ab-sep"></span>
+  <span style="font-size:.72rem;color:rgba(255,255,255,.4)">Click any highlighted text to edit</span>
+  <span class="ab-sep"></span>
+  <button class="ab-btn save" onclick="saveAll()">Save All</button>
+  <button class="ab-btn" onclick="resetAll()">Reset</button>
+  <button class="ab-btn" onclick="exitAdmin()">Exit</button>
+</div>
+
+<!-- ── TOAST ── -->
+<div id="toast">✓ Content saved</div>
+
+<!-- ── NAV ─────────────────────────────────── -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo"><span class="editable" data-key="nav-logo">Meridian<em>.</em></span></a>
+  <ul class="nav-links">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="clients.html">Clients</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta"><span class="editable" data-key="nav-cta">Get in Touch</span></a>
+  <button class="nav-burger" id="nav-burger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobile-nav">
+  <button class="close-btn" id="close-nav">✕</button>
+  <a href="services.html" class="mob-link">Services</a>
+  <a href="about.html" class="mob-link">About</a>
+  <a href="work.html" class="mob-link">Work</a>
+  <a href="clients.html" class="mob-link">Clients</a>
+  <a href="contact.html" class="mob-link">Contact</a>
+</div>
+
+<!-- ── HERO ─────────────────────────────────── -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <span class="hero-eyebrow editable" data-key="hero-eye">Global Strategy & Technology Consultancy</span>
+      <h1 class="hero-h1">
+        <span class="line"><span class="word editable" data-key="hero-l1">Navigate</span></span>
+        <span class="line"><span class="word editable" data-key="hero-l2">What's</span></span>
+        <span class="line"><span class="word editable" data-key="hero-l3">Next.</span></span>
+      </h1>
+      <p class="hero-sub editable" data-key="hero-sub">We help ambitious organizations define clear strategy, harness technology, and execute with conviction — in a world that rewards speed and clarity.</p>
+      <div class="hero-btns">
+        <a href="#work" class="btn-a"><span class="editable" data-key="hero-cta1">Explore Our Work</span></a>
+        <a href="#contact" class="btn-b"><span class="editable" data-key="hero-cta2">Schedule a Call</span></a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="hc-label editable" data-key="hc1-label">Clients served globally</div>
+        <div class="hc-val"><span class="count-up editable" data-key="hc1-num" data-target="200">0</span><span class="sfx editable" data-key="hc1-sfx">+</span></div>
+        <div class="hc-desc editable" data-key="hc1-desc">Across 15 countries and 6 industries</div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-label editable" data-key="hc2-label">Value created for clients</div>
+        <div class="hc-val"><span class="sfx editable" data-key="hc2-pre">$</span><span class="count-up editable" data-key="hc2-num" data-target="4" data-decimal>4</span><span class="sfx editable" data-key="hc2-sfx">.2B</span></div>
+        <div class="hc-desc editable" data-key="hc2-desc">Measurable impact since 2008</div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-label editable" data-key="hc3-label">Client retention rate</div>
+        <div class="hc-val"><span class="count-up editable" data-key="hc3-num" data-target="97">0</span><span class="sfx editable" data-key="hc3-sfx">%</span></div>
+        <div class="hc-desc editable" data-key="hc3-desc">Year-over-year since founding</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TICKER ────────────────────────────────── -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item">Apex Financial<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Nordvale Health<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Sienna Logistics<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Vantage Capital<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Elara Technologies<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Crestwood Energy<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Halston Group<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Orion Pharma<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Apex Financial<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Nordvale Health<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Sienna Logistics<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Vantage Capital<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Elara Technologies<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Crestwood Energy<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Halston Group<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Orion Pharma<span class="ticker-sep"></span></span>
+  </div>
+</div>
+
+<!-- ── SERVICES ──────────────────────────────── -->
+<section id="services" style="padding:7rem 0;background:var(--cream)">
+  <div class="si">
+    <div class="sh rev">
+      <span class="eyebrow editable" data-key="srv-eye">What We Do</span>
+      <h2 class="sec-title editable" data-key="srv-title" style="color:var(--text-d)">Built for complexity.<br>Designed for results.</h2>
+      <p class="sec-sub editable" data-key="srv-sub" style="color:var(--text-d)">Six integrated practices that work as one — because real transformation doesn't happen in silos.</p>
+    </div>
+    <div class="srv-grid">
+      <div class="srv-card rev d1">
+        <div class="srv-ico">◈</div>
+        <h3 class="editable" data-key="srv1-t">Strategy & Transformation</h3>
+        <p class="editable" data-key="srv1-d">Defining clear, actionable paths forward in environments of uncertainty. We align leadership, sharpen vision, and build the conditions for execution.</p>
+        <span class="srv-more editable" data-key="srv1-l">Learn more →</span>
+      </div>
+      <div class="srv-card rev d2">
+        <div class="srv-ico">⬡</div>
+        <h3 class="editable" data-key="srv2-t">Technology Advisory</h3>
+        <p class="editable" data-key="srv2-d">Bridging business vision with technical reality. From architecture decisions to vendor selection, we make technology choices you won't regret.</p>
+        <span class="srv-more editable" data-key="srv2-l">Learn more →</span>
+      </div>
+      <div class="srv-card rev d3">
+        <div class="srv-ico">◇</div>
+        <h3 class="editable" data-key="srv3-t">Digital Innovation</h3>
+        <p class="editable" data-key="srv3-d">Building the products and platforms of tomorrow — faster. We combine design thinking with engineering rigor to deliver experiences that actually ship.</p>
+        <span class="srv-more editable" data-key="srv3-l">Learn more →</span>
+      </div>
+      <div class="srv-card rev d1">
+        <div class="srv-ico">▽</div>
+        <h3 class="editable" data-key="srv4-t">Financial Consulting</h3>
+        <p class="editable" data-key="srv4-d">Unlocking hidden value through intelligent financial strategy. We turn data into decisions across M&A, restructuring, and performance improvement.</p>
+        <span class="srv-more editable" data-key="srv4-l">Learn more →</span>
+      </div>
+      <div class="srv-card rev d2">
+        <div class="srv-ico">⊞</div>
+        <h3 class="editable" data-key="srv5-t">Operations Excellence</h3>
+        <p class="editable" data-key="srv5-d">Streamlining what slows you down. From supply chain to shared services, we redesign operations to run leaner, faster, and with less friction.</p>
+        <span class="srv-more editable" data-key="srv5-l">Learn more →</span>
+      </div>
+      <div class="srv-card rev d3">
+        <div class="srv-ico">○</div>
+        <h3 class="editable" data-key="srv6-t">Risk & Compliance</h3>
+        <p class="editable" data-key="srv6-d">Navigating regulatory complexity with confidence. We turn compliance from a burden into a competitive advantage — protecting what matters most.</p>
+        <span class="srv-more editable" data-key="srv6-l">Learn more →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ──────────────────────────────────── -->
+<section id="stats" style="padding:6rem 0;background:var(--dark)">
+  <div class="si">
+    <div class="sh c rev">
+      <span class="eyebrow editable" data-key="stats-eye">By the Numbers</span>
+      <h2 class="sec-title editable" data-key="stats-title" style="color:var(--white)">Impact you can measure.</h2>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box rev d1">
+        <div class="stat-num">
+          <span class="count-up editable" data-key="st1-n" data-target="200">0</span><span class="sfx editable" data-key="st1-s">+</span>
+        </div>
+        <div class="stat-lbl editable" data-key="st1-l">Clients Served</div>
+      </div>
+      <div class="stat-box rev d2">
+        <div class="stat-num">
+          <span class="count-up editable" data-key="st2-n" data-target="15">0</span>
+        </div>
+        <div class="stat-lbl editable" data-key="st2-l">Countries Active</div>
+      </div>
+      <div class="stat-box rev d3">
+        <div class="stat-num">
+          <span class="sfx editable" data-key="st3-pre">$</span><span class="count-up editable" data-key="st3-n" data-target="4">0</span><span class="sfx editable" data-key="st3-s">.2B</span>
+        </div>
+        <div class="stat-lbl editable" data-key="st3-l">Value Created</div>
+      </div>
+      <div class="stat-box rev d4">
+        <div class="stat-num">
+          <span class="count-up editable" data-key="st4-n" data-target="97">0</span><span class="sfx editable" data-key="st4-s">%</span>
+        </div>
+        <div class="stat-lbl editable" data-key="st4-l">Client Retention</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ──────────────────────────────────── -->
+<section id="about" style="padding:7rem 0;background:var(--white)">
+  <div class="si">
+    <div class="about-grid">
+      <div class="about-img-wrap rev">
+        <div class="about-img-bg">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="10" width="60" height="60" rx="8" stroke="#0B1929" stroke-width="3"/>
+            <path d="M10 30h60M30 10v60" stroke="#0B1929" stroke-width="2"/>
+            <circle cx="40" cy="40" r="10" stroke="#0B1929" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="about-badge">
+          <span class="ab-num editable" data-key="ab-num">16</span>
+          <span class="ab-txt editable" data-key="ab-txt">Years of experience</span>
+        </div>
+      </div>
+      <div class="about-text rev d2">
+        <span class="eyebrow editable" data-key="about-eye">Who We Are</span>
+        <h2 class="sec-title editable" data-key="about-title" style="color:var(--text-d)">Strategy is only as good as the people who execute it.</h2>
+        <p class="editable" data-key="about-p1">Founded in 2008, Meridian Group has guided Fortune 500 companies through their most complex transformations. We're not a firm that hands over a report and disappears — we stay in the room until the work is done.</p>
+        <p class="editable" data-key="about-p2">Our teams combine deep industry expertise with cutting-edge analytical capabilities. The result: decisions grounded in data, strategies built for reality, and outcomes that speak for themselves.</p>
+        <ul class="about-list">
+          <li class="editable" data-key="about-li1">Offices in London, New York, Singapore, and Dubai</li>
+          <li class="editable" data-key="about-li2">450+ consultants across 12 disciplines</li>
+          <li class="editable" data-key="about-li3">FT Global Consulting Firm of the Year, 2022 & 2023</li>
+          <li class="editable" data-key="about-li4">B Corp certified since 2019</li>
+        </ul>
+        <div style="margin-top:.5rem">
+          <a href="#contact" class="btn-a">Work With Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORK ──────────────────────────────────── -->
+<section id="work" style="padding:7rem 0;background:var(--cream)">
+  <div class="si">
+    <div class="sh rev">
+      <span class="eyebrow editable" data-key="work-eye">Selected Work</span>
+      <h2 class="sec-title editable" data-key="work-title" style="color:var(--text-d)">Results we're proud of.</h2>
+      <p class="sec-sub editable" data-key="work-sub" style="color:var(--text-d)">Three examples from hundreds of engagements — each one a reminder of why precision and partnership matter.</p>
+    </div>
+    <div class="work-grid">
+      <div class="work-card rev d1">
+        <div class="work-img">
+          <span class="work-tag editable" data-key="wk1-tag">Banking · Transformation</span>
+        </div>
+        <div class="work-body">
+          <div class="work-cat editable" data-key="wk1-cat">Apex Financial</div>
+          <h3 class="editable" data-key="wk1-title">Core banking digital overhaul</h3>
+          <p class="editable" data-key="wk1-desc">Redesigned the entire technology infrastructure of a tier-1 bank — from legacy mainframes to cloud-native microservices — in under 18 months.</p>
+          <span class="work-result editable" data-key="wk1-res">40% operational efficiency gain</span>
+        </div>
+      </div>
+      <div class="work-card rev d2">
+        <div class="work-img">
+          <span class="work-tag editable" data-key="wk2-tag">Healthcare · Operations</span>
+        </div>
+        <div class="work-body">
+          <div class="work-cat editable" data-key="wk2-cat">Nordvale Health</div>
+          <h3 class="editable" data-key="wk2-title">Patient journey optimization</h3>
+          <p class="editable" data-key="wk2-desc">Mapped and redesigned the end-to-end care experience across 50 hospitals, reducing wait times and increasing patient satisfaction scores significantly.</p>
+          <span class="work-result editable" data-key="wk2-res">€2.1B in value unlocked</span>
+        </div>
+      </div>
+      <div class="work-card rev d3">
+        <div class="work-img">
+          <span class="work-tag editable" data-key="wk3-tag">Logistics · AI</span>
+        </div>
+        <div class="work-body">
+          <div class="work-cat editable" data-key="wk3-cat">Sienna Logistics</div>
+          <h3 class="editable" data-key="wk3-title">AI-powered supply chain reinvention</h3>
+          <p class="editable" data-key="wk3-desc">Introduced machine learning at every node in a global distribution network — demand forecasting, routing optimization, and real-time anomaly detection.</p>
+          <span class="work-result editable" data-key="wk3-res">3× throughput increase</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ──────────────────────────── -->
+<section id="testimonials" style="padding:7rem 0;background:var(--dark)">
+  <div class="tst-inner">
+    <div class="sh c rev" style="margin-bottom:3rem">
+      <span class="eyebrow editable" data-key="tst-eye">Client Voices</span>
+      <h2 class="sec-title editable" data-key="tst-title" style="color:var(--white)">Straight from the people we work with.</h2>
+    </div>
+    <div class="tst-track">
+      <div class="tst-item on">
+        <p class="tst-q editable" data-key="tst1-q">Meridian didn't just advise us — they transformed how we think about strategy entirely. The clarity they brought to a genuinely complex problem was unlike anything we'd seen from a consulting firm.</p>
+        <div class="tst-author">
+          <span class="tst-name editable" data-key="tst1-n">Sarah Chen</span>
+          <span class="tst-role editable" data-key="tst1-r">CEO, Apex Financial</span>
+        </div>
+      </div>
+      <div class="tst-item">
+        <p class="tst-q editable" data-key="tst2-q">The depth of insight and the speed of execution were remarkable. They had a practical recommendation on the table within a week — and it actually worked. That's rare in this industry.</p>
+        <div class="tst-author">
+          <span class="tst-name editable" data-key="tst2-n">Marcus Hoffmann</span>
+          <span class="tst-role editable" data-key="tst2-r">CTO, Nordvale Health</span>
+        </div>
+      </div>
+      <div class="tst-item">
+        <p class="tst-q editable" data-key="tst3-q">Working with Meridian was the single best decision we made last year. Full stop. They understood our business faster than any partner we've worked with, and they stayed committed until results appeared.</p>
+        <div class="tst-author">
+          <span class="tst-name editable" data-key="tst3-n">Amara Diallo</span>
+          <span class="tst-role editable" data-key="tst3-r">COO, Sienna Logistics</span>
+        </div>
+      </div>
+    </div>
+    <div class="tst-dots">
+      <div class="tdot on" data-i="0"></div>
+      <div class="tdot" data-i="1"></div>
+      <div class="tdot" data-i="2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────── -->
+<section id="contact">
+  <div class="cta-inner rev">
+    <h2 class="cta-title editable" data-key="cta-title">Ready to navigate what's next?</h2>
+    <p class="cta-sub editable" data-key="cta-sub">Most of our best engagements started with a single conversation. Let's have one — no obligation, no pitch deck, just a genuine discussion about your challenges.</p>
+    <a href="mailto:hello@meridiangroup.com" class="btn-dark"><span class="editable" data-key="cta-btn">Start the Conversation →</span></a>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Meridian<em>.</em></div>
+        <p class="footer-tagline editable" data-key="ft-tag">We help ambitious organizations navigate complexity and build lasting advantage.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Leadership</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Strategy</a></li>
+          <li><a href="#">Technology</a></li>
+          <li><a href="#">Digital</a></li>
+          <li><a href="#">Finance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Insights</h4>
+        <ul>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">Articles</a></li>
+          <li><a href="#">Reports</a></li>
+          <li><a href="#">Webinars</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter/X</a></li>
+          <li><a href="#">Offices</a></li>
+          <li><a href="#">Partners</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bot">
+      <span class="footer-copy editable" data-key="ft-copy">© 2026 Meridian Group. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════
+   CANVAS PARTICLE NETWORK
+   ═══════════════════════════════════════════════ */
+const cv = document.getElementById('hero-canvas');
+const cx = cv.getContext('2d');
+let pts=[], raf;
+
+function initCv(){
+  cv.width = cv.offsetWidth;
+  cv.height = cv.offsetHeight;
+  const n = Math.floor(cv.width*cv.height/22000);
+  pts=[];
+  for(let i=0;i<n;i++){
+    pts.push({
+      x:Math.random()*cv.width,
+      y:Math.random()*cv.height,
+      vx:(Math.random()-.5)*.35,
+      vy:(Math.random()-.5)*.35,
+      r:Math.random()*1.4+.4
+    });
+  }
+}
+
+function drawCv(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  const max=130;
+  pts.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0) p.x=cv.width;
+    if(p.x>cv.width) p.x=0;
+    if(p.y<0) p.y=cv.height;
+    if(p.y>cv.height) p.y=0;
+    cx.beginPath();
+    cx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    cx.fillStyle='rgba(138,164,190,.55)';
+    cx.fill();
+  });
+  for(let i=0;i<pts.length;i++){
+    for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<max){
+        cx.beginPath();
+        cx.moveTo(pts[i].x,pts[i].y);
+        cx.lineTo(pts[j].x,pts[j].y);
+        cx.strokeStyle=`rgba(138,164,190,${(1-d/max)*.18})`;
+        cx.lineWidth=.6;
+        cx.stroke();
+      }
+    }
+  }
+  raf=requestAnimationFrame(drawCv);
+}
+
+initCv(); drawCv();
+let rz; window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{cancelAnimationFrame(raf);initCv();drawCv();},200);});
+
+/* ═══════════════════════════════════════════════
+   HERO ENTRANCE
+   ═══════════════════════════════════════════════ */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.querySelectorAll('.hero-h1 .word').forEach(el=>el.classList.add('up'));
+    document.querySelector('.hero-sub').classList.add('show');
+    document.querySelector('.hero-btns').classList.add('show');
+    document.querySelector('.hero-right').classList.add('show');
+  },200);
+});
+
+/* ═══════════════════════════════════════════════
+   SCROLL: NAV + REVEAL
+   ═══════════════════════════════════════════════ */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  navEl.classList.toggle('scrolled',window.scrollY>60);
+}, {passive:true});
+
+const revObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rev').forEach(el=>revObs.observe(el));
+
+/* ═══════════════════════════════════════════════
+   COUNT-UP ANIMATION
+   ═══════════════════════════════════════════════ */
+function countUp(el,target,dur=1800){
+  let start=null;
+  function step(ts){
+    if(!start) start=ts;
+    const prog=Math.min((ts-start)/dur,1);
+    const ease=1-Math.pow(1-prog,3);
+    el.textContent=Math.round(ease*target);
+    if(prog<1) requestAnimationFrame(step);
+    else el.textContent=target;
+  }
+  requestAnimationFrame(step);
+}
+
+const cntObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target;
+      const t=parseInt(el.dataset.target)||0;
+      // Only animate if not user-edited
+      if(!localStorage.getItem('mg_'+el.dataset.key)) countUp(el,t);
+      cntObs.unobserve(el);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('.count-up').forEach(el=>cntObs.observe(el));
+
+/* ═══════════════════════════════════════════════
+   TESTIMONIAL CAROUSEL
+   ═══════════════════════════════════════════════ */
+const items=document.querySelectorAll('.tst-item');
+const dots=document.querySelectorAll('.tdot');
+let cur=0, timer;
+
+function showTst(i){
+  items.forEach((it,n)=>it.classList.toggle('on',n===i));
+  dots.forEach((d,n)=>d.classList.toggle('on',n===i));
+  cur=i;
+}
+
+function nextTst(){ showTst((cur+1)%items.length); }
+timer=setInterval(nextTst,5200);
+
+dots.forEach(d=>{
+  d.addEventListener('click',()=>{
+    clearInterval(timer);
+    showTst(parseInt(d.dataset.i));
+    timer=setInterval(nextTst,5200);
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   MOBILE NAV
+   ═══════════════════════════════════════════════ */
+const burger=document.getElementById('nav-burger');
+const mobileNav=document.getElementById('mobile-nav');
+const closeNav=document.getElementById('close-nav');
+burger.addEventListener('click',()=>mobileNav.classList.add('open'));
+closeNav.addEventListener('click',()=>mobileNav.classList.remove('open'));
+document.querySelectorAll('.mob-link').forEach(l=>{
+  l.addEventListener('click',()=>mobileNav.classList.remove('open'));
+});
+
+/* ═══════════════════════════════════════════════
+   SERVICE CARD HOVER — subtle icon pop
+   ═══════════════════════════════════════════════ */
+document.querySelectorAll('.srv-card').forEach(card=>{
+  card.addEventListener('mouseenter',()=>{
+    const ico=card.querySelector('.srv-ico');
+    ico.style.transform='scale(1.12) rotate(-4deg)';
+  });
+  card.addEventListener('mouseleave',()=>{
+    const ico=card.querySelector('.srv-ico');
+    ico.style.transform='';
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   ADMIN MODE
+   ═══════════════════════════════════════════════ */
+const KEY='mg_';
+let adminOn=false;
+
+function enterAdmin(){
+  adminOn=true;
+  document.body.classList.add('admin');
+  document.getElementById('admin-bar').style.display='flex';
+  document.getElementById('admin-fab').classList.add('on');
+  document.getElementById('admin-fab').textContent='✓';
+  document.querySelectorAll('.editable').forEach(el=>{
+    el.contentEditable='true';
+    el.setAttribute('spellcheck','false');
+  });
+}
+
+function exitAdmin(){
+  adminOn=false;
+  document.body.classList.remove('admin');
+  document.getElementById('admin-bar').style.display='none';
+  document.getElementById('admin-fab').classList.remove('on');
+  document.getElementById('admin-fab').textContent='⚙';
+  document.querySelectorAll('.editable').forEach(el=>{
+    el.contentEditable='false';
+  });
+}
+
+function saveAll(){
+  document.querySelectorAll('.editable[data-key]').forEach(el=>{
+    localStorage.setItem(KEY+el.dataset.key, el.innerHTML);
+  });
+  toast('All changes saved ✓');
+}
+
+function resetAll(){
+  if(!confirm('Reset all content to defaults? This cannot be undone.')) return;
+  document.querySelectorAll('.editable[data-key]').forEach(el=>{
+    localStorage.removeItem(KEY+el.dataset.key);
+  });
+  location.reload();
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+function loadContent(){
+  document.querySelectorAll('.editable[data-key]').forEach(el=>{
+    const saved=localStorage.getItem(KEY+el.dataset.key);
+    if(saved) el.innerHTML=saved;
+  });
+}
+
+// Auto-save on edit
+document.addEventListener('input',e=>{
+  if(e.target.contentEditable==='true' && e.target.dataset.key){
+    localStorage.setItem(KEY+e.target.dataset.key, e.target.innerHTML);
+  }
+});
+
+// Toggle button
+document.getElementById('admin-fab').addEventListener('click',()=>{
+  adminOn ? exitAdmin() : enterAdmin();
+});
+
+// Keyboard shortcut: Ctrl+Shift+A
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey && e.shiftKey && e.key==='A'){
+    e.preventDefault();
+    adminOn ? exitAdmin() : enterAdmin();
+  }
+});
+
+// Init: load saved content
+document.addEventListener('DOMContentLoaded', loadContent);
+
+/* ═══════════════════════════════════════════════
+   SMOOTH HOVER PARALLAX ON HERO CARDS
+   ═══════════════════════════════════════════════ */
+document.querySelectorAll('.hero-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+  });
+});
+</script>
+</body>
+</html>

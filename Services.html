@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Services — Meridian Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS & RESET ─────────────────────────── */
+:root{--dark:#0B1929;--navy:#152B3E;--cream:#F3EDE2;--white:#FAFAF7;--amber:#E8A847;--amber-d:#C8852A;--mist:#8AA4BE;--text-d:#0D1E2C;--text-l:#E2DAD0;--text-m:#7A9CB8;--ff-h:'Syne',sans-serif;--ff-b:'DM Sans',sans-serif;--ease:cubic-bezier(.4,0,.2,1);--spring:cubic-bezier(.16,1,.3,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--ff-b);color:var(--text-d);background:var(--white);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;transition:.4s var(--ease)}
+.nav.scrolled{background:rgba(11,25,41,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-logo{font-family:var(--ff-h);font-size:1.3rem;font-weight:800;color:var(--white);letter-spacing:-.03em}
+.nav-logo em{color:var(--amber);font-style:normal}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{font-size:.875rem;color:rgba(255,255,255,.5);transition:color .3s;font-weight:400}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-links a.active{font-weight:500}
+.nav-cta{font-size:.85rem;font-weight:600;color:var(--dark);background:var(--amber);padding:.55rem 1.3rem;border-radius:100px;transition:background .3s,transform .3s}
+.nav-cta:hover{background:#f0b94e;transform:translateY(-1px)}
+.nav-burger{display:none;flex-direction:column;gap:5px;background:0;border:0;cursor:pointer;padding:4px}
+.nav-burger span{width:22px;height:2px;background:#fff;border-radius:2px;transition:.3s var(--ease)}
+@media(max-width:860px){.nav-links,.nav-cta{display:none}.nav-burger{display:flex}}
+.mobile-nav{position:fixed;inset:0;z-index:199;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transform:translateX(100%);transition:.4s var(--spring)}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav a{font-family:var(--ff-h);font-size:2rem;color:#fff;font-weight:700}
+.mobile-nav a:hover,.mobile-nav a.active{color:var(--amber)}
+.mobile-nav .close-btn{position:absolute;top:1.5rem;right:2rem;font-size:2rem;color:#fff;background:0;border:0;cursor:pointer}
+
+/* ── BUTTONS ────────────────────────────────── */
+.btn-a{display:inline-flex;align-items:center;gap:.5rem;background:var(--amber);color:var(--dark);font-family:var(--ff-b);font-size:.9rem;font-weight:600;padding:.8rem 1.9rem;border-radius:100px;border:2px solid transparent;transition:all .3s var(--ease)}
+.btn-a:hover{background:#f0b94e;transform:translateY(-2px);box-shadow:0 10px 28px rgba(232,168,71,.35)}
+.btn-b{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text-l);font-family:var(--ff-b);font-size:.9rem;font-weight:400;padding:.8rem 1.9rem;border-radius:100px;border:1.5px solid rgba(255,255,255,.22);transition:all .3s var(--ease)}
+.btn-b:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.35);transform:translateY(-2px)}
+.btn-dark{display:inline-flex;align-items:center;gap:.5rem;background:var(--dark);color:var(--white);font-family:var(--ff-b);font-size:.9rem;font-weight:600;padding:.85rem 2rem;border-radius:100px;transition:all .3s var(--ease)}
+.btn-dark:hover{background:var(--navy);transform:translateY(-2px);box-shadow:0 12px 30px rgba(11,25,41,.3)}
+
+/* ── LAYOUT UTILS ───────────────────────────── */
+.si{max-width:1160px;margin:0 auto;padding:0 3rem}
+.sh{display:flex;flex-direction:column;gap:.9rem;margin-bottom:3.5rem}
+.sh.c{align-items:center;text-align:center}
+.eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.sec-title{font-family:var(--ff-h);font-size:clamp(1.9rem,3.5vw,2.85rem);font-weight:700;letter-spacing:-.025em;color:inherit;line-height:1.1}
+.sec-sub{font-size:1rem;font-weight:300;line-height:1.8;max-width:55ch;color:inherit;opacity:.65}
+
+/* ── PAGE HERO ──────────────────────────────── */
+.ph{background:var(--dark);padding:9rem 0 5.5rem;position:relative;overflow:hidden}
+.ph-bg{position:absolute;inset:0;background:radial-gradient(ellipse 90% 70% at 75% 40%,rgba(22,58,90,.65) 0%,transparent 60%),radial-gradient(ellipse 50% 70% at 10% 90%,rgba(232,168,71,.05) 0%,transparent 50%)}
+.ph-inner{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:0 3rem}
+.ph-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:1.4rem}
+.ph-breadcrumb a{color:rgba(255,255,255,.4);transition:color .25s}
+.ph-breadcrumb a:hover{color:var(--amber)}
+.ph-breadcrumb span{color:rgba(255,255,255,.2)}
+.ph-title{font-family:var(--ff-h);font-size:clamp(2.8rem,6vw,5rem);font-weight:800;color:var(--white);line-height:1.0;letter-spacing:-.03em;margin:.7rem 0 1.1rem}
+.ph-sub{font-size:1.1rem;font-weight:300;color:var(--text-m);max-width:52ch;line-height:1.75}
+.ph-line{width:60px;height:3px;background:var(--amber);border-radius:2px;margin-top:1.5rem}
+
+/* ── SERVICE ROWS ───────────────────────────── */
+.srv-rows{display:flex;flex-direction:column;gap:0}
+.srv-row{display:grid;grid-template-columns:64px 1fr 200px;gap:2.5rem;align-items:start;padding:2.8rem 0;border-bottom:1px solid rgba(14,31,46,.09);transition:background .3s}
+.srv-row:first-child{padding-top:.5rem}
+.srv-row:hover{background:rgba(232,168,71,.025);margin:0 -1rem;padding-left:1rem;padding-right:1rem;border-radius:12px}
+.srv-ico{width:56px;height:56px;background:rgba(232,168,71,.12);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;transition:background .3s,transform .3s;margin-top:.25rem}
+.srv-row:hover .srv-ico{background:rgba(232,168,71,.2);transform:scale(1.06) rotate(-3deg)}
+.srv-content h3{font-family:var(--ff-h);font-size:1.2rem;font-weight:700;color:var(--text-d);margin-bottom:.75rem}
+.srv-content p{font-size:.93rem;color:#5A6E7E;line-height:1.78;margin-bottom:1rem}
+.srv-bullets{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.srv-bullets li{display:flex;align-items:flex-start;gap:.6rem;font-size:.85rem;color:#6B7E8E}
+.srv-bullets li::before{content:'→';color:var(--amber);flex-shrink:0;font-weight:600;margin-top:1px}
+.srv-meta{display:flex;flex-direction:column;gap:.5rem;align-items:flex-end;padding-top:.25rem}
+.srv-stat{text-align:right}
+.srv-stat-num{font-family:var(--ff-h);font-size:2rem;font-weight:800;color:var(--text-d);line-height:1}
+.srv-stat-num em{color:var(--amber);font-style:normal}
+.srv-stat-lbl{font-size:.72rem;color:#8A9EB0;margin-top:.2rem}
+
+/* ── PROCESS ────────────────────────────────── */
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.process-grid::before{content:'';position:absolute;top:36px;left:calc(12.5% + 20px);right:calc(12.5% + 20px);height:1px;background:linear-gradient(to right,var(--amber),rgba(232,168,71,.2));z-index:0}
+.process-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:1.5rem 1rem;position:relative;z-index:1}
+.ps-num{width:72px;height:72px;border-radius:50%;background:var(--navy);border:2px solid rgba(232,168,71,.3);display:flex;align-items:center;justify-content:center;font-family:var(--ff-h);font-size:1.3rem;font-weight:800;color:var(--amber);margin-bottom:1.4rem;transition:border-color .35s,background .35s,transform .35s}
+.process-step:hover .ps-num{border-color:var(--amber);background:rgba(232,168,71,.1);transform:scale(1.06)}
+.ps-title{font-family:var(--ff-h);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.6rem}
+.ps-desc{font-size:.84rem;font-weight:300;color:var(--text-m);line-height:1.7}
+
+/* ── INDUSTRIES ─────────────────────────────── */
+.ind-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.ind-card{background:var(--white);border:1px solid rgba(14,31,46,.08);border-radius:18px;padding:2rem;display:flex;gap:1.2rem;align-items:flex-start;transition:transform .3s var(--spring),box-shadow .3s,border-color .3s}
+.ind-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(14,31,46,.1);border-color:rgba(232,168,71,.2)}
+.ind-ico{width:44px;height:44px;border-radius:11px;background:rgba(232,168,71,.1);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.ind-text h4{font-family:var(--ff-h);font-size:.95rem;font-weight:700;color:var(--text-d);margin-bottom:.35rem}
+.ind-text p{font-size:.82rem;color:#7A8E9E;line-height:1.65}
+
+/* ── WHY MERIDIAN ───────────────────────────── */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.why-card{border-radius:20px;padding:2.5rem;background:var(--cream);border:1px solid rgba(14,31,46,.07);transition:transform .3s var(--spring),box-shadow .3s}
+.why-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(14,31,46,.09)}
+.why-num{font-family:var(--ff-h);font-size:3.5rem;font-weight:800;color:rgba(232,168,71,.18);line-height:1;margin-bottom:.8rem}
+.why-card h3{font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--text-d);margin-bottom:.7rem}
+.why-card p{font-size:.88rem;color:#6B7E8E;line-height:1.75}
+
+/* ── CTA SECTION ────────────────────────────── */
+.cta-sec{padding:7rem 3rem;background:var(--amber);text-align:center}
+.cta-inner{max-width:680px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:1.4rem}
+.cta-title{font-family:var(--ff-h);font-size:clamp(2rem,5vw,3.4rem);font-weight:800;color:var(--dark);letter-spacing:-.03em;line-height:1.05}
+.cta-sub{font-size:1rem;font-weight:300;color:rgba(11,25,41,.65);max-width:50ch;line-height:1.75}
+
+/* ── FOOTER ─────────────────────────────────── */
+footer{background:var(--dark);padding:5rem 0 2.5rem}
+.fi{max-width:1160px;margin:0 auto;padding:0 3rem}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:2.5rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:2rem}
+.fb{display:flex;flex-direction:column;gap:1rem}
+.fl{font-family:var(--ff-h);font-size:1.3rem;font-weight:800;color:#fff}
+.fl em{color:var(--amber);font-style:normal}
+.ftag{font-size:.875rem;font-weight:300;color:var(--mist);line-height:1.65;max-width:28ch}
+.fc h4{font-family:var(--ff-b);font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:1.1rem}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.fc ul a{font-size:.85rem;color:#6A8CA6;transition:color .3s}
+.fc ul a:hover{color:#fff}
+.fbot{display:flex;justify-content:space-between;align-items:center}
+.fcopy{font-size:.78rem;color:var(--mist)}
+.fleg{display:flex;gap:1.4rem}
+.fleg a{font-size:.78rem;color:var(--mist);transition:color .3s}
+.fleg a:hover{color:#fff}
+
+/* ── REVEAL ─────────────────────────────────── */
+.rev{opacity:0;transform:translateY(28px);transition:opacity .8s var(--spring),transform .8s var(--spring)}
+.rev.vis{opacity:1;transform:translateY(0)}
+.rev.d1{transition-delay:.08s}.rev.d2{transition-delay:.16s}.rev.d3{transition-delay:.24s}
+.rev.d4{transition-delay:.32s}.rev.d5{transition-delay:.4s}.rev.d6{transition-delay:.48s}
+
+/* ── ADMIN ──────────────────────────────────── */
+.admin-fab{position:fixed;bottom:1.8rem;right:1.8rem;z-index:9999;width:50px;height:50px;border-radius:50%;background:var(--dark);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;box-shadow:0 4px 20px rgba(0,0,0,.35);transition:all .3s var(--ease)}
+.admin-fab:hover{background:var(--navy);transform:scale(1.07)}
+.admin-fab.on{background:var(--amber);color:var(--dark);border-color:var(--amber)}
+#admin-bar{display:none;position:fixed;top:.9rem;left:50%;transform:translateX(-50%);z-index:9998;background:rgba(10,22,36,.96);backdrop-filter:blur(18px);border:1px solid rgba(232,168,71,.28);border-radius:100px;padding:.55rem 1rem;align-items:center;gap:.85rem;box-shadow:0 8px 36px rgba(0,0,0,.45);white-space:nowrap}
+.ab-label{font-size:.72rem;font-weight:600;letter-spacing:.1em;color:var(--amber);text-transform:uppercase;display:flex;align-items:center;gap:.35rem}
+.ab-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--amber);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.ab-sep{width:1px;height:18px;background:rgba(255,255,255,.1)}
+.ab-btn{font-family:var(--ff-b);font-size:.78rem;font-weight:500;color:rgba(255,255,255,.65);background:0;border:0;cursor:pointer;padding:.28rem .6rem;border-radius:6px;transition:all .25s}
+.ab-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.ab-btn.save{background:var(--amber);color:var(--dark);font-weight:600;padding:.28rem .85rem}
+.ab-btn.save:hover{background:#f0b94e}
+body.admin .editable{outline:2px dashed rgba(232,168,71,.45);outline-offset:3px;border-radius:3px;cursor:text;min-width:1em;transition:outline-color .25s,background .25s}
+body.admin .editable:hover{outline-color:var(--amber);background:rgba(232,168,71,.06)}
+body.admin .editable:focus{outline:2px solid var(--amber);background:rgba(232,168,71,.06)}
+#toast{position:fixed;bottom:5.5rem;right:1.8rem;z-index:9999;background:#1AA86A;color:#fff;font-size:.82rem;font-weight:500;padding:.65rem 1.1rem;border-radius:10px;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none}
+#toast.show{opacity:1;transform:translateY(0)}
+
+/* ── SCROLLBAR ──────────────────────────────── */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--dark)}::-webkit-scrollbar-thumb{background:var(--navy);border-radius:3px}
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media(max-width:860px){
+  .si,.ph-inner,.fi{padding-left:1.5rem;padding-right:1.5rem}
+  .srv-row{grid-template-columns:50px 1fr;gap:1.5rem}.srv-meta{display:none}
+  .process-grid{grid-template-columns:1fr 1fr;gap:1.5rem}.process-grid::before{display:none}
+  .ind-grid{grid-template-columns:1fr 1fr}
+  .why-grid{grid-template-columns:1fr}
+  .ft{grid-template-columns:1fr 1fr;gap:2rem}.fb{grid-column:1/-1}
+  .fbot{flex-direction:column;gap:.75rem;text-align:center}
+  .cta-sec{padding:5rem 1.5rem}
+}
+@media(max-width:540px){
+  .ind-grid{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:1fr}
+  .ft{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<button class="admin-fab" id="admin-fab" title="Admin mode (Ctrl+Shift+A)">⚙</button>
+<div id="admin-bar">
+  <span class="ab-label">Admin Mode</span><span class="ab-sep"></span>
+  <span style="font-size:.72rem;color:rgba(255,255,255,.4)">Click highlighted text to edit</span>
+  <span class="ab-sep"></span>
+  <button class="ab-btn save" onclick="saveAll()">Save All</button>
+  <button class="ab-btn" onclick="resetAll()">Reset</button>
+  <button class="ab-btn" onclick="exitAdmin()">Exit</button>
+</div>
+<div id="toast"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="meridian-group.html" class="nav-logo">Meridian<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="clients.html">Clients</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Get in Touch</a>
+  <button class="nav-burger" id="nav-burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <button class="close-btn" id="close-nav">✕</button>
+  <a href="meridian-group.html">Home</a>
+  <a href="services.html" class="active">Services</a>
+  <a href="about.html">About</a>
+  <a href="work.html">Work</a>
+  <a href="clients.html">Clients</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="ph">
+  <div class="ph-bg"></div>
+  <div class="ph-inner">
+    <div class="ph-breadcrumb"><a href="meridian-group.html">Home</a><span>/</span>Services</div>
+    <span class="eyebrow editable" data-key="srv-ph-eye">Our Services</span>
+    <h1 class="ph-title editable" data-key="srv-ph-title">Six practices.<br>One firm.</h1>
+    <p class="ph-sub editable" data-key="srv-ph-sub">An integrated approach to strategy, technology, and transformation — because the challenges that matter most rarely fit neatly into a single discipline.</p>
+    <div class="ph-line"></div>
+  </div>
+</section>
+
+<!-- SERVICE ROWS -->
+<section style="padding:6rem 0;background:var(--white)">
+  <div class="si">
+    <div class="srv-rows">
+      <div class="srv-row rev">
+        <div class="srv-ico">◈</div>
+        <div class="srv-content">
+          <h3 class="editable" data-key="s1-t">Strategy & Transformation</h3>
+          <p class="editable" data-key="s1-p">Defining clear, actionable paths forward in environments of genuine uncertainty. We work at the intersection of market dynamics, organizational capability, and competitive positioning to create strategies that hold up under scrutiny — and under pressure.</p>
+          <ul class="srv-bullets">
+            <li class="editable" data-key="s1-b1">Corporate and business unit strategy design</li>
+            <li class="editable" data-key="s1-b2">Organizational restructuring and change management</li>
+            <li class="editable" data-key="s1-b3">Market entry, growth, and portfolio strategy</li>
+            <li class="editable" data-key="s1-b4">Executive alignment and strategic planning cycles</li>
+          </ul>
+        </div>
+        <div class="srv-meta">
+          <div class="srv-stat">
+            <div class="srv-stat-num">60<em>+</em></div>
+            <div class="srv-stat-lbl">Strategy engagements</div>
+          </div>
+        </div>
+      </div>
+      <div class="srv-row rev d1">
+        <div class="srv-ico">⬡</div>
+        <div class="srv-content">
+          <h3 class="editable" data-key="s2-t">Technology Advisory</h3>
+          <p class="editable" data-key="s2-p">Bridging business vision with technical reality. Technology choices compound — good ones create advantages for years, bad ones create debt. We help leaders make architecture, platform, and vendor decisions with confidence and a long-term lens.</p>
+          <ul class="srv-bullets">
+            <li class="editable" data-key="s2-b1">Enterprise architecture and tech stack modernization</li>
+            <li class="editable" data-key="s2-b2">Cloud migration strategy and execution oversight</li>
+            <li class="editable" data-key="s2-b3">Technology vendor selection and contract negotiation</li>
+            <li class="editable" data-key="s2-b4">CTO advisory and interim technology leadership</li>
+          </ul>
+        </div>
+        <div class="srv-meta">
+          <div class="srv-stat">
+            <div class="srv-stat-num">45<em>+</em></div>
+            <div class="srv-stat-lbl">Tech transformations</div>
+          </div>
+        </div>
+      </div>
+      <div class="srv-row rev d2">
+        <div class="srv-ico">◇</div>
+        <div class="srv-content">
+          <h3 class="editable" data-key="s3-t">Digital Innovation</h3>
+          <p class="editable" data-key="s3-p">Building the products and platforms of tomorrow — with the rigor that production-grade work demands. From discovery through delivery, we combine design thinking, user research, and engineering excellence to ship experiences that actually matter.</p>
+          <ul class="srv-bullets">
+            <li class="editable" data-key="s3-b1">Product strategy, roadmap, and MVP development</li>
+            <li class="editable" data-key="s3-b2">Design systems, UX research, and accessibility</li>
+            <li class="editable" data-key="s3-b3">AI and machine learning product integration</li>
+            <li class="editable" data-key="s3-b4">Platform and ecosystem strategy</li>
+          </ul>
+        </div>
+        <div class="srv-meta">
+          <div class="srv-stat">
+            <div class="srv-stat-num">80<em>+</em></div>
+            <div class="srv-stat-lbl">Products launched</div>
+          </div>
+        </div>
+      </div>
+      <div class="srv-row rev d1">
+        <div class="srv-ico">▽</div>
+        <div class="srv-content">
+          <h3 class="editable" data-key="s4-t">Financial Consulting</h3>
+          <p class="editable" data-key="s4-p">Turning data into decisions across the full spectrum of financial strategy. We work alongside CFOs, boards, and investors to identify value, structure transactions, and build the financial discipline that sustains growth over time.</p>
+          <ul class="srv-bullets">
+            <li class="editable" data-key="s4-b1">M&A due diligence, integration, and value creation</li>
+            <li class="editable" data-key="s4-b2">Financial restructuring and turnaround management</li>
+            <li class="editable" data-key="s4-b3">Capital allocation strategy and investor relations</li>
+            <li class="editable" data-key="s4-b4">Performance improvement and cost transformation</li>
+          </ul>
+        </div>
+        <div class="srv-meta">
+          <div class="srv-stat">
+            <div class="srv-stat-num">$8<em>B+</em></div>
+            <div class="srv-stat-lbl">Transactions advised</div>
+          </div>
+        </div>
+      </div>
+      <div class="srv-row rev d2">
+        <div class="srv-ico">⊞</div>
+        <div class="srv-content">
+          <h3 class="editable" data-key="s5-t">Operations Excellence</h3>
+          <p class="editable" data-key="s5-p">Streamlining what slows organizations down without stripping out what makes them unique. We redesign operations end-to-end — from process mapping to automation implementation — so teams can move faster with fewer friction points.</p>
+          <ul class="srv-bullets">
+            <li class="editable" data-key="s5-b1">Operating model design and process reengineering</li>
+            <li class="editable" data-key="s5-b2">Lean, Six Sigma, and continuous improvement programs</li>
+            <li class="editable" data-key="s5-b3">Supply chain optimization and resilience planning</li>
+            <li class="editable" data-key="s5-b4">Shared services design and outsourcing strategy</li>
+          </ul>
+        </div>
+        <div class="srv-meta">
+          <div class="srv-stat">
+            <div class="srv-stat-num">35<em>%</em></div>
+            <div class="srv-stat-lbl">Avg. efficiency gain</div>
+          </div>
+        </div>
+      </div>
+      <div class="srv-row rev d1">
+        <div class="srv-ico">○</div>
+        <div class="srv-content">
+          <h3 class="editable" data-key="s6-t">Risk & Compliance</h3>
+          <p class="editable" data-key="s6-p">Navigating regulatory complexity with clarity and confidence. We help organizations build compliance frameworks that don't just satisfy regulators — they create genuine competitive advantage by reducing uncertainty and building trust with customers and partners.</p>
+          <ul class="srv-bullets">
+            <li class="editable" data-key="s6-b1">Regulatory strategy and horizon scanning</li>
+            <li class="editable" data-key="s6-b2">Enterprise risk management and governance frameworks</li>
+            <li class="editable" data-key="s6-b3">Data privacy, cybersecurity, and ESG compliance</li>
+            <li class="editable" data-key="s6-b4">Regulatory remediation and regulatory affairs</li>
+          </ul>
+        </div>
+        <div class="srv-meta">
+          <div class="srv-stat">
+            <div class="srv-stat-num">100<em>%</em></div>
+            <div class="srv-stat-lbl">Remediation success rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section style="padding:6.5rem 0;background:var(--dark)">
+  <div class="si">
+    <div class="sh c rev">
+      <span class="eyebrow editable" data-key="proc-eye">How We Work</span>
+      <h2 class="sec-title editable" data-key="proc-title" style="color:var(--white)">A process built for real problems.</h2>
+      <p class="sec-sub editable" data-key="proc-sub" style="color:var(--text-m)">Disciplined enough to be repeatable. Flexible enough to meet you where you are.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step rev d1">
+        <div class="ps-num">01</div>
+        <div class="ps-title editable" data-key="p1-t">Discover</div>
+        <p class="ps-desc editable" data-key="p1-d">We immerse in your world — interviewing stakeholders, interrogating data, and mapping the landscape to find the real problem behind the stated one.</p>
+      </div>
+      <div class="process-step rev d2">
+        <div class="ps-num">02</div>
+        <div class="ps-title editable" data-key="p2-t">Define</div>
+        <p class="ps-desc editable" data-key="p2-d">We frame the challenge precisely, align leadership on success metrics, and build the strategic brief that governs every decision that follows.</p>
+      </div>
+      <div class="process-step rev d3">
+        <div class="ps-num">03</div>
+        <div class="ps-title editable" data-key="p3-t">Design</div>
+        <p class="ps-desc editable" data-key="p3-d">We develop and stress-test options, co-creating solutions with your team. Buy-in is built during the process — not at the presentation.</p>
+      </div>
+      <div class="process-step rev d4">
+        <div class="ps-num">04</div>
+        <div class="ps-title editable" data-key="p4-t">Deliver</div>
+        <p class="ps-desc editable" data-key="p4-d">We stay engaged through implementation, adapting to reality as it emerges. Our work isn't finished until the results are visible in the numbers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section style="padding:6.5rem 0;background:var(--cream)">
+  <div class="si">
+    <div class="sh c rev">
+      <span class="eyebrow editable" data-key="ind-eye">Industries</span>
+      <h2 class="sec-title editable" data-key="ind-title" style="color:var(--text-d)">Deep expertise across sectors.</h2>
+    </div>
+    <div class="ind-grid">
+      <div class="ind-card rev d1">
+        <div class="ind-ico">🏦</div>
+        <div class="ind-text">
+          <h4 class="editable" data-key="i1-t">Financial Services</h4>
+          <p class="editable" data-key="i1-d">Banking, insurance, capital markets, wealth management, and fintech. We understand the regulatory environment and the pace of disruption.</p>
+        </div>
+      </div>
+      <div class="ind-card rev d2">
+        <div class="ind-ico">🏥</div>
+        <div class="ind-text">
+          <h4 class="editable" data-key="i2-t">Healthcare & Life Sciences</h4>
+          <p class="editable" data-key="i2-d">Hospitals, pharma, medtech, and digital health. Patient outcomes and commercial performance aren't in conflict — we show you how to improve both.</p>
+        </div>
+      </div>
+      <div class="ind-card rev d3">
+        <div class="ind-ico">⚡</div>
+        <div class="ind-text">
+          <h4 class="editable" data-key="i3-t">Energy & Industrials</h4>
+          <p class="editable" data-key="i3-d">Oil & gas, renewables, utilities, and manufacturing. We help traditional energy companies navigate the transition without sacrificing near-term performance.</p>
+        </div>
+      </div>
+      <div class="ind-card rev d1">
+        <div class="ind-ico">💻</div>
+        <div class="ind-text">
+          <h4 class="editable" data-key="i4-t">Technology & Media</h4>
+          <p class="editable" data-key="i4-d">Software, platforms, content, and hardware. From pre-IPO growth strategy to enterprise transformation, we speak the language of tech-native businesses.</p>
+        </div>
+      </div>
+      <div class="ind-card rev d2">
+        <div class="ind-ico">🛍</div>
+        <div class="ind-text">
+          <h4 class="editable" data-key="i5-t">Consumer & Retail</h4>
+          <p class="editable" data-key="i5-d">FMCG, e-commerce, luxury, and hospitality. We help consumer businesses adapt their operating models as channels, expectations, and competition evolve rapidly.</p>
+        </div>
+      </div>
+      <div class="ind-card rev d3">
+        <div class="ind-ico">🏛</div>
+        <div class="ind-text">
+          <h4 class="editable" data-key="i6-t">Public Sector</h4>
+          <p class="editable" data-key="i6-d">Government agencies, infrastructure, education, and defence. We bring private-sector rigor to public-sector complexity, without losing sight of the mission.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY MERIDIAN -->
+<section style="padding:6.5rem 0;background:var(--white)">
+  <div class="si">
+    <div class="sh c rev">
+      <span class="eyebrow editable" data-key="why-eye">Why Meridian</span>
+      <h2 class="sec-title editable" data-key="why-title" style="color:var(--text-d)">What makes the difference.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card rev d1">
+        <div class="why-num">01</div>
+        <h3 class="editable" data-key="w1-t">We work alongside you, not above you</h3>
+        <p class="editable" data-key="w1-d">Our teams embed with yours. We share your accountability and your pressure — which means the work is shaped by reality, not by what looks good in a deck. If a recommendation doesn't survive contact with your organization, it isn't a good recommendation.</p>
+      </div>
+      <div class="why-card rev d2">
+        <div class="why-num">02</div>
+        <h3 class="editable" data-key="w2-t">We measure ourselves by outcomes</h3>
+        <p class="editable" data-key="w2-d">We're in the results business, not the deliverables business. That means we stay engaged past the point where most firms consider their job done — and we hold ourselves to the numbers that matter to you, not the ones that are easy to claim.</p>
+      </div>
+      <div class="why-card rev d3">
+        <div class="why-num">03</div>
+        <h3 class="editable" data-key="w3-t">We bring the right people, not the nearest ones</h3>
+        <p class="editable" data-key="w3-d">Every engagement is staffed from our global network based on specific expertise fit — not availability. The partner you meet is the partner who stays. There's no bait-and-switch, no junior team left to figure it out. You get the best of Meridian on your problem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="cta-inner rev">
+    <h2 class="cta-title editable" data-key="srv-cta-t">The right engagement starts with the right conversation.</h2>
+    <p class="cta-sub editable" data-key="srv-cta-s">Tell us what you're working on. We'll tell you honestly whether we're the right fit — and if we're not, we'll point you to someone who is.</p>
+    <a href="contact.html" class="btn-dark"><span class="editable" data-key="srv-cta-b">Start the Conversation →</span></a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <div class="ft">
+      <div class="fb">
+        <div class="fl">Meridian<em>.</em></div>
+        <p class="ftag">We help ambitious organizations navigate complexity and build lasting advantage.</p>
+      </div>
+      <div class="fc"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="about.html#leadership">Leadership</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li></ul></div>
+      <div class="fc"><h4>Services</h4><ul><li><a href="services.html">Strategy</a></li><li><a href="services.html">Technology</a></li><li><a href="services.html">Digital</a></li><li><a href="services.html">Finance</a></li></ul></div>
+      <div class="fc"><h4>Insights</h4><ul><li><a href="#">Research</a></li><li><a href="#">Articles</a></li><li><a href="#">Reports</a></li><li><a href="#">Webinars</a></li></ul></div>
+      <div class="fc"><h4>Connect</h4><ul><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter/X</a></li><li><a href="contact.html">Offices</a></li><li><a href="#">Partners</a></li></ul></div>
+    </div>
+    <div class="fbot">
+      <span class="fcopy">© 2026 Meridian Group. All rights reserved.</span>
+      <div class="fleg"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Cookie Settings</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>navEl.classList.toggle('scrolled',window.scrollY>60),{passive:true});
+const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+const burger=document.getElementById('nav-burger'),mob=document.getElementById('mobile-nav'),close=document.getElementById('close-nav');
+burger.addEventListener('click',()=>mob.classList.add('open'));
+close.addEventListener('click',()=>mob.classList.remove('open'));
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mob.classList.remove('open')));
+/* Admin */
+const KEY='mg_srv_';let adminOn=false;
+function enterAdmin(){adminOn=true;document.body.classList.add('admin');document.getElementById('admin-bar').style.display='flex';document.getElementById('admin-fab').classList.add('on');document.getElementById('admin-fab').textContent='✓';document.querySelectorAll('.editable').forEach(el=>{el.contentEditable='true';el.setAttribute('spellcheck','false')})}
+function exitAdmin(){adminOn=false;document.body.classList.remove('admin');document.getElementById('admin-bar').style.display='none';document.getElementById('admin-fab').classList.remove('on');document.getElementById('admin-fab').textContent='⚙';document.querySelectorAll('.editable').forEach(el=>{el.contentEditable='false'})}
+function saveAll(){document.querySelectorAll('.editable[data-key]').forEach(el=>localStorage.setItem(KEY+el.dataset.key,el.innerHTML));toast('All changes saved ✓')}
+function resetAll(){if(!confirm('Reset all content?'))return;document.querySelectorAll('.editable[data-key]').forEach(el=>localStorage.removeItem(KEY+el.dataset.key));location.reload()}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+function loadContent(){document.querySelectorAll('.editable[data-key]').forEach(el=>{const s=localStorage.getItem(KEY+el.dataset.key);if(s)el.innerHTML=s})}
+document.addEventListener('input',e=>{if(e.target.contentEditable==='true'&&e.target.dataset.key)localStorage.setItem(KEY+e.target.dataset.key,e.target.innerHTML)});
+document.getElementById('admin-fab').addEventListener('click',()=>adminOn?exitAdmin():enterAdmin());
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key==='A'){e.preventDefault();adminOn?exitAdmin():enterAdmin()}});
+document.addEventListener('DOMContentLoaded',loadContent);
+</script>
+</body>
+</html>

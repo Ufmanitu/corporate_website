@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contact — Meridian Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+:root{--dark:#0B1929;--navy:#152B3E;--cream:#F3EDE2;--white:#FAFAF7;--amber:#E8A847;--amber-d:#C8852A;--mist:#8AA4BE;--text-d:#0D1E2C;--text-l:#E2DAD0;--text-m:#7A9CB8;--ff-h:'Syne',sans-serif;--ff-b:'DM Sans',sans-serif;--ease:cubic-bezier(.4,0,.2,1);--spring:cubic-bezier(.16,1,.3,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--ff-b);color:var(--text-d);background:var(--white);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;transition:.4s var(--ease)}
+.nav.scrolled{background:rgba(11,25,41,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-logo{font-family:var(--ff-h);font-size:1.3rem;font-weight:800;color:var(--white);letter-spacing:-.03em}.nav-logo em{color:var(--amber);font-style:normal}
+.nav-links{display:flex;gap:2.2rem;list-style:none}.nav-links a{font-size:.875rem;color:rgba(255,255,255,.5);transition:color .3s;font-weight:400}.nav-links a:hover,.nav-links a.active{color:#fff;font-weight:500}
+.nav-cta{font-size:.85rem;font-weight:600;color:var(--dark);background:var(--amber);padding:.55rem 1.3rem;border-radius:100px;transition:background .3s,transform .3s}.nav-cta:hover{background:#f0b94e;transform:translateY(-1px)}
+.nav-burger{display:none;flex-direction:column;gap:5px;background:0;border:0;cursor:pointer;padding:4px}.nav-burger span{width:22px;height:2px;background:#fff;border-radius:2px;transition:.3s var(--ease)}
+@media(max-width:860px){.nav-links,.nav-cta{display:none}.nav-burger{display:flex}}
+.mobile-nav{position:fixed;inset:0;z-index:199;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transform:translateX(100%);transition:.4s var(--spring)}
+.mobile-nav.open{transform:translateX(0)}.mobile-nav a{font-family:var(--ff-h);font-size:2rem;color:#fff;font-weight:700}.mobile-nav a:hover,.mobile-nav a.active{color:var(--amber)}
+.mobile-nav .close-btn{position:absolute;top:1.5rem;right:2rem;font-size:2rem;color:#fff;background:0;border:0;cursor:pointer}
+.si{max-width:1160px;margin:0 auto;padding:0 3rem}
+.sh{display:flex;flex-direction:column;gap:.9rem;margin-bottom:3rem}.sh.c{align-items:center;text-align:center}
+.eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.sec-title{font-family:var(--ff-h);font-size:clamp(1.9rem,3.5vw,2.85rem);font-weight:700;letter-spacing:-.025em;color:inherit;line-height:1.1}
+
+/* PAGE HERO */
+.ph{background:var(--dark);padding:9rem 0 6rem;position:relative;overflow:hidden}
+.ph-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 70% 40%,rgba(22,58,90,.65) 0%,transparent 60%),radial-gradient(ellipse 45% 55% at 5% 90%,rgba(232,168,71,.05) 0%,transparent 50%)}
+.ph-inner{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:0 3rem}
+.ph-breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:1.4rem}
+.ph-breadcrumb a{color:rgba(255,255,255,.4);transition:color .25s}.ph-breadcrumb a:hover{color:var(--amber)}.ph-breadcrumb span{color:rgba(255,255,255,.2)}
+.ph-title{font-family:var(--ff-h);font-size:clamp(2.8rem,6vw,5rem);font-weight:800;color:var(--white);line-height:1.0;letter-spacing:-.03em;margin:.7rem 0 1.1rem}
+.ph-sub{font-size:1.1rem;font-weight:300;color:var(--text-m);max-width:52ch;line-height:1.75}
+.ph-line{width:60px;height:3px;background:var(--amber);border-radius:2px;margin-top:1.5rem}
+
+/* CONTACT GRID */
+.contact-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:5rem;align-items:start}
+
+/* FORM */
+.contact-form{display:flex;flex-direction:column;gap:1.4rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.form-group{display:flex;flex-direction:column;gap:.5rem}
+.form-group label{font-size:.78rem;font-weight:500;color:var(--text-d);letter-spacing:.02em}
+.form-group input,.form-group select,.form-group textarea{font-family:var(--ff-b);font-size:.92rem;font-weight:400;color:var(--text-d);background:var(--white);border:1.5px solid rgba(14,31,46,.15);border-radius:12px;padding:.85rem 1rem;outline:none;transition:border-color .25s,box-shadow .25s;width:100%;appearance:none;-webkit-appearance:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(232,168,71,.12)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:#A0B4C4}
+.form-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238AA4BE' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
+.form-group textarea{resize:vertical;min-height:120px;line-height:1.6}
+.form-consent{display:flex;align-items:flex-start;gap:.7rem}
+.form-consent input[type=checkbox]{width:16px;height:16px;margin-top:2px;accent-color:var(--amber);flex-shrink:0}
+.form-consent label{font-size:.8rem;color:#6B7E8E;line-height:1.6;cursor:pointer}
+.form-consent label a{color:var(--amber-d);border-bottom:1px solid rgba(200,133,42,.3);transition:border-color .25s}
+.form-consent label a:hover{border-color:var(--amber-d)}
+.submit-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;background:var(--dark);color:#fff;font-family:var(--ff-b);font-size:.95rem;font-weight:600;padding:1rem 2.4rem;border-radius:100px;border:none;cursor:pointer;transition:all .3s var(--ease);align-self:flex-start}
+.submit-btn:hover{background:var(--navy);transform:translateY(-2px);box-shadow:0 12px 30px rgba(11,25,41,.3)}
+.submit-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.submit-btn.loading .spinner{display:block}.submit-btn.loading .btn-txt{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.form-success{display:none;background:rgba(26,168,106,.08);border:1px solid rgba(26,168,106,.25);border-radius:16px;padding:2rem;text-align:center}
+.form-success.show{display:flex;flex-direction:column;align-items:center;gap:.75rem}
+.form-success .tick{font-size:2.5rem}
+.form-success h3{font-family:var(--ff-h);font-size:1.2rem;color:#1AA86A;font-weight:700}
+.form-success p{font-size:.9rem;color:#5A6E7E;line-height:1.7;max-width:36ch}
+
+/* CONTACT INFO PANEL */
+.contact-info{display:flex;flex-direction:column;gap:2rem}
+.info-card{background:var(--cream);border-radius:18px;padding:1.8rem}
+.info-card h4{font-family:var(--ff-h);font-size:.95rem;font-weight:700;color:var(--text-d);margin-bottom:1rem}
+.info-item{display:flex;align-items:flex-start;gap:.8rem;padding:.7rem 0;border-bottom:1px solid rgba(14,31,46,.07)}
+.info-item:last-child{border-bottom:0}
+.info-ico{font-size:1rem;width:20px;flex-shrink:0;margin-top:1px}
+.info-text{font-size:.87rem;color:#5A6E7E;line-height:1.6}
+.info-text strong{color:var(--text-d);font-weight:500}
+.info-text a{color:var(--amber-d);transition:color .25s}.info-text a:hover{color:var(--dark)}
+
+/* OFFICES */
+.offices-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+.office-card{border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:1.8rem;transition:border-color .3s,background .3s,transform .3s}
+.office-card:hover{border-color:rgba(232,168,71,.28);background:rgba(255,255,255,.02);transform:translateY(-4px)}
+.office-flag{font-size:1.4rem;margin-bottom:.8rem}
+.office-city{font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:.25rem}
+.office-tag{font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:.9rem}
+.office-addr{font-size:.82rem;color:var(--mist);line-height:1.65}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:.8rem}
+.faq-item{border:1px solid rgba(14,31,46,.1);border-radius:14px;overflow:hidden;transition:border-color .3s}
+.faq-item.open{border-color:rgba(232,168,71,.2)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.4rem;cursor:pointer;gap:1rem;background:var(--white);transition:background .25s}
+.faq-item.open .faq-q{background:rgba(232,168,71,.04)}
+.faq-q-text{font-family:var(--ff-h);font-size:.95rem;font-weight:600;color:var(--text-d)}
+.faq-arrow{width:24px;height:24px;border-radius:50%;background:rgba(14,31,46,.06);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--text-d);flex-shrink:0;transition:transform .3s var(--spring),background .3s}
+.faq-item.open .faq-arrow{transform:rotate(180deg);background:rgba(232,168,71,.15);color:var(--amber-d)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--spring)}
+.faq-item.open .faq-a{max-height:400px}
+.faq-a-inner{padding:.25rem 1.4rem 1.4rem;font-size:.88rem;color:#5A6E7E;line-height:1.78}
+
+footer{background:var(--dark);padding:5rem 0 2.5rem}.fi{max-width:1160px;margin:0 auto;padding:0 3rem}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:2.5rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:2rem}
+.fb{display:flex;flex-direction:column;gap:1rem}.fl{font-family:var(--ff-h);font-size:1.3rem;font-weight:800;color:#fff}.fl em{color:var(--amber);font-style:normal}.ftag{font-size:.875rem;font-weight:300;color:var(--mist);line-height:1.65;max-width:28ch}
+.fc h4{font-family:var(--ff-b);font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);margin-bottom:1.1rem}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}.fc ul a{font-size:.85rem;color:#6A8CA6;transition:color .3s}.fc ul a:hover{color:#fff}
+.fbot{display:flex;justify-content:space-between;align-items:center}.fcopy{font-size:.78rem;color:var(--mist)}.fleg{display:flex;gap:1.4rem}.fleg a{font-size:.78rem;color:var(--mist);transition:color .3s}.fleg a:hover{color:#fff}
+.rev{opacity:0;transform:translateY(28px);transition:opacity .8s var(--spring),transform .8s var(--spring)}.rev.vis{opacity:1;transform:translateY(0)}
+.rev.d1{transition-delay:.08s}.rev.d2{transition-delay:.16s}.rev.d3{transition-delay:.24s}
+.admin-fab{position:fixed;bottom:1.8rem;right:1.8rem;z-index:9999;width:50px;height:50px;border-radius:50%;background:var(--dark);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;box-shadow:0 4px 20px rgba(0,0,0,.35);transition:all .3s var(--ease)}.admin-fab:hover{background:var(--navy);transform:scale(1.07)}.admin-fab.on{background:var(--amber);color:var(--dark);border-color:var(--amber)}
+#admin-bar{display:none;position:fixed;top:.9rem;left:50%;transform:translateX(-50%);z-index:9998;background:rgba(10,22,36,.96);backdrop-filter:blur(18px);border:1px solid rgba(232,168,71,.28);border-radius:100px;padding:.55rem 1rem;align-items:center;gap:.85rem;box-shadow:0 8px 36px rgba(0,0,0,.45);white-space:nowrap}
+.ab-label{font-size:.72rem;font-weight:600;letter-spacing:.1em;color:var(--amber);text-transform:uppercase;display:flex;align-items:center;gap:.35rem}.ab-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--amber);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}.ab-sep{width:1px;height:18px;background:rgba(255,255,255,.1)}.ab-btn{font-family:var(--ff-b);font-size:.78rem;font-weight:500;color:rgba(255,255,255,.65);background:0;border:0;cursor:pointer;padding:.28rem .6rem;border-radius:6px;transition:all .25s}.ab-btn:hover{background:rgba(255,255,255,.08);color:#fff}.ab-btn.save{background:var(--amber);color:var(--dark);font-weight:600;padding:.28rem .85rem}.ab-btn.save:hover{background:#f0b94e}
+body.admin .editable{outline:2px dashed rgba(232,168,71,.45);outline-offset:3px;border-radius:3px;cursor:text;min-width:1em;transition:outline-color .25s,background .25s}body.admin .editable:hover{outline-color:var(--amber);background:rgba(232,168,71,.06)}body.admin .editable:focus{outline:2px solid var(--amber);background:rgba(232,168,71,.06)}
+#toast{position:fixed;bottom:5.5rem;right:1.8rem;z-index:9999;background:#1AA86A;color:#fff;font-size:.82rem;font-weight:500;padding:.65rem 1.1rem;border-radius:10px;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none}#toast.show{opacity:1;transform:translateY(0)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--dark)}::-webkit-scrollbar-thumb{background:var(--navy);border-radius:3px}
+@media(max-width:860px){.si,.ph-inner,.fi{padding-left:1.5rem;padding-right:1.5rem}.contact-grid{grid-template-columns:1fr;gap:3rem}.form-row{grid-template-columns:1fr}.offices-grid{grid-template-columns:1fr 1fr}.ft{grid-template-columns:1fr 1fr;gap:2rem}.fb{grid-column:1/-1}.fbot{flex-direction:column;gap:.75rem;text-align:center}}
+@media(max-width:540px){.offices-grid{grid-template-columns:1fr}.ft{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button class="admin-fab" id="admin-fab" title="Admin mode (Ctrl+Shift+A)">⚙</button>
+<div id="admin-bar"><span class="ab-label">Admin Mode</span><span class="ab-sep"></span><span style="font-size:.72rem;color:rgba(255,255,255,.4)">Click highlighted text to edit</span><span class="ab-sep"></span><button class="ab-btn save" onclick="saveAll()">Save All</button><button class="ab-btn" onclick="resetAll()">Reset</button><button class="ab-btn" onclick="exitAdmin()">Exit</button></div>
+<div id="toast"></div>
+
+<nav class="nav" id="nav">
+  <a href="meridian-group.html" class="nav-logo">Meridian<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="services.html">Services</a></li><li><a href="about.html">About</a></li>
+    <li><a href="work.html">Work</a></li><li><a href="clients.html">Clients</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta" style="background:rgba(255,255,255,.12);color:#fff">Get in Touch</a>
+  <button class="nav-burger" id="nav-burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <button class="close-btn" id="close-nav">✕</button>
+  <a href="meridian-group.html">Home</a><a href="services.html">Services</a><a href="about.html">About</a>
+  <a href="work.html">Work</a><a href="clients.html">Clients</a><a href="contact.html" class="active">Contact</a>
+</div>
+
+<section class="ph">
+  <div class="ph-bg"></div>
+  <div class="ph-inner">
+    <div class="ph-breadcrumb"><a href="meridian-group.html">Home</a><span>/</span>Contact</div>
+    <span class="eyebrow editable" data-key="ct-ph-eye">Get in Touch</span>
+    <h1 class="ph-title editable" data-key="ct-ph-title">Let's start a<br>conversation.</h1>
+    <p class="ph-sub editable" data-key="ct-ph-sub">No pitch decks, no obligation, no junior team assigned to evaluate you. Just a genuine conversation about what you're facing and whether we can help.</p>
+    <div class="ph-line"></div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section style="padding:6rem 0 7rem;background:var(--white)">
+  <div class="si">
+    <div class="contact-grid">
+      <!-- FORM COLUMN -->
+      <div class="rev">
+        <div class="sh" style="margin-bottom:2.2rem">
+          <span class="eyebrow editable" data-key="ct-form-eye">Send us a message</span>
+          <h2 class="sec-title editable" data-key="ct-form-title" style="color:var(--text-d);font-size:clamp(1.6rem,3vw,2.2rem)">Tell us about your challenge.</h2>
+          <p style="font-size:.92rem;font-weight:300;color:#6B7E8E;line-height:1.75" class="editable" data-key="ct-form-sub">We read every message ourselves. You'll hear from a partner — not a business development manager — within 48 hours.</p>
+        </div>
+        <div id="contact-form-wrap">
+          <div class="contact-form" id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="f-name">Full Name *</label>
+                <input type="text" id="f-name" placeholder="Elena Vasquez" required/>
+              </div>
+              <div class="form-group">
+                <label for="f-company">Company *</label>
+                <input type="text" id="f-company" placeholder="Apex Financial" required/>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="f-email">Work Email *</label>
+                <input type="email" id="f-email" placeholder="elena@apexfinancial.com" required/>
+              </div>
+              <div class="form-group">
+                <label for="f-phone">Phone</label>
+                <input type="tel" id="f-phone" placeholder="+44 20 7946 0000"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="f-service">Primary Area of Interest</label>
+              <select id="f-service">
+                <option value="" disabled selected>Select a practice area…</option>
+                <option>Strategy & Transformation</option>
+                <option>Technology Advisory</option>
+                <option>Digital Innovation</option>
+                <option>Financial Consulting</option>
+                <option>Operations Excellence</option>
+                <option>Risk & Compliance</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="f-budget">Approximate Engagement Budget</label>
+              <select id="f-budget">
+                <option value="" disabled selected>Select a range…</option>
+                <option>€150K – €500K</option>
+                <option>€500K – €2M</option>
+                <option>€2M – €10M</option>
+                <option>€10M+</option>
+                <option>Prefer to discuss</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="f-msg">What are you working on? *</label>
+              <textarea id="f-msg" placeholder="Describe the challenge, the context, and what success would look like for you. No need to be formal — the more real, the better." required></textarea>
+            </div>
+            <div class="form-consent">
+              <input type="checkbox" id="f-consent"/>
+              <label for="f-consent">I agree to Meridian Group's <a href="#">Privacy Policy</a> and consent to being contacted about this inquiry. We'll never share your information with third parties.</label>
+            </div>
+            <button class="submit-btn" id="submit-btn" onclick="submitForm(event)">
+              <span class="btn-txt">Send Message →</span>
+              <span class="spinner"></span>
+            </button>
+          </div>
+          <div class="form-success" id="form-success">
+            <span class="tick">✓</span>
+            <h3>Message received.</h3>
+            <p>Thank you for reaching out. A Meridian partner will personally review your message and respond within 48 hours.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFO COLUMN -->
+      <div style="display:flex;flex-direction:column;gap:1.8rem" class="rev d2">
+        <div class="info-card">
+          <h4 class="editable" data-key="ct-contact-h">Direct Contact</h4>
+          <div class="info-item">
+            <span class="info-ico">✉</span>
+            <span class="info-text"><strong>New Business</strong><br><a href="mailto:hello@meridiangroup.com" class="editable" data-key="ct-email">hello@meridiangroup.com</a></span>
+          </div>
+          <div class="info-item">
+            <span class="info-ico">📞</span>
+            <span class="info-text"><strong>London (HQ)</strong><br><span class="editable" data-key="ct-phone">+44 20 7946 0958</span></span>
+          </div>
+          <div class="info-item">
+            <span class="info-ico">🕐</span>
+            <span class="info-text"><strong>Response time</strong><br><span class="editable" data-key="ct-resp">Partner-level response within 48 hours</span></span>
+          </div>
+        </div>
+        <div class="info-card">
+          <h4 class="editable" data-key="ct-expect-h">What to expect</h4>
+          <div class="info-item">
+            <span class="info-ico">1</span>
+            <span class="info-text editable" data-key="ct-e1">A partner reads your message and responds personally — no sales team handoff.</span>
+          </div>
+          <div class="info-item">
+            <span class="info-ico">2</span>
+            <span class="info-text editable" data-key="ct-e2">We'll suggest a 30-minute call to understand your situation properly before discussing scope.</span>
+          </div>
+          <div class="info-item">
+            <span class="info-ico">3</span>
+            <span class="info-text editable" data-key="ct-e3">If we're a good fit, we'll outline a tailored proposal within a week. If we're not, we'll tell you honestly and suggest who might be.</span>
+          </div>
+        </div>
+        <div class="info-card" style="background:var(--dark)">
+          <h4 style="color:#fff" class="editable" data-key="ct-careers-h">Thinking about joining us?</h4>
+          <p style="font-size:.85rem;color:var(--mist);line-height:1.7;margin-top:.5rem" class="editable" data-key="ct-careers-t">We hire a small number of exceptional consultants each year — people who combine analytical rigor with genuine curiosity and the ability to work through ambiguity. If that sounds like you, we'd love to hear from you.</p>
+          <a href="mailto:careers@meridiangroup.com" style="display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:500;color:var(--amber);margin-top:1rem;transition:gap .25s" class="editable" data-key="ct-careers-link">careers@meridiangroup.com →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFICES -->
+<section style="padding:5rem 0 7rem;background:var(--dark)">
+  <div class="si">
+    <div class="sh c rev">
+      <span class="eyebrow editable" data-key="off-eye">Our Offices</span>
+      <h2 class="sec-title editable" data-key="off-title" style="color:var(--white)">Find us anywhere.</h2>
+    </div>
+    <div class="offices-grid">
+      <div class="office-card rev d1">
+        <div class="office-flag">🇬🇧</div>
+        <div class="office-city editable" data-key="co1-c">London</div>
+        <div class="office-tag editable" data-key="co1-t">Headquarters · EMEA</div>
+        <p class="office-addr editable" data-key="co1-a">10 Grosvenor Square, Mayfair<br>London W1K 6JP, United Kingdom<br>+44 20 7946 0958</p>
+      </div>
+      <div class="office-card rev d2">
+        <div class="office-flag">🇺🇸</div>
+        <div class="office-city editable" data-key="co2-c">New York</div>
+        <div class="office-tag editable" data-key="co2-t">Americas</div>
+        <p class="office-addr editable" data-key="co2-a">1 World Trade Center, Floor 68<br>New York, NY 10007, USA<br>+1 212 555 0192</p>
+      </div>
+      <div class="office-card rev d3">
+        <div class="office-flag">🇸🇬</div>
+        <div class="office-city editable" data-key="co3-c">Singapore</div>
+        <div class="office-tag editable" data-key="co3-t">Asia-Pacific</div>
+        <p class="office-addr editable" data-key="co3-a">Marina Bay Financial Centre<br>Tower 3, Level 24, Singapore 018982<br>+65 6123 4567</p>
+      </div>
+      <div class="office-card rev d4">
+        <div class="office-flag">🇦🇪</div>
+        <div class="office-city editable" data-key="co4-c">Dubai</div>
+        <div class="office-tag editable" data-key="co4-t">Middle East</div>
+        <p class="office-addr editable" data-key="co4-a">DIFC Gate Village, Building 4<br>Level 5, Dubai, UAE<br>+971 4 555 0234</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="padding:5rem 0 7rem;background:var(--cream)">
+  <div class="si">
+    <div class="sh c rev">
+      <span class="eyebrow editable" data-key="faq-eye">Common Questions</span>
+      <h2 class="sec-title editable" data-key="faq-title" style="color:var(--text-d)">Before you reach out.</h2>
+    </div>
+    <div class="faq-list rev" style="max-width:800px;margin:0 auto">
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text editable" data-key="faq1-q">What size of engagement do you take on?</span><span class="faq-arrow">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner editable" data-key="faq1-a">We work with organizations of all sizes, from high-growth scale-ups to global enterprises. Our smallest engagements typically start at €150K and our largest run into eight figures. What matters more than size is fit: we take on work where we believe we can make a real difference, and we turn down work where we don't believe that — even when it's lucrative.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text editable" data-key="faq2-q">How quickly can you mobilize a team?</span><span class="faq-arrow">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner editable" data-key="faq2-a">We can typically mobilize a full team within two weeks of contract signature. For urgent situations — a crisis, an imminent decision, or a time-sensitive opportunity — we've moved meaningfully faster than that. Speed of mobilization is something we've deliberately built into how we operate, because many of the problems worth solving can't wait six weeks for a kickoff meeting.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text editable" data-key="faq3-q">Do you work with clients outside your listed industries?</span><span class="faq-arrow">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner editable" data-key="faq3-a">Yes, selectively. While we have particularly deep expertise in our six focus sectors, we take on engagements in adjacent areas where our core capabilities — rigorous analysis, strategic clarity, technology advisory, and operational redesign — clearly translate. If you're unsure whether we're the right fit, tell us what you're working on and we'll give you an honest answer.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text editable" data-key="faq4-q">Will the partner I meet be the partner who leads the engagement?</span><span class="faq-arrow">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner editable" data-key="faq4-a">Yes. We don't pitch with senior partners and then hand work to junior teams. The partner you meet during the sales process is the same person who leads your engagement, attends your steering committee meetings, and stays accountable for outcomes throughout. This is a point of real differentiation for us — and one we actively protect as we grow.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text editable" data-key="faq5-q">How do you handle confidentiality?</span><span class="faq-arrow">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner editable" data-key="faq5-a">We sign NDAs before any substantive conversation, and we treat client confidentiality with the same seriousness as our own reputation. We never disclose client identities or project details without explicit permission — which is why our case studies refer to industries and outcomes rather than names wherever clients prefer it. The relationships we value most are built on absolute trust, and we act accordingly.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="fi"><div class="ft"><div class="fb"><div class="fl">Meridian<em>.</em></div><p class="ftag">We help ambitious organizations navigate complexity and build lasting advantage.</p></div><div class="fc"><h4>Company</h4><ul><li><a href="about.html">About</a></li><li><a href="about.html#leadership">Leadership</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li></ul></div><div class="fc"><h4>Services</h4><ul><li><a href="services.html">Strategy</a></li><li><a href="services.html">Technology</a></li><li><a href="services.html">Digital</a></li><li><a href="services.html">Finance</a></li></ul></div><div class="fc"><h4>Insights</h4><ul><li><a href="#">Research</a></li><li><a href="#">Articles</a></li><li><a href="#">Reports</a></li><li><a href="#">Webinars</a></li></ul></div><div class="fc"><h4>Connect</h4><ul><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter/X</a></li><li><a href="contact.html">Offices</a></li><li><a href="#">Partners</a></li></ul></div></div><div class="fbot"><span class="fcopy">© 2026 Meridian Group. All rights reserved.</span><div class="fleg"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Cookie Settings</a></div></div></div></footer>
+
+<script>
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>navEl.classList.toggle('scrolled',window.scrollY>60),{passive:true});
+const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+const burger=document.getElementById('nav-burger'),mob=document.getElementById('mobile-nav'),close=document.getElementById('close-nav');
+burger.addEventListener('click',()=>mob.classList.add('open'));close.addEventListener('click',()=>mob.classList.remove('open'));
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mob.classList.remove('open')));
+
+/* FAQ accordion */
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click',()=>{
+    const isOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+
+/* Form submit */
+function submitForm(e){
+  e.preventDefault();
+  const name=document.getElementById('f-name').value;
+  const email=document.getElementById('f-email').value;
+  const msg=document.getElementById('f-msg').value;
+  const consent=document.getElementById('f-consent').checked;
+  if(!name||!email||!msg){alert('Please fill in all required fields.');return;}
+  if(!consent){alert('Please agree to the Privacy Policy to continue.');return;}
+  const btn=document.getElementById('submit-btn');
+  btn.classList.add('loading');
+  setTimeout(()=>{
+    document.getElementById('contact-form').style.display='none';
+    const success=document.getElementById('form-success');
+    success.classList.add('show');
+  },1400);
+}
+
+/* Admin */
+const KEY='mg_ct_';let adminOn=false;
+function enterAdmin(){adminOn=true;document.body.classList.add('admin');document.getElementById('admin-bar').style.display='flex';document.getElementById('admin-fab').classList.add('on');document.getElementById('admin-fab').textContent='✓';document.querySelectorAll('.editable').forEach(el=>{el.contentEditable='true';el.setAttribute('spellcheck','false')})}
+function exitAdmin(){adminOn=false;document.body.classList.remove('admin');document.getElementById('admin-bar').style.display='none';document.getElementById('admin-fab').classList.remove('on');document.getElementById('admin-fab').textContent='⚙';document.querySelectorAll('.editable').forEach(el=>{el.contentEditable='false'})}
+function saveAll(){document.querySelectorAll('.editable[data-key]').forEach(el=>localStorage.setItem(KEY+el.dataset.key,el.innerHTML));toast('All changes saved ✓')}
+function resetAll(){if(!confirm('Reset all content?'))return;document.querySelectorAll('.editable[data-key]').forEach(el=>localStorage.removeItem(KEY+el.dataset.key));location.reload()}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+function loadContent(){document.querySelectorAll('.editable[data-key]').forEach(el=>{const s=localStorage.getItem(KEY+el.dataset.key);if(s)el.innerHTML=s})}
+document.addEventListener('input',e=>{if(e.target.contentEditable==='true'&&e.target.dataset.key)localStorage.setItem(KEY+e.target.dataset.key,e.target.innerHTML)});
+document.getElementById('admin-fab').addEventListener('click',()=>adminOn?exitAdmin():enterAdmin());
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key==='A'){e.preventDefault();adminOn?exitAdmin():enterAdmin()}});
+document.addEventListener('DOMContentLoaded',loadContent);
+</script>
+</body>
+</html>
