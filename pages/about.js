@@ -73,7 +73,7 @@ function AboutContent({ content }) {
       </section>
 
       {/* Story */}
-      <section style={{ padding: '7rem 0', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="story-grid">
             <div className="story-img rev">
@@ -107,7 +107,7 @@ function AboutContent({ content }) {
       </section>
 
       {/* Values */}
-      <section style={{ padding: '7rem 0', background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="val-eye"   content={c('val-eye', 'Our Values')} className="eyebrow" />
@@ -126,7 +126,7 @@ function AboutContent({ content }) {
       </section>
 
       {/* Leadership */}
-      <section id="leadership" style={{ padding: '7rem 0', background: 'var(--white)' }}>
+      <section id="leadership" className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="team-eye"   content={c('team-eye', 'Leadership')} className="eyebrow" />
@@ -148,7 +148,7 @@ function AboutContent({ content }) {
       </section>
 
       {/* Offices */}
-      <section style={{ padding: '6.5rem 0', background: 'var(--dark)' }}>
+      <section className="sec-pad" style={{ background: 'var(--dark)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="off-eye"   content={c('off-eye', 'Our Offices')} className="eyebrow" />
@@ -167,7 +167,7 @@ function AboutContent({ content }) {
       </section>
 
       {/* Awards */}
-      <section style={{ padding: '6.5rem 0', background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="aw-eye"   content={c('aw-eye', 'Recognition')} className="eyebrow" />

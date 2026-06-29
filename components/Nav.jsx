@@ -20,6 +20,7 @@ const navLinks = {
 }
 
 const cta = { en: 'Get in Touch', tr: 'İletişime Geçin' }
+const homeLabel = { en: 'Home', tr: 'Ana Sayfa' }
 
 export default function Nav() {
   const [scrolled, setScrolled]     = useState(false)
@@ -81,7 +82,7 @@ export default function Nav() {
 
       <div className={`mobile-nav${mobileOpen ? ' open' : ''}`}>
         <button className="close-btn" onClick={() => setMobileOpen(false)}>✕</button>
-        <Link href="/">Home</Link>
+        <Link href="/">{homeLabel[locale] ?? homeLabel.en}</Link>
         {links.map(l => (
           <Link key={l.href} href={l.href} className={router.pathname === l.href ? 'active' : ''}>
             {l.label}

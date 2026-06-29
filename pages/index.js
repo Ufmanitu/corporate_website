@@ -204,7 +204,7 @@ function HomeContent({ content }) {
       </div>
 
       {/* ── SERVICES ── */}
-      <section style={{ padding: '7rem 0', background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh rev">
             <Editable tag="span" id="srv-eye"   content={c('srv-eye', 'What We Do')} className="eyebrow" />
@@ -232,7 +232,7 @@ function HomeContent({ content }) {
       </section>
 
       {/* ── STATS ── */}
-      <section style={{ padding: '6rem 0', background: 'var(--dark)' }}>
+      <section className="sec-pad" style={{ background: 'var(--dark)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="stats-eye"   content={c('stats-eye', 'By the Numbers')} className="eyebrow" />
@@ -260,7 +260,7 @@ function HomeContent({ content }) {
       </section>
 
       {/* ── ABOUT ── */}
-      <section style={{ padding: '7rem 0', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="about-grid">
             <div className="about-img-wrap rev">
@@ -289,7 +289,7 @@ function HomeContent({ content }) {
       </section>
 
       {/* ── WORK ── */}
-      <section style={{ padding: '7rem 0', background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh rev">
             <Editable tag="span" id="work-eye"   content={c('work-eye', 'Selected Work')} className="eyebrow" />

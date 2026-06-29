@@ -56,7 +56,7 @@ function ClientsContent({ content }) {
       </section>
 
       {/* Logo grid */}
-      <section style={{ padding: '6rem 0', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="lg-eye"   content={c('lg-eye', 'Client Roster')} className="eyebrow" />
@@ -73,7 +73,7 @@ function ClientsContent({ content }) {
       </section>
 
       {/* Testimonials */}
-      <section style={{ padding: '6rem 0', background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="tst-eye"   content={c('tst-eye', 'What Clients Say')} className="eyebrow" />
@@ -99,7 +99,7 @@ function ClientsContent({ content }) {
       </section>
 
       {/* Industry breakdown */}
-      <section style={{ padding: '6rem 0', background: 'var(--dark)' }}>
+      <section className="sec-pad" style={{ background: 'var(--dark)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="ind-eye"   content={c('ind-eye', 'By Sector')} className="eyebrow" />
@@ -119,7 +119,7 @@ function ClientsContent({ content }) {
       </section>
 
       {/* Trust strip */}
-      <section style={{ padding: '5rem 0 7rem', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="trust-strip rev">
             <Editable tag="h3" id="ts-t" content={c('ts-t', "The number that matters most to us isn't revenue. It's 97%.")} />

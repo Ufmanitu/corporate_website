@@ -85,7 +85,7 @@ function ContactContent({ content }) {
       </section>
 
       {/* Form + info */}
-      <section style={{ padding: '6rem 0 7rem', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="contact-grid">
 
@@ -180,7 +180,7 @@ function ContactContent({ content }) {
       </section>
 
       {/* Offices */}
-      <section style={{ padding: '5rem 0 7rem', background: 'var(--dark)' }}>
+      <section className="sec-pad" style={{ background: 'var(--dark)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="off-eye"   content={c('off-eye', 'Our Offices')} className="eyebrow" />
@@ -200,7 +200,7 @@ function ContactContent({ content }) {
       </section>
 
       {/* FAQ */}
-      <section style={{ padding: '5rem 0 7rem', background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="faq-eye"   content={c('faq-eye', 'Common Questions')} className="eyebrow" />

@@ -49,7 +49,7 @@ function WorkContent({ content }) {
       </section>
 
       {/* Featured case study */}
-      <section style={{ padding: '6rem 0', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="sh rev">
             <Editable tag="span" id="feat-eye"   content={c('feat-eye', 'Featured Engagement')} className="eyebrow" />
@@ -92,7 +92,7 @@ function WorkContent({ content }) {
       </section>
 
       {/* Case study grid with filter */}
-      <section style={{ padding: '5rem 0 7rem', background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh rev">
             <Editable tag="span" id="cs-eye"   content={c('cs-eye', 'All Engagements')} className="eyebrow" />
@@ -125,7 +125,7 @@ function WorkContent({ content }) {
       </section>
 
       {/* Approach strip */}
-      <section style={{ padding: '5rem 0 7rem', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="approach-strip rev">
             <div className="ap-left">

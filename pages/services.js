@@ -60,7 +60,7 @@ function ServicesContent({ content }) {
       </section>
 
       {/* Service rows */}
-      <section style={{ padding: '6rem 0', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="srv-rows">
             {services.map((s, i) => (
@@ -88,7 +88,7 @@ function ServicesContent({ content }) {
       </section>
 
       {/* Process */}
-      <section style={{ padding: '6.5rem 0', background: 'var(--dark)' }}>
+      <section className="sec-pad" style={{ background: 'var(--dark)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="proc-eye"   content={c('proc-eye', 'How We Work')} className="eyebrow" />
@@ -113,7 +113,7 @@ function ServicesContent({ content }) {
       </section>
 
       {/* Industries */}
-      <section style={{ padding: '6.5rem 0', background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="ind-eye"   content={c('ind-eye', 'Industries')} className="eyebrow" />
@@ -134,7 +134,7 @@ function ServicesContent({ content }) {
       </section>
 
       {/* Why Meridian */}
-      <section style={{ padding: '6.5rem 0', background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="why-eye"   content={c('why-eye', 'Why Meridian')} className="eyebrow" />
