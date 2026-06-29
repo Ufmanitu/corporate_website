@@ -9,6 +9,7 @@ export function AdminProvider({ children, page }) {
   const [toastMsg, setToastMsg] = useState(null)
   const toastTimer = useRef(null)
   const router = useRouter()
+  const pageKey = router.locale && router.locale !== 'en' ? `${page}_${router.locale}` : page
 
   function showToast(msg) {
     setToastMsg(msg)
@@ -30,11 +31,16 @@ export function AdminProvider({ children, page }) {
     setIsAdmin(false)
   }, [])
 
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut()
+    setIsAdmin(false)
+  }, [])
+
   // Save a single field immediately (called on contentEditable blur)
   const saveSingle = useCallback(async (key, value) => {
     const { error } = await supabase
       .from('page_content')
-      .upsert({ page, key, value }, { onConflict: 'page,key' })
+      .upsert({ page: pageKey, key, value }, { onConflict: 'page,key' })
 
     if (error) {
       console.error('[admin] Save failed:', error.message)
@@ -47,7 +53,7 @@ export function AdminProvider({ children, page }) {
   const saveAll = useCallback(async () => {
     const editables = document.querySelectorAll('[data-key]')
     const upserts = Array.from(editables).map(el => ({
-      page,
+      page: pageKey,
       key: el.dataset.key,
       value: el.innerHTML,
     }))
@@ -68,7 +74,7 @@ export function AdminProvider({ children, page }) {
     const { error } = await supabase
       .from('page_content')
       .delete()
-      .eq('page', page)
+      .eq('page', pageKey)
 
     if (!error) {
       showToast('Page reset — reloading...')
@@ -77,7 +83,7 @@ export function AdminProvider({ children, page }) {
   }, [page, router])
 
   return (
-    <AdminContext.Provider value={{ isAdmin, enterAdmin, exitAdmin, saveSingle, saveAll, resetAll, toastMsg }}>
+    <AdminContext.Provider value={{ isAdmin, enterAdmin, exitAdmin, logout, saveSingle, saveAll, resetAll, toastMsg }}>
       {children}
     </AdminContext.Provider>
   )

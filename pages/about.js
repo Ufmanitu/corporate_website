@@ -88,7 +88,7 @@ function AboutContent({ content }) {
             <div className="story-text rev d2">
               <Editable tag="span" id="ab-story-eye"   content={c('ab-story-eye', 'Our Story')} className="eyebrow" />
               <Editable tag="h2"   id="ab-story-title" content={c('ab-story-title', 'Built to challenge the conventional consulting model.')} className="sec-title" style={{ color: 'var(--text-d)' }} />
-              <Editable tag="p"    id="ab-story-p1"    content={c('ab-story-p1', 'Meridian was founded in 2008 by four partners who had grown frustrated with the consulting industry they'd spent their careers in.')} />
+              <Editable tag="p"    id="ab-story-p1"    content={c('ab-story-p1', `Meridian was founded in 2008 by four partners who had grown frustrated with the consulting industry they'd spent their careers in.`)} />
               <Editable tag="p"    id="ab-story-p2"    content={c('ab-story-p2', 'The founding idea was simple: stay in the room until the work is done. Measure success by what actually changes in the organization, not by what gets presented in the boardroom.')} />
               <div className="timeline">
                 {timeline.map((tl, i) => (
@@ -199,7 +199,7 @@ function AboutContent({ content }) {
   )
 }
 
-export async function getServerSideProps() {
-  const content = await getPageContent('about')
+export async function getServerSideProps({ locale }) {
+  const content = await getPageContent('about', locale)
   return { props: { content } }
 }

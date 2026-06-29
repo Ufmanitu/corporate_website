@@ -157,7 +157,7 @@ function WorkContent({ content }) {
   )
 }
 
-export async function getServerSideProps() {
-  const content = await getPageContent('work')
+export async function getServerSideProps({ locale }) {
+  const content = await getPageContent('work', locale)
   return { props: { content } }
 }

@@ -157,9 +157,9 @@ function HomeContent({ content }) {
           <div className="hero-left">
             <Editable tag="span" id="hero-eye" content={c('hero-eye', 'Global Strategy & Technology Consultancy')} className="hero-eyebrow" />
             <h1 className="hero-h1">
-              <span className="line"><span className="word" ref={el => wordsRef.current[0] = el}>{c('hero-l1', 'Navigate')}</span></span>
-              <span className="line"><span className="word" ref={el => wordsRef.current[1] = el}>{c('hero-l2', "What's")}</span></span>
-              <span className="line"><span className="word" ref={el => wordsRef.current[2] = el}>{c('hero-l3', 'Next.')}</span></span>
+              <span className="line"><span className="word" ref={el => wordsRef.current[0] = el}><Editable tag="span" id="hero-l1" content={c('hero-l1', 'Navigate')} /></span></span>
+              <span className="line"><span className="word" ref={el => wordsRef.current[1] = el}><Editable tag="span" id="hero-l2" content={c('hero-l2', "What's")} /></span></span>
+              <span className="line"><span className="word" ref={el => wordsRef.current[2] = el}><Editable tag="span" id="hero-l3" content={c('hero-l3', 'Next.')} /></span></span>
             </h1>
             <Editable tag="p" id="hero-sub" content={c('hero-sub', 'We help ambitious organizations define clear strategy, harness technology, and execute with conviction.')} className="hero-sub" ref={subRef} />
             <div className="hero-btns" ref={btnsRef}>
@@ -361,7 +361,7 @@ function HomeContent({ content }) {
   )
 }
 
-export async function getServerSideProps() {
-  const content = await getPageContent('home')
+export async function getServerSideProps({ locale }) {
+  const content = await getPageContent('home', locale)
   return { props: { content } }
 }

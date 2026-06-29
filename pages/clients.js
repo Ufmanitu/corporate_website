@@ -149,7 +149,7 @@ function ClientsContent({ content }) {
   )
 }
 
-export async function getServerSideProps() {
-  const content = await getPageContent('clients')
+export async function getServerSideProps({ locale }) {
+  const content = await getPageContent('clients', locale)
   return { props: { content } }
 }

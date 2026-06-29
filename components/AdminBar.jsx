@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAdmin } from '../context/AdminContext'
 
 export default function AdminBar() {
-  const { isAdmin, enterAdmin, exitAdmin, saveAll, resetAll, toastMsg } = useAdmin()
+  const { isAdmin, enterAdmin, exitAdmin, logout, saveAll, resetAll, toastMsg } = useAdmin()
 
   // Keyboard shortcut: Ctrl+Shift+A
   useEffect(() => {
@@ -39,6 +39,7 @@ export default function AdminBar() {
           <button className="ab-btn save" onClick={saveAll}>Save All</button>
           <button className="ab-btn" onClick={resetAll}>Reset Page</button>
           <button className="ab-btn" onClick={exitAdmin}>Exit</button>
+          <button className="ab-btn" onClick={logout}>Sign Out</button>
         </div>
       )}
 

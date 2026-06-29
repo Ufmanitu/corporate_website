@@ -227,7 +227,7 @@ function ContactContent({ content }) {
   )
 }
 
-export async function getServerSideProps() {
-  const content = await getPageContent('contact')
+export async function getServerSideProps({ locale }) {
+  const content = await getPageContent('contact', locale)
   return { props: { content } }
 }
