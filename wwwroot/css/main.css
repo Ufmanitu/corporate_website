@@ -1,18 +1,20 @@
 /* ═══════════════════════════════════════
-   MERIDIAN GROUP — PREMIUM CSS v2
-   Dark theme · Glassmorphism · Cinematic
+   MERIDIAN GROUP — PREMIUM CSS v3
+   Corporate · Gold · Architecture
 ═══════════════════════════════════════ */
 
 /* ── VARIABLES ── */
 :root {
-  --void:   #050505;
-  --deep:   #0a0a12;
+  --void:   #04060f;
+  --deep:   #070d1e;
   --glass:  rgba(255,255,255,0.04);
   --gline:  rgba(255,255,255,0.08);
-  --blue:   #4F6EF7;
-  --purple: #8B5CF6;
-  --cyan:   #06B6D4;
-  --pink:   #EC4899;
+  --blue:   #2563EB;
+  --purple: #059669;
+  --cyan:   #D97706;
+  --pink:   #F59E0B;
+  --gold:   #D97706;
+  --gold2:  #F59E0B;
   --white:  #ffffff;
   --text:   rgba(255,255,255,0.85);
   --muted:  rgba(255,255,255,0.5);
@@ -66,7 +68,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   line-height: 1.7;
   max-width: 52ch;
 }
-.accent { color: var(--blue); }
+.accent { color: var(--gold); }
 
 /* ── GLASSMORPHISM ── */
 .glass {
@@ -83,7 +85,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   align-items: center;
   gap: 0.5rem;
   padding: 0.9rem 2rem;
-  background: var(--blue);
+  background: var(--gold);
   color: var(--white);
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.9rem;
@@ -98,11 +100,11 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--purple), var(--blue));
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
   opacity: 0;
   transition: opacity 0.3s;
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(79,110,247,0.35); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(217,119,6,0.4); }
 .btn-primary:hover::before { opacity: 1; }
 .btn-primary span, .btn-primary .btn-arr { position: relative; }
 .btn-arr { transition: transform 0.3s; }
@@ -122,7 +124,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   transition: all 0.3s var(--ease-out-expo);
   backdrop-filter: blur(10px);
 }
-.btn-ghost:hover { border-color: var(--blue); color: var(--white); background: rgba(79,110,247,0.1); }
+.btn-ghost:hover { border-color: var(--gold); color: var(--white); background: rgba(217,119,6,0.1); }
 
 /* ── LOADER ── */
 #loader {
@@ -145,7 +147,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   color: var(--white);
   letter-spacing: -0.04em;
 }
-.ld-logo em { color: var(--blue); font-style: normal; }
+.ld-logo em { color: var(--gold); font-style: normal; }
 .ld-bar {
   width: 200px;
   height: 1px;
@@ -156,7 +158,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .ld-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--blue), var(--purple));
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
   transition: width 0.1s linear;
 }
 .ld-label {
@@ -204,7 +206,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   color: var(--white);
   margin-right: auto;
 }
-.nav-logo em { color: var(--blue); font-style: normal; }
+.nav-logo em { color: var(--gold); font-style: normal; }
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -222,7 +224,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   position: absolute;
   bottom: -4px; left: 0;
   width: 0; height: 1px;
-  background: var(--blue);
+  background: var(--gold);
   transition: width 0.3s var(--ease-out-expo);
 }
 .nav-links a:hover { color: var(--white); }
@@ -240,7 +242,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .lang-btn.active, .lang-btn:hover { color: var(--white); }
 .nav-cta {
   padding: 0.55rem 1.4rem;
-  background: var(--blue);
+  background: var(--gold);
   color: var(--white);
   font-size: 0.8rem;
   font-weight: 500;
@@ -248,7 +250,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   letter-spacing: 0.02em;
   transition: all 0.3s;
 }
-.nav-cta:hover { background: var(--purple); transform: translateY(-1px); }
+.nav-cta:hover { background: var(--gold2); transform: translateY(-1px); }
 .burger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
 .burger span {
   display: block;
@@ -292,7 +294,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   color: var(--white);
   transition: color 0.2s;
 }
-.mobile-nav a:hover { color: var(--blue); }
+.mobile-nav a:hover { color: var(--gold); }
 .mobile-lang { display: flex; align-items: center; gap: 0.75rem; }
 .mobile-lang span { color: var(--subtle); }
 
@@ -341,7 +343,7 @@ main { position: relative; z-index: 1; }
   opacity: 0;
   transform: translateY(60px);
 }
-.hero-word.accent { color: var(--blue); }
+.hero-word.accent { color: var(--gold); }
 .hero-sub {
   font-size: clamp(1rem, 1.4vw, 1.2rem);
   color: var(--muted);
@@ -371,7 +373,7 @@ main { position: relative; z-index: 1; }
 .scroll-line {
   width: 1px;
   height: 60px;
-  background: linear-gradient(to bottom, var(--blue), transparent);
+  background: linear-gradient(to bottom, var(--gold), transparent);
   animation: scrollPulse 2s infinite;
 }
 .hero-scroll span {
@@ -413,7 +415,7 @@ main { position: relative; z-index: 1; }
   opacity: 0;
   transform: translateY(40px);
 }
-.stat-item:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(79,110,247,0.12); }
+.stat-item:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(217,119,6,0.12); }
 .stat-row {
   display: flex;
   align-items: baseline;
@@ -424,7 +426,7 @@ main { position: relative; z-index: 1; }
   font-family: 'Syne', sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--blue);
+  color: var(--gold);
 }
 .stat-num {
   font-family: 'Syne', sans-serif;
@@ -438,7 +440,7 @@ main { position: relative; z-index: 1; }
   font-family: 'Syne', sans-serif;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--blue);
+  color: var(--gold);
 }
 .stat-label {
   margin-top: 0.75rem;
@@ -470,12 +472,12 @@ main { position: relative; z-index: 1; }
   opacity: 0;
   transform: translateY(40px);
 }
-.srv-card:hover { transform: translateY(-6px); border-color: rgba(79,110,247,0.3); }
+.srv-card:hover { transform: translateY(-6px); border-color: rgba(217,119,6,0.3); }
 .srv-card:hover .srv-glow { opacity: 1; }
 .srv-icon {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -511,13 +513,13 @@ main { position: relative; z-index: 1; }
   content: '→';
   position: absolute;
   left: 0;
-  color: var(--blue);
+  color: var(--gold);
   font-size: 0.75rem;
 }
 .srv-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 50%, rgba(79,110,247,0.06), transparent 70%);
+  background: radial-gradient(circle at 30% 50%, rgba(217,119,6,0.06), transparent 70%);
   opacity: 0;
   transition: opacity 0.4s;
   pointer-events: none;
@@ -566,8 +568,8 @@ main { position: relative; z-index: 1; }
 .presence-globe {
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(79,110,247,0.15), transparent 70%);
-  border: 1px solid rgba(79,110,247,0.2);
+  background: radial-gradient(circle, rgba(217,119,6,0.15), transparent 70%);
+  border: 1px solid rgba(217,119,6,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -608,12 +610,12 @@ main { position: relative; z-index: 1; }
 }
 .tech-item:hover {
   transform: translateY(-8px) scale(1.02);
-  border-color: rgba(79,110,247,0.3);
-  box-shadow: 0 20px 60px rgba(79,110,247,0.15);
+  border-color: rgba(217,119,6,0.3);
+  box-shadow: 0 20px 60px rgba(217,119,6,0.15);
 }
 .tech-icon {
   font-size: 2rem;
-  background: linear-gradient(135deg, var(--blue), var(--purple));
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -646,7 +648,7 @@ main { position: relative; z-index: 1; }
 .tl-progress {
   width: 100%;
   height: 0%;
-  background: linear-gradient(to bottom, var(--blue), var(--purple));
+  background: linear-gradient(to bottom, var(--gold), var(--gold2));
 }
 .tl-item {
   display: grid;
@@ -661,7 +663,7 @@ main { position: relative; z-index: 1; }
   font-family: 'Syne', sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--blue);
+  color: var(--gold);
   letter-spacing: -0.02em;
   padding-top: 1.5rem;
   text-align: right;
@@ -670,7 +672,7 @@ main { position: relative; z-index: 1; }
   padding: 2rem 2.5rem;
   transition: transform 0.3s var(--ease-out-expo), border-color 0.3s;
 }
-.tl-card:hover { transform: translateX(6px); border-color: rgba(79,110,247,0.3); }
+.tl-card:hover { transform: translateX(6px); border-color: rgba(217,119,6,0.3); }
 .tl-card h3 {
   font-family: 'Syne', sans-serif;
   font-size: 1.1rem;
@@ -703,7 +705,7 @@ main { position: relative; z-index: 1; }
   transform: translateY(40px);
   transition: transform 0.4s var(--ease-out-expo), border-color 0.3s;
 }
-.proj-card:hover { border-color: rgba(79,110,247,0.3); }
+.proj-card:hover { border-color: rgba(217,119,6,0.3); }
 .proj-visual {
   background: linear-gradient(135deg, var(--c1), var(--c2));
   position: relative;
@@ -780,14 +782,14 @@ main { position: relative; z-index: 1; }
 .proj-link {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--blue);
+  color: var(--gold);
   letter-spacing: 0.02em;
   transition: gap 0.2s;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }
-.proj-link:hover { color: var(--purple); }
+.proj-link:hover { color: var(--gold2); }
 
 /* ── TEAM ── */
 .s-team {
@@ -844,7 +846,7 @@ main { position: relative; z-index: 1; }
   top: -2px; left: 50%;
   transform: translateX(-50%);
   width: 4px; height: 4px;
-  background: var(--purple);
+  background: var(--gold2);
   border-radius: 50%;
 }
 @keyframes holoSpin {
@@ -875,11 +877,11 @@ main { position: relative; z-index: 1; }
 }
 .team-link {
   font-size: 0.8rem;
-  color: var(--blue);
+  color: var(--gold);
   font-weight: 500;
   transition: color 0.2s;
 }
-.team-link:hover { color: var(--purple); }
+.team-link:hover { color: var(--gold2); }
 
 /* ── CONTACT ── */
 .s-contact {
@@ -906,7 +908,7 @@ main { position: relative; z-index: 1; }
   color: var(--muted);
   transition: color 0.2s;
 }
-.contact-link:hover { color: var(--blue); }
+.contact-link:hover { color: var(--gold); }
 .contact-offices {
   margin-top: 1.5rem;
   font-size: 0.8rem;
@@ -953,7 +955,7 @@ main { position: relative; z-index: 1; }
 .form-group textarea:not(:placeholder-shown) ~ label {
   top: 0;
   font-size: 0.7rem;
-  color: var(--blue);
+  color: var(--gold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -967,7 +969,7 @@ main { position: relative; z-index: 1; }
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--blue);
+  background: var(--gold);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s var(--ease-out-expo);
@@ -1007,7 +1009,7 @@ main { position: relative; z-index: 1; }
   letter-spacing: -0.03em;
   margin-bottom: 0.75rem;
 }
-.footer-logo em { color: var(--blue); font-style: normal; }
+.footer-logo em { color: var(--gold); font-style: normal; }
 .footer-brand p {
   font-size: 0.875rem;
   color: var(--muted);
@@ -1058,7 +1060,7 @@ main { position: relative; z-index: 1; }
 .cursor-dot {
   position: fixed;
   width: 6px; height: 6px;
-  background: var(--blue);
+  background: var(--gold);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
@@ -1068,7 +1070,7 @@ main { position: relative; z-index: 1; }
 .cursor-ring {
   position: fixed;
   width: 40px; height: 40px;
-  border: 1px solid rgba(79,110,247,0.4);
+  border: 1px solid rgba(217,119,6,0.4);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9997;
