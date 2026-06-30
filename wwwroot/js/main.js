@@ -136,8 +136,8 @@ runLoader(() => {
   } catch (err) {
     console.error('journey init failed:', err)
     const dbg = document.createElement('div')
-    dbg.style.cssText = 'position:fixed;top:80px;left:20px;z-index:9999;background:red;color:#fff;padding:12px;font-size:13px;max-width:90vw;border-radius:8px;'
-    dbg.textContent = '3D error: ' + err.message
+    dbg.style.cssText = 'position:fixed;top:80px;left:20px;z-index:9999;background:#7f1d1d;color:#fff;padding:14px 16px;font-size:12px;max-width:96vw;border-radius:8px;font-family:monospace;white-space:pre-wrap;line-height:1.5;'
+    dbg.textContent = err.stack || err.message
     document.body.appendChild(dbg)
   }
   initScroll()

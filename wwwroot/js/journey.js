@@ -621,14 +621,23 @@ export function initJourney(canvas) {
 
   scene.add(new THREE.AmbientLight(0x304060, 1.0))
 
-  // Build zones
-  const zones = [
-    buildSkylineZone(scene),
-    buildDataZone(scene),
-    buildEarthZone(scene),
-    buildMonolithZone(scene),
-    buildBoardroomZone(scene),
+  // Build zones — individual try-catch to identify which zone fails
+  const zoneBuilders = [
+    ['skyline',   () => buildSkylineZone(scene)],
+    ['data',      () => buildDataZone(scene)],
+    ['earth',     () => buildEarthZone(scene)],
+    ['monoliths', () => buildMonolithZone(scene)],
+    ['boardroom', () => buildBoardroomZone(scene)],
   ]
+  const zones = []
+  for (const [name, fn] of zoneBuilders) {
+    try {
+      zones.push(fn())
+    } catch (e) {
+      console.error(`Zone "${name}" failed:`, e)
+      throw new Error(`Zone "${name}" failed — ${e.message}`)
+    }
+  }
 
   // Camera Z target for each zone
   const zCam = [
@@ -675,8 +684,8 @@ export function initJourney(canvas) {
     camera.position.z = lerp(camera.position.z, camTargetZ,    0.055)
     camera.lookAt(camera.position.x * 0.15, camera.position.y * 0.15, camera.position.z - 5)
 
-    zones.forEach(z => z.update(dt))
-    renderer.render(scene, camera)
+    try { zones.forEach(z => z.update(dt)) } catch (e) { throw new Error('zones.update — ' + e.message) }
+    try { renderer.render(scene, camera) } catch (e) { throw new Error('renderer.render — ' + e.message) }
   }
 
   animate()
