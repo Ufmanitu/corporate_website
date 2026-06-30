@@ -1,3 +1,5 @@
 # Meridian Group — Corporate Website
 
-**Live site:** https://corporate-website-two-delta.vercel.app/
+**Live site (main — Next.js):** https://corporate-website-two-delta.vercel.app/
+
+**Live site (v2 — Three.js redesign):** https://corporate-website-git-v2-awwwards-ufmanitus-projects.vercel.app/
