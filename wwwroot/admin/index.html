@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meridian Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #050505; --surface: #0f0f17; --border: rgba(255,255,255,0.08);
+      --blue: #4F6EF7; --purple: #8B5CF6; --cyan: #06B6D4;
+      --text: rgba(255,255,255,0.85); --muted: rgba(255,255,255,0.45);
+      --danger: #ef4444; --success: #10b981;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; min-height: 100vh; }
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-box {
+      width: 360px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.5rem; text-align: center;
+    }
+    .login-box h1 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .login-box h1 em { color: var(--blue); font-style: normal; }
+    .login-box p { color: var(--muted); margin-bottom: 2rem; font-size: 0.85rem; }
+    input[type=password] {
+      width: 100%; padding: 0.75rem 1rem; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+      font-family: inherit; font-size: 0.9rem; outline: none; margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    input[type=password]:focus { border-color: var(--blue); }
+    .btn { width: 100%; padding: 0.75rem; background: var(--blue); color: #fff; border: none;
+      border-radius: 10px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn:hover { background: var(--purple); }
+    .err { color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem; }
+    #app { display: none; }
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+    .sidebar {
+      background: var(--surface); border-right: 1px solid var(--border);
+      padding: 1.5rem; display: flex; flex-direction: column; gap: 0.25rem;
+    }
+    .sidebar-logo { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 1.5rem; }
+    .sidebar-logo em { color: var(--blue); font-style: normal; }
+    .nav-item {
+      padding: 0.6rem 0.9rem; border-radius: 10px; cursor: pointer;
+      color: var(--muted); font-size: 0.85rem; font-weight: 500; transition: all 0.2s;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .nav-item:hover, .nav-item.active { background: rgba(79,110,247,0.12); color: var(--text); }
+    .nav-item.active { color: var(--blue); }
+    .main { padding: 2.5rem; overflow-y: auto; }
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+    .page-header h2 { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; }
+    .add-btn { padding: 0.5rem 1.2rem; background: var(--blue); color: #fff; border: none;
+      border-radius: 8px; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .add-btn:hover { background: var(--purple); }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.5rem; margin-bottom: 1rem; display: flex; align-items: start; gap: 1rem;
+    }
+    .card-body { flex: 1; }
+    .card-title { font-weight: 600; margin-bottom: 0.25rem; }
+    .card-sub { color: var(--muted); font-size: 0.8rem; line-height: 1.5; }
+    .card-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+    .edit-btn, .del-btn {
+      padding: 0.4rem 0.9rem; border-radius: 6px; font-size: 0.78rem; font-weight: 500;
+      cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .edit-btn { background: rgba(79,110,247,0.15); color: var(--blue); }
+    .edit-btn:hover { background: rgba(79,110,247,0.3); }
+    .del-btn { background: rgba(239,68,68,0.1); color: var(--danger); }
+    .del-btn:hover { background: rgba(239,68,68,0.25); }
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100;
+      display: flex; align-items: center; justify-content: center; display: none;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 2rem; width: 560px; max-height: 80vh; overflow-y: auto;
+    }
+    .modal h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .field { margin-bottom: 1.25rem; }
+    .field label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.4rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+    .field input, .field textarea, .field select {
+      width: 100%; padding: 0.65rem 0.9rem; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+      font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--blue); }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; }
+    .cancel-btn { padding: 0.6rem 1.2rem; border: 1px solid var(--border); border-radius: 8px;
+      color: var(--muted); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; background: none; }
+    .cancel-btn:hover { border-color: var(--text); color: var(--text); }
+    .save-btn { padding: 0.6rem 1.4rem; background: var(--blue); color: #fff; border: none;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .save-btn:hover { background: var(--purple); }
+    .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 100px; font-size: 0.72rem; font-weight: 500; }
+    .badge-blue { background: rgba(79,110,247,0.15); color: var(--blue); }
+    .badge-cyan { background: rgba(6,182,212,0.15); color: var(--cyan); }
+    .badge-unread { background: rgba(239,68,68,0.15); color: var(--danger); }
+    .badge-read { background: rgba(16,185,129,0.12); color: var(--success); }
+    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; padding: 0.75rem 1.25rem;
+      background: var(--success); color: #fff; border-radius: 10px; font-size: 0.85rem;
+      font-weight: 500; transform: translateY(4rem); opacity: 0; transition: all 0.3s; z-index: 999; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .section-tab { display: none; }
+    .section-tab.active { display: block; }
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-row { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .stat-mini { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.5rem; flex: 1; }
+    .stat-mini .n { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; }
+    .stat-mini .l { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Meridian<em>.</em></h1>
+    <p>Admin Panel — Enter your access key</p>
+    <input type="password" id="key-input" placeholder="Access key" autocomplete="current-password">
+    <button class="btn" onclick="login()">Unlock</button>
+    <div class="err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- APP -->
+<div id="app">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">Meridian<em>.</em></div>
+      <div class="nav-item active" onclick="showTab('dashboard')">📊 Dashboard</div>
+      <div class="nav-item" onclick="showTab('services')">◈ Services</div>
+      <div class="nav-item" onclick="showTab('projects')">⬡ Projects</div>
+      <div class="nav-item" onclick="showTab('team')">◉ Team</div>
+      <div class="nav-item" onclick="showTab('timeline')">◬ Timeline</div>
+      <div class="nav-item" onclick="showTab('settings')">⚙ Settings</div>
+      <div class="nav-item" onclick="showTab('submissions')" style="margin-top:auto">✉ Inquiries</div>
+      <div class="nav-item" onclick="logout()" style="color:var(--danger)">↩ Logout</div>
+    </aside>
+    <main class="main">
+
+      <!-- Dashboard -->
+      <div class="section-tab active" id="tab-dashboard">
+        <div class="page-header"><h2>Dashboard</h2></div>
+        <div class="stat-row" id="dash-stats"></div>
+        <div id="recent-submissions"></div>
+      </div>
+
+      <!-- Services -->
+      <div class="section-tab" id="tab-services">
+        <div class="page-header">
+          <h2>Services</h2>
+          <button class="add-btn" onclick="openServiceModal()">+ Add Service</button>
+        </div>
+        <div id="services-list"></div>
+      </div>
+
+      <!-- Projects -->
+      <div class="section-tab" id="tab-projects">
+        <div class="page-header">
+          <h2>Projects</h2>
+          <button class="add-btn" onclick="openProjectModal()">+ Add Project</button>
+        </div>
+        <div id="projects-list"></div>
+      </div>
+
+      <!-- Team -->
+      <div class="section-tab" id="tab-team">
+        <div class="page-header">
+          <h2>Team Members</h2>
+          <button class="add-btn" onclick="openMemberModal()">+ Add Member</button>
+        </div>
+        <div id="team-list"></div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="section-tab" id="tab-timeline">
+        <div class="page-header">
+          <h2>Timeline</h2>
+          <button class="add-btn" onclick="openEventModal()">+ Add Event</button>
+        </div>
+        <div id="timeline-list"></div>
+      </div>
+
+      <!-- Settings -->
+      <div class="section-tab" id="tab-settings">
+        <div class="page-header"><h2>Site Settings</h2></div>
+        <div id="settings-list"></div>
+      </div>
+
+      <!-- Submissions -->
+      <div class="section-tab" id="tab-submissions">
+        <div class="page-header"><h2>Inquiries</h2></div>
+        <div id="submissions-list"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">Edit</h3>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="save-btn" id="modal-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let API_KEY = ''
+
+function login() {
+  const key = document.getElementById('key-input').value.trim()
+  if (!key) return
+  API_KEY = key
+  fetch('/api/content/settings', { headers: { 'X-Admin-Key': key } })
+    .then(r => {
+      if (r.status === 401) { document.getElementById('login-err').textContent = 'Invalid key'; API_KEY = ''; return }
+      document.getElementById('login-screen').style.display = 'none'
+      document.getElementById('app').style.display = 'block'
+      loadAll()
+    })
+}
+
+document.getElementById('key-input').addEventListener('keydown', e => { if (e.key === 'Enter') login() })
+
+function logout() { API_KEY = ''; location.reload() }
+
+function headers() { return { 'Content-Type': 'application/json', 'X-Admin-Key': API_KEY } }
+
+async function api(path, opts = {}) {
+  const r = await fetch('/api' + path, { ...opts, headers: { ...headers(), ...opts.headers } })
+  if (!r.ok) throw new Error(await r.text())
+  return r.json().catch(() => null)
+}
+
+function toast(msg, ok = true) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.style.background = ok ? 'var(--success)' : 'var(--danger)'
+  t.classList.add('show')
+  setTimeout(() => t.classList.remove('show'), 2800)
+}
+
+function showTab(name) {
+  document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'))
+  document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'))
+  document.getElementById('tab-' + name).classList.add('active')
+  event.currentTarget.classList.add('active')
+}
+
+// ── LOAD ALL ──
+async function loadAll() {
+  loadDashboard()
+  loadServices()
+  loadProjects()
+  loadTeam()
+  loadTimeline()
+  loadSettings()
+  loadSubmissions()
+}
+
+async function loadDashboard() {
+  const [svcs, projs, team, subs] = await Promise.all([
+    api('/content/services'), api('/content/projects'), api('/content/team'), api('/content/submissions')
+  ])
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-mini"><div class="n">${svcs.length}</div><div class="l">Services</div></div>
+    <div class="stat-mini"><div class="n">${projs.length}</div><div class="l">Projects</div></div>
+    <div class="stat-mini"><div class="n">${team.length}</div><div class="l">Team Members</div></div>
+    <div class="stat-mini"><div class="n">${subs.filter(s=>!s.isRead).length}</div><div class="l">Unread Inquiries</div></div>
+  `
+  document.getElementById('recent-submissions').innerHTML = `
+    <h3 style="margin-bottom:1rem;font-family:'Syne',sans-serif">Recent Inquiries</h3>
+    ${subs.slice(0,5).map(s => `
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">${s.name} — ${s.email} ${s.company ? `(${s.company})` : ''}</div>
+          <div class="card-sub">${s.message.slice(0,120)}…</div>
+          <div style="margin-top:.5rem;font-size:.75rem;color:var(--muted)">${new Date(s.submittedAt).toLocaleString()}</div>
+        </div>
+        <span class="badge ${s.isRead ? 'badge-read' : 'badge-unread'}">${s.isRead ? 'Read' : 'New'}</span>
+      </div>
+    `).join('')}
+  `
+}
+
+// ── SERVICES ──
+async function loadServices() {
+  const data = await api('/content/services')
+  document.getElementById('services-list').innerHTML = data.map(s => `
+    <div class="card">
+      <div style="font-size:1.5rem;margin-top:.2rem">${s.icon}</div>
+      <div class="card-body">
+        <div class="card-title">${s.title}</div>
+        <div class="card-sub">${s.description}</div>
+      </div>
+      <div class="card-actions">
+        <button class="edit-btn" onclick='openServiceModal(${JSON.stringify(s)})'>Edit</button>
+        <button class="del-btn" onclick="deleteService(${s.id})">Delete</button>
+      </div>
+    </div>`).join('')
+}
+
+function openServiceModal(s = null) {
+  document.getElementById('modal-title').textContent = s ? 'Edit Service' : 'Add Service'
+  document.getElementById('modal-body').innerHTML = `
+    <div class="field"><label>Icon (character)</label><input id="f-icon" value="${s?.icon||''}"></div>
+    <div class="field"><label>Title</label><input id="f-title" value="${s?.title||''}"></div>
+    <div class="field"><label>Description</label><textarea id="f-desc">${s?.description||''}</textarea></div>
+    <div class="field"><label>Features (one per line)</label><textarea id="f-feat">${s ? JSON.parse(s.featuresJson||'[]').join('\n') : ''}</textarea></div>
+    <div class="field"><label>Display Order</label><input type="number" id="f-order" value="${s?.displayOrder||1}"></div>
+  `
+  document.getElementById('modal-save').onclick = () => saveService(s?.id)
+  document.getElementById('modal').classList.add('open')
+}
+
+async function saveService(id) {
+  const body = {
+    icon: document.getElementById('f-icon').value,
+    title: document.getElementById('f-title').value,
+    description: document.getElementById('f-desc').value,
+    featuresJson: JSON.stringify(document.getElementById('f-feat').value.split('\n').filter(Boolean)),
+    displayOrder: +document.getElementById('f-order').value,
+    isActive: true,
+  }
+  try {
+    if (id) await api(`/content/services/${id}`, { method: 'PUT', body: JSON.stringify(body) })
+    else     await api('/content/services',       { method: 'POST', body: JSON.stringify(body) })
+    closeModal(); loadServices(); loadDashboard(); toast('Service saved')
+  } catch(e) { toast('Error: ' + e.message, false) }
+}
+
+async function deleteService(id) {
+  if (!confirm('Delete this service?')) return
+  await api(`/content/services/${id}`, { method: 'DELETE' })
+  loadServices(); toast('Deleted')
+}
+
+// ── PROJECTS ──
+async function loadProjects() {
+  const data = await api('/content/projects')
+  document.getElementById('projects-list').innerHTML = data.map(p => `
+    <div class="card">
+      <div style="width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,${p.gradientFrom},${p.gradientTo});flex-shrink:0"></div>
+      <div class="card-body">
+        <div class="card-title">${p.title}</div>
+        <div class="card-sub"><span class="badge badge-cyan">${p.category}</span></div>
+        <div class="card-sub" style="margin-top:.4rem">${p.description.slice(0,100)}…</div>
+      </div>
+      <div class="card-actions">
+        <button class="edit-btn" onclick='openProjectModal(${JSON.stringify(p)})'>Edit</button>
+        <button class="del-btn" onclick="deleteProject(${p.id})">Delete</button>
+      </div>
+    </div>`).join('')
+}
+
+function openProjectModal(p = null) {
+  document.getElementById('modal-title').textContent = p ? 'Edit Project' : 'Add Project'
+  document.getElementById('modal-body').innerHTML = `
+    <div class="field"><label>Title</label><input id="f-title" value="${p?.title||''}"></div>
+    <div class="field"><label>Category</label><input id="f-cat" value="${p?.category||''}"></div>
+    <div class="field"><label>Description</label><textarea id="f-desc">${p?.description||''}</textarea></div>
+    <div class="field"><label>Gradient From</label><input id="f-g1" value="${p?.gradientFrom||'#4F6EF7'}"></div>
+    <div class="field"><label>Gradient To</label><input id="f-g2" value="${p?.gradientTo||'#1a1a3e'}"></div>
+    <div class="field"><label>Display Order</label><input type="number" id="f-order" value="${p?.displayOrder||1}"></div>
+  `
+  document.getElementById('modal-save').onclick = () => saveProject(p?.id)
+  document.getElementById('modal').classList.add('open')
+}
+
+async function saveProject(id) {
+  const body = {
+    title: document.getElementById('f-title').value,
+    category: document.getElementById('f-cat').value,
+    description: document.getElementById('f-desc').value,
+    gradientFrom: document.getElementById('f-g1').value,
+    gradientTo: document.getElementById('f-g2').value,
+    displayOrder: +document.getElementById('f-order').value,
+    statsJson: '[]', isActive: true,
+  }
+  try {
+    if (id) await api(`/content/projects/${id}`, { method: 'PUT', body: JSON.stringify(body) })
+    else     await api('/content/projects',       { method: 'POST', body: JSON.stringify(body) })
+    closeModal(); loadProjects(); toast('Project saved')
+  } catch(e) { toast('Error: ' + e.message, false) }
+}
+
+async function deleteProject(id) {
+  if (!confirm('Delete this project?')) return
+  await api(`/content/projects/${id}`, { method: 'DELETE' })
+  loadProjects(); toast('Deleted')
+}
+
+// ── TEAM ──
+async function loadTeam() {
+  const data = await api('/content/team')
+  document.getElementById('team-list').innerHTML = data.map(m => `
+    <div class="card">
+      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,${m.gradientFrom},${m.gradientTo});display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${m.initials}</div>
+      <div class="card-body">
+        <div class="card-title">${m.name}</div>
+        <div class="card-sub">${m.jobTitle}</div>
+        <div class="card-sub" style="margin-top:.3rem">${m.bio.slice(0,100)}…</div>
+      </div>
+      <div class="card-actions">
+        <button class="edit-btn" onclick='openMemberModal(${JSON.stringify(m)})'>Edit</button>
+        <button class="del-btn" onclick="deleteMember(${m.id})">Delete</button>
+      </div>
+    </div>`).join('')
+}
+
+function openMemberModal(m = null) {
+  document.getElementById('modal-title').textContent = m ? 'Edit Team Member' : 'Add Member'
+  document.getElementById('modal-body').innerHTML = `
+    <div class="field"><label>Name</label><input id="f-name" value="${m?.name||''}"></div>
+    <div class="field"><label>Job Title</label><input id="f-title" value="${m?.jobTitle||''}"></div>
+    <div class="field"><label>Bio</label><textarea id="f-bio">${m?.bio||''}</textarea></div>
+    <div class="field"><label>Initials</label><input id="f-init" value="${m?.initials||''}" maxlength="2"></div>
+    <div class="field"><label>LinkedIn URL</label><input id="f-li" value="${m?.linkedInUrl||''}"></div>
+    <div class="field"><label>Gradient From</label><input id="f-g1" value="${m?.gradientFrom||'#4F6EF7'}"></div>
+    <div class="field"><label>Gradient To</label><input id="f-g2" value="${m?.gradientTo||'#8B5CF6'}"></div>
+    <div class="field"><label>Display Order</label><input type="number" id="f-order" value="${m?.displayOrder||1}"></div>
+  `
+  document.getElementById('modal-save').onclick = () => saveMember(m?.id)
+  document.getElementById('modal').classList.add('open')
+}
+
+async function saveMember(id) {
+  const body = {
+    name: document.getElementById('f-name').value,
+    jobTitle: document.getElementById('f-title').value,
+    bio: document.getElementById('f-bio').value,
+    initials: document.getElementById('f-init').value,
+    linkedInUrl: document.getElementById('f-li').value,
+    gradientFrom: document.getElementById('f-g1').value,
+    gradientTo: document.getElementById('f-g2').value,
+    displayOrder: +document.getElementById('f-order').value,
+    isActive: true,
+  }
+  try {
+    if (id) await api(`/content/team/${id}`, { method: 'PUT', body: JSON.stringify(body) })
+    else     await api('/content/team',       { method: 'POST', body: JSON.stringify(body) })
+    closeModal(); loadTeam(); toast('Member saved')
+  } catch(e) { toast('Error: ' + e.message, false) }
+}
+
+async function deleteMember(id) {
+  if (!confirm('Delete this member?')) return
+  await api(`/content/team/${id}`, { method: 'DELETE' })
+  loadTeam(); toast('Deleted')
+}
+
+// ── TIMELINE ──
+async function loadTimeline() {
+  const data = await api('/content/timeline')
+  document.getElementById('timeline-list').innerHTML = data.map(e => `
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--blue);flex-shrink:0">${e.year}</div>
+      <div class="card-body">
+        <div class="card-title">${e.title}</div>
+        <div class="card-sub">${e.description}</div>
+      </div>
+      <div class="card-actions">
+        <button class="edit-btn" onclick='openEventModal(${JSON.stringify(e)})'>Edit</button>
+        <button class="del-btn" onclick="deleteEvent(${e.id})">Delete</button>
+      </div>
+    </div>`).join('')
+}
+
+function openEventModal(e = null) {
+  document.getElementById('modal-title').textContent = e ? 'Edit Event' : 'Add Timeline Event'
+  document.getElementById('modal-body').innerHTML = `
+    <div class="field"><label>Year</label><input type="number" id="f-year" value="${e?.year||new Date().getFullYear()}"></div>
+    <div class="field"><label>Title</label><input id="f-title" value="${e?.title||''}"></div>
+    <div class="field"><label>Description</label><textarea id="f-desc">${e?.description||''}</textarea></div>
+    <div class="field"><label>Display Order</label><input type="number" id="f-order" value="${e?.displayOrder||1}"></div>
+  `
+  document.getElementById('modal-save').onclick = () => saveEvent(e?.id)
+  document.getElementById('modal').classList.add('open')
+}
+
+async function saveEvent(id) {
+  const body = {
+    year: +document.getElementById('f-year').value,
+    title: document.getElementById('f-title').value,
+    description: document.getElementById('f-desc').value,
+    displayOrder: +document.getElementById('f-order').value,
+  }
+  try {
+    if (id) await api(`/content/timeline/${id}`, { method: 'PUT', body: JSON.stringify(body) })
+    else     await api('/content/timeline',       { method: 'POST', body: JSON.stringify(body) })
+    closeModal(); loadTimeline(); toast('Event saved')
+  } catch(e) { toast('Error: ' + e.message, false) }
+}
+
+async function deleteEvent(id) {
+  if (!confirm('Delete this event?')) return
+  await api(`/content/timeline/${id}`, { method: 'DELETE' })
+  loadTimeline(); toast('Deleted')
+}
+
+// ── SETTINGS ──
+async function loadSettings() {
+  const data = await api('/content/settings')
+  document.getElementById('settings-list').innerHTML = `
+    <div class="settings-grid">
+      ${Object.entries(data).map(([k,v]) => `
+        <div class="field">
+          <label>${k}</label>
+          <input data-key="${k}" value="${v}" onchange="saveSetting('${k}', this.value)">
+        </div>
+      `).join('')}
+    </div>
+  `
+}
+
+async function saveSetting(key, value) {
+  try {
+    await api(`/content/settings/${encodeURIComponent(key)}`, { method: 'PUT', body: JSON.stringify(value) })
+    toast('Setting saved')
+  } catch(e) { toast('Error', false) }
+}
+
+// ── SUBMISSIONS ──
+async function loadSubmissions() {
+  const data = await api('/content/submissions')
+  document.getElementById('submissions-list').innerHTML = data.map(s => `
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">${s.name} <span style="color:var(--muted);font-weight:400">&lt;${s.email}&gt;</span>${s.company ? ` · ${s.company}` : ''}</div>
+        <div class="card-sub" style="margin:.4rem 0">${s.message}</div>
+        <div style="font-size:.72rem;color:var(--muted)">${new Date(s.submittedAt).toLocaleString()}</div>
+      </div>
+      <div class="card-actions" style="flex-direction:column">
+        <span class="badge ${s.isRead ? 'badge-read' : 'badge-unread'}">${s.isRead ? 'Read' : 'New'}</span>
+        ${!s.isRead ? `<button class="edit-btn" style="margin-top:.5rem" onclick="markRead(${s.id})">Mark Read</button>` : ''}
+      </div>
+    </div>`).join('')
+}
+
+async function markRead(id) {
+  await api(`/content/submissions/${id}/read`, { method: 'PUT' })
+  loadSubmissions(); loadDashboard(); toast('Marked as read')
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('open') }
+document.getElementById('modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal() })
+</script>
+</body>
+</html>

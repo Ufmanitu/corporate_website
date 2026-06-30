@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meridian Group — Navigate What's Next</title>
+  <meta name="description" content="Meridian Group is a global strategy & technology consultancy helping ambitious organizations navigate complexity and build lasting advantage.">
+  <meta property="og:title" content="Meridian Group">
+  <meta property="og:description" content="Navigate What's Next.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- GSAP (globals, loaded before ES modules) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Three.js importmap -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- ── LOADER ── -->
+  <div id="loader">
+    <div class="ld-logo">M<em>.</em></div>
+    <div class="ld-bar"><div class="ld-fill"></div></div>
+    <div class="ld-label">Initializing Universe</div>
+  </div>
+
+  <!-- ── WEBGL CANVAS (fixed, fullscreen) ── -->
+  <canvas id="webgl" aria-hidden="true"></canvas>
+
+  <!-- ── NAV ── -->
+  <nav id="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="Meridian Group home">Meridian<em>.</em></a>
+      <ul class="nav-links" role="list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#presence">Global</a></li>
+        <li><a href="#technology">Technology</a></li>
+        <li><a href="#projects">Work</a></li>
+        <li><a href="#team">Team</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en" aria-current="true">EN</button>
+          <span aria-hidden="true">/</span>
+          <button class="lang-btn" data-lang="tr">TR</button>
+          <span aria-hidden="true">/</span>
+          <button class="lang-btn" data-lang="hu">HU</button>
+        </div>
+        <a href="#contact" class="nav-cta">Get in Touch</a>
+      </div>
+      <button class="burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── MOBILE MENU ── -->
+  <div class="mobile-menu" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+    <button class="mobile-close" aria-label="Close menu">✕</button>
+    <nav class="mobile-nav">
+      <a href="#services">Services</a>
+      <a href="#presence">Global Presence</a>
+      <a href="#technology">Technology</a>
+      <a href="#projects">Work</a>
+      <a href="#team">Team</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="mobile-lang">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <span>/</span>
+      <button class="lang-btn" data-lang="tr">TR</button>
+      <span>/</span>
+      <button class="lang-btn" data-lang="hu">HU</button>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ── SECTION 1: HERO ── -->
+    <section id="hero" class="s-hero" aria-label="Hero">
+      <div class="hero-inner">
+        <div class="hero-tag">Global Strategy &amp; Technology Consultancy</div>
+        <h1 class="hero-h1">
+          <span class="hero-word">Navigate</span>
+          <span class="hero-word">What's</span>
+          <span class="hero-word accent">Next.</span>
+        </h1>
+        <p class="hero-sub">We help ambitious organizations define clear strategy,<br>harness technology, and execute with conviction.</p>
+        <div class="hero-btns">
+          <a href="#projects" class="btn-primary">Explore Our Work <span class="btn-arr">→</span></a>
+          <a href="#contact" class="btn-ghost">Schedule a Call</a>
+        </div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <div class="scroll-line"></div>
+        <span>SCROLL</span>
+      </div>
+    </section>
+
+    <!-- ── SECTION 2: NETWORK / STATS ── -->
+    <section id="network" class="s-network" aria-label="By the numbers">
+      <div class="network-inner">
+        <div class="s-head c">
+          <span class="eyebrow">Impact by Numbers</span>
+          <h2 class="s-title">The results speak<br>for themselves.</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item glass">
+            <div class="stat-row">
+              <span class="stat-num" data-target="200">0</span>
+              <span class="stat-sfx">+</span>
+            </div>
+            <div class="stat-label">Clients Globally</div>
+          </div>
+          <div class="stat-item glass">
+            <div class="stat-row">
+              <span class="stat-num" data-target="15">0</span>
+            </div>
+            <div class="stat-label">Countries Active</div>
+          </div>
+          <div class="stat-item glass">
+            <div class="stat-row">
+              <span class="stat-pre">$</span>
+              <span class="stat-num" data-target="4">0</span>
+              <span class="stat-sfx">.2B</span>
+            </div>
+            <div class="stat-label">Value Created</div>
+          </div>
+          <div class="stat-item glass">
+            <div class="stat-row">
+              <span class="stat-num" data-target="97">0</span>
+              <span class="stat-sfx">%</span>
+            </div>
+            <div class="stat-label">Client Retention</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 3: SERVICES ── -->
+    <section id="services" class="s-services" aria-label="Services">
+      <div class="s-inner">
+        <div class="s-head">
+          <span class="eyebrow">What We Do</span>
+          <h2 class="s-title">Capabilities built<br>for complexity.</h2>
+        </div>
+        <div class="services-grid">
+          <article class="srv-card glass" tabindex="0">
+            <div class="srv-icon" aria-hidden="true">◈</div>
+            <h3>Corporate Strategy</h3>
+            <p>Transforming organizational vision into executable advantage through rigorous analysis and bold thinking.</p>
+            <ul class="srv-list">
+              <li>Market entry &amp; expansion</li>
+              <li>Portfolio optimization</li>
+              <li>M&amp;A strategy &amp; integration</li>
+              <li>Operating model design</li>
+            </ul>
+            <div class="srv-glow" aria-hidden="true"></div>
+          </article>
+          <article class="srv-card glass" tabindex="0">
+            <div class="srv-icon" aria-hidden="true">⬡</div>
+            <h3>Technology &amp; AI</h3>
+            <p>Harnessing emerging technologies to drive efficiency, unlock new revenue streams, and future-proof operations.</p>
+            <ul class="srv-list">
+              <li>AI &amp; machine learning</li>
+              <li>Cloud architecture</li>
+              <li>Platform engineering</li>
+              <li>Data strategy</li>
+            </ul>
+            <div class="srv-glow" aria-hidden="true"></div>
+          </article>
+          <article class="srv-card glass" tabindex="0">
+            <div class="srv-icon" aria-hidden="true">◉</div>
+            <h3>Digital Transformation</h3>
+            <p>End-to-end reinvention of customer experience and operational models for the digital age.</p>
+            <ul class="srv-list">
+              <li>Customer journey redesign</li>
+              <li>Process automation</li>
+              <li>Product strategy</li>
+              <li>Innovation programs</li>
+            </ul>
+            <div class="srv-glow" aria-hidden="true"></div>
+          </article>
+          <article class="srv-card glass" tabindex="0">
+            <div class="srv-icon" aria-hidden="true">◬</div>
+            <h3>Financial Advisory</h3>
+            <p>Capital markets expertise combined with strategic insight to maximize value at every stage of growth.</p>
+            <ul class="srv-list">
+              <li>Valuation &amp; due diligence</li>
+              <li>Capital structure optimization</li>
+              <li>Financial modeling</li>
+              <li>Investor relations</li>
+            </ul>
+            <div class="srv-glow" aria-hidden="true"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 4: GLOBAL PRESENCE ── -->
+    <section id="presence" class="s-presence" aria-label="Global presence">
+      <div class="s-inner presence-inner">
+        <div class="presence-text">
+          <span class="eyebrow">Global Reach</span>
+          <h2 class="s-title">Wherever<br>you operate.</h2>
+          <p class="body-text">With offices on four continents and active engagements in 15 countries, we bring global perspective and local depth to every mandate.</p>
+          <div class="office-list">
+            <div class="office-item"><span class="office-dot" aria-hidden="true"></span>New York</div>
+            <div class="office-item"><span class="office-dot" aria-hidden="true"></span>London</div>
+            <div class="office-item"><span class="office-dot" aria-hidden="true"></span>Singapore</div>
+            <div class="office-item"><span class="office-dot" aria-hidden="true"></span>Istanbul</div>
+            <div class="office-item"><span class="office-dot" aria-hidden="true"></span>Budapest</div>
+            <div class="office-item"><span class="office-dot" aria-hidden="true"></span>Dubai</div>
+          </div>
+        </div>
+        <div class="presence-globe" aria-hidden="true">
+          <!-- Three.js earth renders here via overlay -->
+          <div class="globe-hint">Interactive 3D Globe</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 5: TECHNOLOGY STACK ── -->
+    <section id="technology" class="s-technology" aria-label="Technology stack">
+      <div class="s-inner">
+        <div class="s-head c">
+          <span class="eyebrow">Technology Ecosystem</span>
+          <h2 class="s-title">The tools that<br>power the future.</h2>
+        </div>
+        <div class="tech-grid">
+          <div class="tech-item glass" style="--delay:0s">
+            <span class="tech-icon" aria-hidden="true">⚡</span>
+            <span class="tech-name">Artificial Intelligence</span>
+          </div>
+          <div class="tech-item glass" style="--delay:.1s">
+            <span class="tech-icon" aria-hidden="true">☁</span>
+            <span class="tech-name">Cloud Platforms</span>
+          </div>
+          <div class="tech-item glass" style="--delay:.2s">
+            <span class="tech-icon" aria-hidden="true">⬡</span>
+            <span class="tech-name">Blockchain</span>
+          </div>
+          <div class="tech-item glass" style="--delay:.3s">
+            <span class="tech-icon" aria-hidden="true">◈</span>
+            <span class="tech-name">Quantum Computing</span>
+          </div>
+          <div class="tech-item glass" style="--delay:.4s">
+            <span class="tech-icon" aria-hidden="true">◉</span>
+            <span class="tech-name">IoT &amp; Edge</span>
+          </div>
+          <div class="tech-item glass" style="--delay:.5s">
+            <span class="tech-icon" aria-hidden="true">▲</span>
+            <span class="tech-name">Data Science</span>
+          </div>
+          <div class="tech-item glass" style="--delay:.6s">
+            <span class="tech-icon" aria-hidden="true">✦</span>
+            <span class="tech-name">Cybersecurity</span>
+          </div>
+          <div class="tech-item glass" style="--delay:.7s">
+            <span class="tech-icon" aria-hidden="true">⬢</span>
+            <span class="tech-name">AR / XR</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 6: TIMELINE ── -->
+    <section id="timeline" class="s-timeline" aria-label="Company timeline">
+      <div class="s-inner">
+        <div class="s-head c">
+          <span class="eyebrow">Our Journey</span>
+          <h2 class="s-title">A history of<br>decisive moments.</h2>
+        </div>
+        <div class="tl-track">
+          <div class="tl-line" aria-hidden="true"><div class="tl-progress"></div></div>
+          <article class="tl-item">
+            <div class="tl-year">2008</div>
+            <div class="tl-card glass">
+              <h3>Founded in New York</h3>
+              <p>Three former McKinsey partners launch Meridian with a mandate to make enterprise-grade strategy accessible to ambitious organizations.</p>
+            </div>
+          </article>
+          <article class="tl-item">
+            <div class="tl-year">2012</div>
+            <div class="tl-card glass">
+              <h3>First Billion in Value</h3>
+              <p>Cross $1B in cumulative client value created. Open London office to serve the European financial services sector.</p>
+            </div>
+          </article>
+          <article class="tl-item">
+            <div class="tl-year">2016</div>
+            <div class="tl-card glass">
+              <h3>Technology Practice Launch</h3>
+              <p>Establish dedicated technology &amp; digital transformation practice. Hire 40 engineers, data scientists, and AI specialists.</p>
+            </div>
+          </article>
+          <article class="tl-item">
+            <div class="tl-year">2019</div>
+            <div class="tl-card glass">
+              <h3>Asia-Pacific Expansion</h3>
+              <p>Open Singapore hub. Secure landmark engagement with Nordvale Health for pan-APAC digital transformation across 12 countries.</p>
+            </div>
+          </article>
+          <article class="tl-item">
+            <div class="tl-year">2022</div>
+            <div class="tl-card glass">
+              <h3>AI-First Pivot</h3>
+              <p>Launch Meridian Intelligence division. Deploy AI-native frameworks across all practice areas. 200+ clients now AI-augmented.</p>
+            </div>
+          </article>
+          <article class="tl-item">
+            <div class="tl-year">2024</div>
+            <div class="tl-card glass">
+              <h3>$4.2B Value Milestone</h3>
+              <p>Cumulative client value created surpasses $4.2 billion. Recognized as one of the world's top 10 boutique strategy firms by Financial Times.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 7: PROJECTS ── -->
+    <section id="projects" class="s-projects" aria-label="Selected work">
+      <div class="s-inner">
+        <div class="s-head">
+          <span class="eyebrow">Selected Work</span>
+          <h2 class="s-title">Projects that<br>moved markets.</h2>
+        </div>
+        <div class="projects-list">
+          <article class="proj-card glass">
+            <div class="proj-visual" style="--c1:#4F6EF7;--c2:#1a1a3e">
+              <div class="proj-stats-overlay">
+                <div class="proj-stat">
+                  <span class="proj-n" data-target="340">0</span>
+                  <span class="proj-unit">% ROI</span>
+                </div>
+                <div class="proj-stat">
+                  <span class="proj-n" data-target="18">0</span>
+                  <span class="proj-unit">mo</span>
+                </div>
+              </div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-cat">Financial Services</span>
+              <h3>Apex Financial — Digital Core Transformation</h3>
+              <p>Full-stack modernization of a $40B AUM wealth management platform, delivering 340% ROI through AI-powered client intelligence and automated portfolio management.</p>
+              <a href="#" class="proj-link" aria-label="View Apex Financial case study">View Case Study →</a>
+            </div>
+          </article>
+          <article class="proj-card glass">
+            <div class="proj-visual" style="--c1:#8B5CF6;--c2:#1a0d3e">
+              <div class="proj-stats-overlay">
+                <div class="proj-stat">
+                  <span class="proj-n" data-target="67">0</span>
+                  <span class="proj-unit">% cost reduction</span>
+                </div>
+                <div class="proj-stat">
+                  <span class="proj-n" data-target="12">0</span>
+                  <span class="proj-unit">countries</span>
+                </div>
+              </div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-cat">Healthcare</span>
+              <h3>Nordvale Health — Pan-APAC Operating Model</h3>
+              <p>Redesigned operating model for a 12-country hospital network, achieving 67% reduction in administrative overhead while significantly improving patient outcomes.</p>
+              <a href="#" class="proj-link" aria-label="View Nordvale Health case study">View Case Study →</a>
+            </div>
+          </article>
+          <article class="proj-card glass">
+            <div class="proj-visual" style="--c1:#06B6D4;--c2:#003344">
+              <div class="proj-stats-overlay">
+                <div class="proj-stat">
+                  <span class="proj-pre">$</span>
+                  <span class="proj-n" data-target="2">0</span>
+                  <span class="proj-unit">.1B new revenue</span>
+                </div>
+                <div class="proj-stat">
+                  <span class="proj-n" data-target="3">0</span>
+                  <span class="proj-unit">continents</span>
+                </div>
+              </div>
+            </div>
+            <div class="proj-body">
+              <span class="proj-cat">Technology &amp; Logistics</span>
+              <h3>Sienna Logistics — AI Supply Chain</h3>
+              <p>Deployed proprietary AI logistics engine across 3 continents, generating $2.1B in new revenue through demand prediction, dynamic routing, and autonomous inventory management.</p>
+              <a href="#" class="proj-link" aria-label="View Sienna Logistics case study">View Case Study →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 8: TEAM ── -->
+    <section id="team" class="s-team" aria-label="Leadership team">
+      <div class="s-inner">
+        <div class="s-head c">
+          <span class="eyebrow">Leadership</span>
+          <h2 class="s-title">The minds behind<br>the missions.</h2>
+        </div>
+        <div class="team-grid">
+          <article class="team-card glass" tabindex="0">
+            <div class="team-av" aria-hidden="true">
+              <div class="av-inner" style="--g1:#4F6EF7;--g2:#8B5CF6">EK</div>
+              <div class="holo-scan" aria-hidden="true"></div>
+            </div>
+            <div class="team-body">
+              <h3>Elena Kovacs</h3>
+              <span class="team-title">Managing Partner, Strategy</span>
+              <p>20 years in strategy consulting. Former McKinsey Senior Partner. Led $15B+ in M&amp;A transactions across 6 sectors.</p>
+              <a href="#" class="team-link" aria-label="Elena Kovacs on LinkedIn">LinkedIn ↗</a>
+            </div>
+          </article>
+          <article class="team-card glass" tabindex="0">
+            <div class="team-av" aria-hidden="true">
+              <div class="av-inner" style="--g1:#8B5CF6;--g2:#06B6D4">MR</div>
+              <div class="holo-scan" aria-hidden="true"></div>
+            </div>
+            <div class="team-body">
+              <h3>Marcus Reid</h3>
+              <span class="team-title">Managing Partner, Technology</span>
+              <p>Ex-Google AI Research. Pioneer in enterprise AI deployment. 3 patents in machine learning architecture and optimization.</p>
+              <a href="#" class="team-link" aria-label="Marcus Reid on LinkedIn">LinkedIn ↗</a>
+            </div>
+          </article>
+          <article class="team-card glass" tabindex="0">
+            <div class="team-av" aria-hidden="true">
+              <div class="av-inner" style="--g1:#06B6D4;--g2:#4F6EF7">AO</div>
+              <div class="holo-scan" aria-hidden="true"></div>
+            </div>
+            <div class="team-body">
+              <h3>Amara Osei</h3>
+              <span class="team-title">Managing Partner, Finance</span>
+              <p>Former Goldman Sachs Managing Director. Specialist in cross-border transactions and emerging market capital structures.</p>
+              <a href="#" class="team-link" aria-label="Amara Osei on LinkedIn">LinkedIn ↗</a>
+            </div>
+          </article>
+          <article class="team-card glass" tabindex="0">
+            <div class="team-av" aria-hidden="true">
+              <div class="av-inner" style="--g1:#EC4899;--g2:#8B5CF6">SL</div>
+              <div class="holo-scan" aria-hidden="true"></div>
+            </div>
+            <div class="team-body">
+              <h3>Sofia Lund</h3>
+              <span class="team-title">Chief Operating Officer</span>
+              <p>Built Meridian's operational backbone from 12 to 300 people. Expert in scaling professional services organizations globally.</p>
+              <a href="#" class="team-link" aria-label="Sofia Lund on LinkedIn">LinkedIn ↗</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 9: CONTACT ── -->
+    <section id="contact" class="s-contact" aria-label="Contact">
+      <div class="s-inner contact-inner">
+        <div class="contact-text">
+          <span class="eyebrow">Get in Touch</span>
+          <h2 class="s-title">Ready to<br>navigate next?</h2>
+          <p class="body-text">Every engagement starts with a conversation. Tell us about your challenge and we'll respond within 24 hours.</p>
+          <div class="contact-details">
+            <a href="mailto:hello@meridiangroup.com" class="contact-link">hello@meridiangroup.com</a>
+            <a href="tel:+12125550100" class="contact-link">+1 (212) 555 0100</a>
+          </div>
+          <div class="contact-offices">
+            <span>New York · London · Singapore · Istanbul · Budapest · Dubai</span>
+          </div>
+        </div>
+        <form class="contact-form glass" id="contactForm" novalidate>
+          <div class="form-group">
+            <input type="text" id="f-name" name="name" autocomplete="name" placeholder=" " required>
+            <label for="f-name">Full Name</label>
+            <div class="form-line"></div>
+          </div>
+          <div class="form-group">
+            <input type="email" id="f-email" name="email" autocomplete="email" placeholder=" " required>
+            <label for="f-email">Work Email</label>
+            <div class="form-line"></div>
+          </div>
+          <div class="form-group">
+            <input type="text" id="f-company" name="company" autocomplete="organization" placeholder=" ">
+            <label for="f-company">Company</label>
+            <div class="form-line"></div>
+          </div>
+          <div class="form-group">
+            <textarea id="f-message" name="message" rows="4" placeholder=" " required></textarea>
+            <label for="f-message">How can we help?</label>
+            <div class="form-line"></div>
+          </div>
+          <button type="submit" class="btn-primary btn-submit">
+            <span class="btn-default">Send Message <span class="btn-arr">→</span></span>
+            <span class="btn-sending hidden">Sending…</span>
+            <span class="btn-sent hidden">Message Sent ✓</span>
+          </button>
+          <p class="form-note">We respect your privacy. No spam, ever.</p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">Meridian<em>.</em></div>
+        <p>Navigate What's Next.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="fc">
+          <h4>Company</h4>
+          <a href="#team">About</a>
+          <a href="#team">Leadership</a>
+          <a href="#contact">Careers</a>
+          <a href="#contact">Press</a>
+        </div>
+        <div class="fc">
+          <h4>Services</h4>
+          <a href="#services">Strategy</a>
+          <a href="#services">Technology</a>
+          <a href="#services">Digital</a>
+          <a href="#services">Finance</a>
+        </div>
+        <div class="fc">
+          <h4>Work</h4>
+          <a href="#projects">All Projects</a>
+          <a href="#projects">Banking</a>
+          <a href="#projects">Healthcare</a>
+          <a href="#projects">Technology</a>
+        </div>
+        <div class="fc">
+          <h4>Connect</h4>
+          <a href="#contact">Contact</a>
+          <a href="#contact">Offices</a>
+          <a href="#contact">New Business</a>
+          <a href="#contact">Newsletter</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Meridian Group. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="/legal/privacy">Privacy Policy</a>
+        <a href="/legal/terms">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
