@@ -94,7 +94,7 @@ function ContactContent({ content }) {
               <div className="sh" style={{ marginBottom: '2.2rem' }}>
                 <Editable tag="span" id="ct-form-eye"  content={c('ct-form-eye', 'Send us a message')} className="eyebrow" />
                 <Editable tag="h2"   id="ct-form-title" content={c('ct-form-title', 'Tell us about your challenge.')} className="sec-title" style={{ color: 'var(--text-d)', fontSize: 'clamp(1.6rem,3vw,2.2rem)' }} />
-                <Editable tag="p"    id="ct-form-sub"  content={c('ct-form-sub', "We read every message ourselves. You'll hear from a partner within 48 hours.")} style={{ fontSize: '.92rem', fontWeight: 300, color: '#6B7E8E', lineHeight: 1.75 }} />
+                <Editable tag="p"    id="ct-form-sub"  content={c('ct-form-sub', "We read every message ourselves. You'll hear from a partner within 48 hours.")} style={{ fontSize: '.92rem', fontWeight: 400, color: '#4D6070', lineHeight: 1.8 }} />
               </div>
 
               {status === 'success' ? (
