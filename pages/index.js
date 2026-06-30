@@ -114,6 +114,7 @@ function HomeContent({ content }) {
   const clients   = useCountUp(200)
   const retention = useCountUp(97)
   const value4    = useCountUp(4)
+  const countries = useCountUp(15)
 
   // Testimonial carousel
   const [tstIdx, setTstIdx] = useState(0)
@@ -234,19 +235,19 @@ function HomeContent({ content }) {
             <Editable tag="h2"   id="stats-title" content={c('stats-title', 'Impact you can measure.')} className="sec-title" style={{ color: 'var(--white)' }} />
           </div>
           <div className="stats-grid">
-            <div className="stat-box rev d1" ref={clientsRef}>
+            <div className="stat-box rev d1">
               <div className="stat-num">{clients}<span className="sfx">+</span></div>
               <Editable tag="div" id="st1-l" content={c('st1-l', 'Clients Served')} className="stat-lbl" />
             </div>
-            <div className="stat-box rev d2" ref={countriesRef}>
+            <div className="stat-box rev d2">
               <div className="stat-num">{countries}</div>
               <Editable tag="div" id="st2-l" content={c('st2-l', 'Countries Active')} className="stat-lbl" />
             </div>
-            <div className="stat-box rev d3" ref={value4Ref}>
+            <div className="stat-box rev d3">
               <div className="stat-num"><span className="sfx">$</span>{value4}<span className="sfx">.2B</span></div>
               <Editable tag="div" id="st3-l" content={c('st3-l', 'Value Created')} className="stat-lbl" />
             </div>
-            <div className="stat-box rev d4" ref={retentionRef}>
+            <div className="stat-box rev d4">
               <div className="stat-num">{retention}<span className="sfx">%</span></div>
               <Editable tag="div" id="st4-l" content={c('st4-l', 'Client Retention')} className="stat-lbl" />
             </div>
