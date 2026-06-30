@@ -15,8 +15,5 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     protected override void OnModelCreating(ModelBuilder mb)
     {
         mb.Entity<SiteSetting>().HasKey(s => s.Key);
-
-        mb.Entity<Service>().Property(s => s.FeaturesJson).HasColumnType("nvarchar(max)");
-        mb.Entity<Project>().Property(p => p.StatsJson).HasColumnType("nvarchar(max)");
     }
 }

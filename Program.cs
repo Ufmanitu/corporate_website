@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(opts =>
 {
@@ -25,11 +25,8 @@ builder.Services.AddCors(opts =>
 // ── APP ───────────────────────────────────────────────────────────────────────
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Auto-apply migrations + seed on startup
 using (var scope = app.Services.CreateScope())
@@ -39,7 +36,8 @@ using (var scope = app.Services.CreateScope())
     await SeedData.SeedAsync(db);
 }
 
-app.UseHttpsRedirection();
+// Fly.io terminates TLS at the edge; only redirect locally
+if (app.Environment.IsDevelopment()) app.UseHttpsRedirection();
 app.UseCors();
 app.UseDefaultFiles();          // serves wwwroot/index.html for /
 app.UseStaticFiles();           // serves wwwroot/**

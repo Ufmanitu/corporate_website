@@ -1,0 +1,27 @@
+# fly.toml — Meridian Group v2
+# Replace YOUR-APP-NAME with the name you chose during `fly launch`
+
+app = "YOUR-APP-NAME"
+primary_region = "ams"
+
+[build]
+
+[env]
+  ASPNETCORE_ENVIRONMENT = "Production"
+  ConnectionStrings__DefaultConnection = "Data Source=/data/meridian.db"
+  AllowedOrigins = "https://YOUR-APP-NAME.fly.dev"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+[mounts]
+  source = "meridian_data"
+  destination = "/data"
