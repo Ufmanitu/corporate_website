@@ -6,46 +6,6 @@
 
 import * as THREE from 'three'
 
-function lp(a, b, t) { return a + (b - a) * t }
-
-// Procedural realistic Earth color per vertex (normalized nx,ny,nz on unit sphere)
-function earthCol(nx, ny, nz) {
-  const latDeg = Math.asin(Math.max(-1, Math.min(1, ny))) * (180 / Math.PI)
-  const lat = Math.abs(latDeg)
-
-  // Multi-octave terrain noise
-  const n1 = Math.sin(nx * 8 + nz * 5.5) * Math.cos(ny * 7 - nz * 3.2)
-  const n2 = Math.sin(nx * 15 + 1.1 + nz * 9) * Math.cos(ny * 12 - nx * 4) * 0.4
-  const noise = n1 + n2
-
-  // Polar ice caps
-  if (lat > 68) {
-    const t = Math.min(1, (lat - 68) / 16)
-    return [lp(0.12, 0.88, t), lp(0.35, 0.91, t), lp(0.65, 0.95, t)]
-  }
-
-  if (noise > 0.18) {
-    // Land
-    if (noise > 1.05) return [0.60, 0.55, 0.48]        // mountain grey
-    if (lat > 56)    return [0.32, 0.40, 0.25]          // tundra
-    if (lat < 22) {
-      return Math.sin(nx * 23 + nz * 17) > 0.28
-        ? [0.72, 0.56, 0.24]                             // tropical desert
-        : [0.13, 0.50, 0.20]                             // tropical forest
-    }
-    if (lat < 48) {
-      return Math.sin(nx * 11 + ny * 8 - nz * 7) > 0.22
-        ? [0.64, 0.51, 0.27]                             // steppe/savanna
-        : [0.22, 0.43, 0.22]                             // temperate forest
-    }
-    return [0.28, 0.38, 0.24]                            // boreal/taiga
-  }
-
-  // Ocean — shallow to deep
-  const depth = Math.max(0, Math.min(1, (0.18 - noise) / 1.58))
-  return [lp(0.07, 0.02, depth), lp(0.35, 0.13, depth), lp(0.72, 0.46, depth)]
-}
-
 export function initGlobe(container) {
   const size = container.offsetWidth || 420
 
@@ -72,20 +32,12 @@ export function initGlobe(container) {
   const globeGroup = new THREE.Group()
   scene.add(globeGroup)
 
-  // Earth sphere with realistic procedural vertex colors
-  const geo = new THREE.SphereGeometry(R, 80, 80)
-  const posArr = geo.attributes.position.array
-  const vColors = new Float32Array(posArr.length)
-  for (let i = 0; i < posArr.length; i += 3) {
-    const nx = posArr[i] / R, ny = posArr[i + 1] / R, nz = posArr[i + 2] / R
-    const [r, g, b] = earthCol(nx, ny, nz)
-    vColors[i] = r; vColors[i + 1] = g; vColors[i + 2] = b
-  }
-  geo.setAttribute('color', new THREE.BufferAttribute(vColors, 3))
-
-  const earth = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({
-    vertexColors: true, shininess: 45,
-  }))
+  // Earth sphere with real texture map
+  const earthTex = new THREE.TextureLoader().load('/img/earth.jpg')
+  const earth = new THREE.Mesh(
+    new THREE.SphereGeometry(R, 80, 80),
+    new THREE.MeshPhongMaterial({ map: earthTex, shininess: 18 })
+  )
   globeGroup.add(earth)
 
   // Thin cloud layer — semi-transparent white sphere
