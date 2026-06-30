@@ -14,7 +14,7 @@ a { text-decoration:none; color:inherit }
 /* ── NAV ─────────────────────────────────────────────────────────────────── */
 .nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:1.25rem 3rem; transition:.4s var(--ease) }
 .nav.scrolled { background:rgba(11,25,41,.93); backdrop-filter:blur(18px); border-bottom:1px solid rgba(255,255,255,.07) }
-.nav-logo { font-family:var(--ff-h); font-size:1.3rem; font-weight:800; color:var(--white); letter-spacing:-.03em }
+.nav-logo { font-family:var(--ff-h); font-size:1.3rem; font-weight:700; color:var(--white); letter-spacing:-.01em }
 .nav-logo em { color:var(--amber); font-style:normal }
 .nav-links { display:flex; gap:2.2rem; list-style:none }
 .nav-links a { font-size:.875rem; color:rgba(255,255,255,.55); transition:color .3s; font-weight:400; letter-spacing:.02em }
@@ -127,7 +127,7 @@ a { text-decoration:none; color:inherit }
 .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4rem }
 .stat-box { border:1px solid rgba(255,255,255,.07); border-radius:20px; padding:2.5rem 1.5rem; text-align:center; transition:border-color .35s,background .35s }
 .stat-box:hover { border-color:rgba(232,168,71,.28); background:rgba(255,255,255,.02) }
-.stat-num { font-family:var(--ff-h); font-size:3.2rem; font-weight:800; color:var(--white); line-height:1; margin-bottom:.5rem }
+.stat-num { font-family:var(--ff-h); font-size:3.2rem; font-weight:700; color:var(--white); line-height:1.1; letter-spacing:-.01em; margin-bottom:.5rem }
 .stat-num .sfx { color:var(--amber) }
 .stat-lbl { font-size:.82rem; color:var(--mist); font-weight:400; letter-spacing:.04em }
 
@@ -210,7 +210,7 @@ footer { background:var(--dark); padding:5rem 0 2.5rem }
 .srv-bullets li::before { content:'→'; color:var(--amber); flex-shrink:0; font-weight:600; margin-top:1px }
 .srv-meta { display:flex; flex-direction:column; gap:.5rem; align-items:flex-end; padding-top:.25rem }
 .srv-stat { text-align:right }
-.srv-stat-num { font-family:var(--ff-h); font-size:2rem; font-weight:800; color:var(--text-d); line-height:1 }
+.srv-stat-num { font-family:var(--ff-h); font-size:2rem; font-weight:700; color:var(--text-d); line-height:1.15; letter-spacing:-.01em }
 .srv-stat-num em { color:var(--amber); font-style:normal }
 .srv-stat-lbl { font-size:.72rem; color:#8A9EB0; margin-top:.2rem }
 .process-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative }
