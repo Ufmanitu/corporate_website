@@ -4,6 +4,7 @@
  */
 
 import { initJourney } from './journey.js'
+import { initGlobe }   from './globe.js'
 import { initScroll }  from './scroll.js'
 import { initContact } from './contact.js'
 import { initI18n }    from './i18n.js'
@@ -132,6 +133,12 @@ runLoader(() => {
     .to('.hero-scroll',{ opacity: 0.4, duration: 0.6 }, '-=0.2')
 
   initJourney(canvas)
+
+  const globeEl = document.getElementById('presence-globe')
+  if (globeEl) {
+    try { initGlobe(globeEl) } catch (err) { console.error('Globe failed:', err) }
+  }
+
   initScroll()
   initNav()
   initLang()
