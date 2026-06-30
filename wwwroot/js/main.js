@@ -131,7 +131,15 @@ runLoader(() => {
     .to('.hero-btns',  { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
     .to('.hero-scroll',{ opacity: 0.4, duration: 0.6 }, '-=0.2')
 
-  initJourney(canvas)
+  try {
+    initJourney(canvas)
+  } catch (err) {
+    console.error('journey init failed:', err)
+    const dbg = document.createElement('div')
+    dbg.style.cssText = 'position:fixed;top:80px;left:20px;z-index:9999;background:red;color:#fff;padding:12px;font-size:13px;max-width:90vw;border-radius:8px;'
+    dbg.textContent = '3D error: ' + err.message
+    document.body.appendChild(dbg)
+  }
   initScroll()
   initNav()
   initLang()

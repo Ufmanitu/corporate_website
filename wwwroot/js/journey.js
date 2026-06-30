@@ -610,8 +610,7 @@ function buildBoardroomZone(scene) {
 export function initJourney(canvas) {
   const W = window.innerWidth, H = window.innerHeight
 
-  // Renderer — same as working v2
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
   renderer.setSize(W, H)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.toneMapping         = THREE.ACESFilmicToneMapping
@@ -619,18 +618,25 @@ export function initJourney(canvas) {
   renderer.outputColorSpace    = THREE.SRGBColorSpace
 
   const scene = new THREE.Scene()
+  scene.background = new THREE.Color(0x04060f)
   scene.fog = new THREE.FogExp2(0x04060f, 0.010)
 
   const camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 400)
   camera.position.set(0, 0, 6)
 
-  scene.add(new THREE.AmbientLight(0x101830, 0.6))
+  scene.add(new THREE.AmbientLight(0x304060, 0.8))
 
-  // Post-processing — same params as working v2
-  const composer = new EffectComposer(renderer)
-  composer.addPass(new RenderPass(scene, camera))
-  composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.9, 0.5, 0.15))
-  composer.addPass(new OutputPass())
+  // Post-processing
+  let composer = null
+  try {
+    composer = new EffectComposer(renderer)
+    composer.addPass(new RenderPass(scene, camera))
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.9, 0.5, 0.15))
+    composer.addPass(new OutputPass())
+  } catch (e) {
+    console.warn('Bloom unavailable, using direct render:', e)
+    composer = null
+  }
 
   // Build zones
   const zones = [
@@ -687,7 +693,8 @@ export function initJourney(canvas) {
     camera.lookAt(camera.position.x * 0.15, camera.position.y * 0.15, camera.position.z - 5)
 
     zones.forEach(z => z.update(dt))
-    composer.render()
+    if (composer) composer.render()
+    else renderer.render(scene, camera)
   }
 
   animate()
@@ -697,6 +704,6 @@ export function initJourney(canvas) {
     camera.aspect = W / H
     camera.updateProjectionMatrix()
     renderer.setSize(W, H)
-    composer.setSize(W, H)
+    if (composer) composer.setSize(W, H)
   })
 }
