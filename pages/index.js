@@ -92,33 +92,6 @@ function HomeContent({ content }) {
     return () => clearTimeout(t)
   }, [])
 
-  // Count-up for stat cards
-  function useCountUp(target, duration = 1800) {
-    const [val, setVal] = useState(0)
-    const ref = useRef(null)
-    useEffect(() => {
-      const obs = new IntersectionObserver(([e]) => {
-        if (!e.isIntersecting) return
-        obs.disconnect()
-        let start = null
-        function step(ts) {
-          if (!start) start = ts
-          const p = Math.min((ts - start) / duration, 1)
-          setVal(Math.round((1 - Math.pow(1 - p, 3)) * target))
-          if (p < 1) requestAnimationFrame(step)
-        }
-        requestAnimationFrame(step)
-      }, { threshold: .5 })
-      if (ref.current) obs.observe(ref.current)
-      return () => obs.disconnect()
-    }, [target, duration])
-    return [val, ref]
-  }
-
-  const [clients, clientsRef] = useCountUp(200)
-  const [countries, countriesRef] = useCountUp(15)
-  const [retention, retentionRef] = useCountUp(97)
-  const [value4, value4Ref] = useCountUp(4)
 
   // Testimonial carousel
   const [tstIdx, setTstIdx] = useState(0)
@@ -168,25 +141,25 @@ function HomeContent({ content }) {
             </div>
           </div>
           <div className="hero-right" ref={rightRef}>
-            <div className="hero-card" ref={clientsRef} style={{ transform: '' }}
+            <div className="hero-card" style={{ transform: '' }}
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
               <Editable tag="div" id="hc1-label" content={c('hc1-label', 'Clients served globally')} className="hc-label" />
-              <div className="hc-val">{clients}<span className="sfx">{c('hc1-sfx', '+')}</span></div>
+              <div className="hc-val">200<span className="sfx">{c('hc1-sfx', '+')}</span></div>
               <Editable tag="div" id="hc1-desc" content={c('hc1-desc', 'Across 15 countries and 6 industries')} className="hc-desc" />
             </div>
             <div className="hero-card"
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
               <Editable tag="div" id="hc2-label" content={c('hc2-label', 'Value created for clients')} className="hc-label" />
-              <div className="hc-val"><span className="sfx">{c('hc2-pre', '$')}</span>{value4}<span className="sfx">{c('hc2-sfx', '.2B')}</span></div>
+              <div className="hc-val"><span className="sfx">{c('hc2-pre', '$')}</span>4<span className="sfx">{c('hc2-sfx', '.2B')}</span></div>
               <Editable tag="div" id="hc2-desc" content={c('hc2-desc', 'Measurable impact since 2008')} className="hc-desc" />
             </div>
-            <div className="hero-card" ref={retentionRef}
+            <div className="hero-card"
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
               <Editable tag="div" id="hc3-label" content={c('hc3-label', 'Client retention rate')} className="hc-label" />
-              <div className="hc-val">{retention}<span className="sfx">{c('hc3-sfx', '%')}</span></div>
+              <div className="hc-val">97<span className="sfx">{c('hc3-sfx', '%')}</span></div>
               <Editable tag="div" id="hc3-desc" content={c('hc3-desc', 'Year-over-year since founding')} className="hc-desc" />
             </div>
           </div>
