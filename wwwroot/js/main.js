@@ -108,12 +108,12 @@ function initCursor() {
     el.addEventListener('mouseenter', () => {
       ring.style.width  = '60px'
       ring.style.height = '60px'
-      ring.style.borderColor = 'rgba(79,110,247,0.7)'
+      ring.style.borderColor = 'rgba(217,119,6,0.7)'
     })
     el.addEventListener('mouseleave', () => {
       ring.style.width  = '40px'
       ring.style.height = '40px'
-      ring.style.borderColor = 'rgba(79,110,247,0.4)'
+      ring.style.borderColor = 'rgba(217,119,6,0.4)'
     })
   })
 }
