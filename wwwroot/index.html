@@ -47,11 +47,11 @@
     <div class="nav-inner">
       <a href="/" class="nav-logo" aria-label="Meridian Group home">Meridian<em>.</em></a>
       <ul class="nav-links" role="list">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#presence">Global</a></li>
-        <li><a href="#technology">Technology</a></li>
-        <li><a href="#projects">Work</a></li>
-        <li><a href="#team">Team</a></li>
+        <li><a href="#services"   data-i18n="nav.services">Services</a></li>
+        <li><a href="#presence"   data-i18n="nav.global">Global</a></li>
+        <li><a href="#technology" data-i18n="nav.technology">Technology</a></li>
+        <li><a href="#projects"   data-i18n="nav.work">Work</a></li>
+        <li><a href="#team"       data-i18n="nav.team">Team</a></li>
       </ul>
       <div class="nav-actions">
         <div class="lang-switch" role="group" aria-label="Language">
@@ -61,7 +61,7 @@
           <span aria-hidden="true">/</span>
           <button class="lang-btn" data-lang="hu">HU</button>
         </div>
-        <a href="#contact" class="nav-cta">Get in Touch</a>
+        <a href="#contact" class="nav-cta" data-i18n="nav.cta">Get in Touch</a>
       </div>
       <button class="burger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -73,12 +73,12 @@
   <div class="mobile-menu" aria-hidden="true" role="dialog" aria-label="Navigation menu">
     <button class="mobile-close" aria-label="Close menu">✕</button>
     <nav class="mobile-nav">
-      <a href="#services">Services</a>
-      <a href="#presence">Global Presence</a>
-      <a href="#technology">Technology</a>
-      <a href="#projects">Work</a>
-      <a href="#team">Team</a>
-      <a href="#contact">Contact</a>
+      <a href="#services"   data-i18n="nav.services">Services</a>
+      <a href="#presence"   data-i18n="nav.presence">Global Presence</a>
+      <a href="#technology" data-i18n="nav.technology">Technology</a>
+      <a href="#projects"   data-i18n="nav.work">Work</a>
+      <a href="#team"       data-i18n="nav.team">Team</a>
+      <a href="#contact"    data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="mobile-lang">
       <button class="lang-btn active" data-lang="en">EN</button>
@@ -94,16 +94,16 @@
     <!-- ── SECTION 1: HERO ── -->
     <section id="hero" class="s-hero" aria-label="Hero">
       <div class="hero-inner">
-        <div class="hero-tag">Global Strategy &amp; Technology Consultancy</div>
+        <div class="hero-tag" data-i18n="hero.tag">Global Strategy &amp; Technology Consultancy</div>
         <h1 class="hero-h1">
-          <span class="hero-word">Navigate</span>
-          <span class="hero-word">What's</span>
-          <span class="hero-word accent">Next.</span>
+          <span class="hero-word" data-i18n="hero.l1">Navigate</span>
+          <span class="hero-word" data-i18n="hero.l2">What's</span>
+          <span class="hero-word accent" data-i18n="hero.l3">Next.</span>
         </h1>
-        <p class="hero-sub">We help ambitious organizations define clear strategy,<br>harness technology, and execute with conviction.</p>
+        <p class="hero-sub" data-i18n="hero.sub">We help ambitious organizations define clear strategy,<br>harness technology, and execute with conviction.</p>
         <div class="hero-btns">
-          <a href="#projects" class="btn-primary">Explore Our Work <span class="btn-arr">→</span></a>
-          <a href="#contact" class="btn-ghost">Schedule a Call</a>
+          <a href="#projects" class="btn-primary"><span data-i18n="hero.cta1">Explore Our Work</span> <span class="btn-arr">→</span></a>
+          <a href="#contact"  class="btn-ghost" data-i18n="hero.cta2">Schedule a Call</a>
         </div>
       </div>
       <div class="hero-scroll" aria-hidden="true">
@@ -116,8 +116,8 @@
     <section id="network" class="s-network" aria-label="By the numbers">
       <div class="network-inner">
         <div class="s-head c">
-          <span class="eyebrow">Impact by Numbers</span>
-          <h2 class="s-title">The results speak<br>for themselves.</h2>
+          <span class="eyebrow" data-i18n="stats.eyebrow">Impact by Numbers</span>
+          <h2 class="s-title" data-i18n="stats.title">The results speak<br>for themselves.</h2>
         </div>
         <div class="stats-grid">
           <div class="stat-item glass">
@@ -125,13 +125,13 @@
               <span class="stat-num" data-target="200">0</span>
               <span class="stat-sfx">+</span>
             </div>
-            <div class="stat-label">Clients Globally</div>
+            <div class="stat-label" data-i18n="stats.clients">Clients Globally</div>
           </div>
           <div class="stat-item glass">
             <div class="stat-row">
               <span class="stat-num" data-target="15">0</span>
             </div>
-            <div class="stat-label">Countries Active</div>
+            <div class="stat-label" data-i18n="stats.countries">Countries Active</div>
           </div>
           <div class="stat-item glass">
             <div class="stat-row">
@@ -139,14 +139,14 @@
               <span class="stat-num" data-target="4">0</span>
               <span class="stat-sfx">.2B</span>
             </div>
-            <div class="stat-label">Value Created</div>
+            <div class="stat-label" data-i18n="stats.value">Value Created</div>
           </div>
           <div class="stat-item glass">
             <div class="stat-row">
               <span class="stat-num" data-target="97">0</span>
               <span class="stat-sfx">%</span>
             </div>
-            <div class="stat-label">Client Retention</div>
+            <div class="stat-label" data-i18n="stats.retention">Client Retention</div>
           </div>
         </div>
       </div>
@@ -156,14 +156,14 @@
     <section id="services" class="s-services" aria-label="Services">
       <div class="s-inner">
         <div class="s-head">
-          <span class="eyebrow">What We Do</span>
-          <h2 class="s-title">Capabilities built<br>for complexity.</h2>
+          <span class="eyebrow" data-i18n="services.eyebrow">What We Do</span>
+          <h2 class="s-title" data-i18n="services.title">Capabilities built<br>for complexity.</h2>
         </div>
         <div class="services-grid">
           <article class="srv-card glass" tabindex="0">
             <div class="srv-icon" aria-hidden="true">◈</div>
-            <h3>Corporate Strategy</h3>
-            <p>Transforming organizational vision into executable advantage through rigorous analysis and bold thinking.</p>
+            <h3 data-i18n="srv.1.title">Corporate Strategy</h3>
+            <p data-i18n="srv.1.desc">Transforming organizational vision into executable advantage through rigorous analysis and bold thinking.</p>
             <ul class="srv-list">
               <li>Market entry &amp; expansion</li>
               <li>Portfolio optimization</li>
@@ -174,8 +174,8 @@
           </article>
           <article class="srv-card glass" tabindex="0">
             <div class="srv-icon" aria-hidden="true">⬡</div>
-            <h3>Technology &amp; AI</h3>
-            <p>Harnessing emerging technologies to drive efficiency, unlock new revenue streams, and future-proof operations.</p>
+            <h3 data-i18n="srv.2.title">Technology &amp; AI</h3>
+            <p data-i18n="srv.2.desc">Harnessing emerging technologies to drive efficiency, unlock new revenue streams, and future-proof operations.</p>
             <ul class="srv-list">
               <li>AI &amp; machine learning</li>
               <li>Cloud architecture</li>
@@ -186,8 +186,8 @@
           </article>
           <article class="srv-card glass" tabindex="0">
             <div class="srv-icon" aria-hidden="true">◉</div>
-            <h3>Digital Transformation</h3>
-            <p>End-to-end reinvention of customer experience and operational models for the digital age.</p>
+            <h3 data-i18n="srv.3.title">Digital Transformation</h3>
+            <p data-i18n="srv.3.desc">End-to-end reinvention of customer experience and operational models for the digital age.</p>
             <ul class="srv-list">
               <li>Customer journey redesign</li>
               <li>Process automation</li>
@@ -198,8 +198,8 @@
           </article>
           <article class="srv-card glass" tabindex="0">
             <div class="srv-icon" aria-hidden="true">◬</div>
-            <h3>Financial Advisory</h3>
-            <p>Capital markets expertise combined with strategic insight to maximize value at every stage of growth.</p>
+            <h3 data-i18n="srv.4.title">Financial Advisory</h3>
+            <p data-i18n="srv.4.desc">Capital markets expertise combined with strategic insight to maximize value at every stage of growth.</p>
             <ul class="srv-list">
               <li>Valuation &amp; due diligence</li>
               <li>Capital structure optimization</li>
@@ -216,9 +216,9 @@
     <section id="presence" class="s-presence" aria-label="Global presence">
       <div class="s-inner presence-inner">
         <div class="presence-text">
-          <span class="eyebrow">Global Reach</span>
-          <h2 class="s-title">Wherever<br>you operate.</h2>
-          <p class="body-text">With offices on four continents and active engagements in 15 countries, we bring global perspective and local depth to every mandate.</p>
+          <span class="eyebrow" data-i18n="presence.eyebrow">Global Reach</span>
+          <h2 class="s-title" data-i18n="presence.title">Wherever<br>you operate.</h2>
+          <p class="body-text" data-i18n="presence.body">With offices on four continents and active engagements in 15 countries, we bring global perspective and local depth to every mandate.</p>
           <div class="office-list">
             <div class="office-item"><span class="office-dot" aria-hidden="true"></span>New York</div>
             <div class="office-item"><span class="office-dot" aria-hidden="true"></span>London</div>
@@ -229,7 +229,6 @@
           </div>
         </div>
         <div class="presence-globe" aria-hidden="true">
-          <!-- Three.js earth renders here via overlay -->
           <div class="globe-hint">Interactive 3D Globe</div>
         </div>
       </div>
@@ -239,8 +238,8 @@
     <section id="technology" class="s-technology" aria-label="Technology stack">
       <div class="s-inner">
         <div class="s-head c">
-          <span class="eyebrow">Technology Ecosystem</span>
-          <h2 class="s-title">The tools that<br>power the future.</h2>
+          <span class="eyebrow" data-i18n="tech.eyebrow">Technology Ecosystem</span>
+          <h2 class="s-title" data-i18n="tech.title">The tools that<br>power the future.</h2>
         </div>
         <div class="tech-grid">
           <div class="tech-item glass" style="--delay:0s">
@@ -283,8 +282,8 @@
     <section id="timeline" class="s-timeline" aria-label="Company timeline">
       <div class="s-inner">
         <div class="s-head c">
-          <span class="eyebrow">Our Journey</span>
-          <h2 class="s-title">A history of<br>decisive moments.</h2>
+          <span class="eyebrow" data-i18n="timeline.eyebrow">Our Journey</span>
+          <h2 class="s-title" data-i18n="timeline.title">A history of<br>decisive moments.</h2>
         </div>
         <div class="tl-track">
           <div class="tl-line" aria-hidden="true"><div class="tl-progress"></div></div>
@@ -338,8 +337,8 @@
     <section id="projects" class="s-projects" aria-label="Selected work">
       <div class="s-inner">
         <div class="s-head">
-          <span class="eyebrow">Selected Work</span>
-          <h2 class="s-title">Projects that<br>moved markets.</h2>
+          <span class="eyebrow" data-i18n="projects.eyebrow">Selected Work</span>
+          <h2 class="s-title" data-i18n="projects.title">Projects that<br>moved markets.</h2>
         </div>
         <div class="projects-list">
           <article class="proj-card glass">
@@ -411,8 +410,8 @@
     <section id="team" class="s-team" aria-label="Leadership team">
       <div class="s-inner">
         <div class="s-head c">
-          <span class="eyebrow">Leadership</span>
-          <h2 class="s-title">The minds behind<br>the missions.</h2>
+          <span class="eyebrow" data-i18n="team.eyebrow">Leadership</span>
+          <h2 class="s-title" data-i18n="team.title">The minds behind<br>the missions.</h2>
         </div>
         <div class="team-grid">
           <article class="team-card glass" tabindex="0">
@@ -471,9 +470,9 @@
     <section id="contact" class="s-contact" aria-label="Contact">
       <div class="s-inner contact-inner">
         <div class="contact-text">
-          <span class="eyebrow">Get in Touch</span>
-          <h2 class="s-title">Ready to<br>navigate next?</h2>
-          <p class="body-text">Every engagement starts with a conversation. Tell us about your challenge and we'll respond within 24 hours.</p>
+          <span class="eyebrow" data-i18n="contact.eyebrow">Get in Touch</span>
+          <h2 class="s-title" data-i18n="contact.title">Ready to<br>navigate next?</h2>
+          <p class="body-text" data-i18n="contact.body">Every engagement starts with a conversation. Tell us about your challenge and we'll respond within 24 hours.</p>
           <div class="contact-details">
             <a href="mailto:hello@meridiangroup.com" class="contact-link">hello@meridiangroup.com</a>
             <a href="tel:+12125550100" class="contact-link">+1 (212) 555 0100</a>
@@ -485,30 +484,30 @@
         <form class="contact-form glass" id="contactForm" novalidate>
           <div class="form-group">
             <input type="text" id="f-name" name="name" autocomplete="name" placeholder=" " required>
-            <label for="f-name">Full Name</label>
+            <label for="f-name" data-i18n="contact.label.name">Full Name</label>
             <div class="form-line"></div>
           </div>
           <div class="form-group">
             <input type="email" id="f-email" name="email" autocomplete="email" placeholder=" " required>
-            <label for="f-email">Work Email</label>
+            <label for="f-email" data-i18n="contact.label.email">Work Email</label>
             <div class="form-line"></div>
           </div>
           <div class="form-group">
             <input type="text" id="f-company" name="company" autocomplete="organization" placeholder=" ">
-            <label for="f-company">Company</label>
+            <label for="f-company" data-i18n="contact.label.company">Company</label>
             <div class="form-line"></div>
           </div>
           <div class="form-group">
             <textarea id="f-message" name="message" rows="4" placeholder=" " required></textarea>
-            <label for="f-message">How can we help?</label>
+            <label for="f-message" data-i18n="contact.label.message">How can we help?</label>
             <div class="form-line"></div>
           </div>
           <button type="submit" class="btn-primary btn-submit">
-            <span class="btn-default">Send Message <span class="btn-arr">→</span></span>
+            <span class="btn-default" data-i18n="contact.submit">Send Message →</span>
             <span class="btn-sending hidden">Sending…</span>
             <span class="btn-sent hidden">Message Sent ✓</span>
           </button>
-          <p class="form-note">We respect your privacy. No spam, ever.</p>
+          <p class="form-note" data-i18n="contact.note">We respect your privacy. No spam, ever.</p>
         </form>
       </div>
     </section>
@@ -520,32 +519,32 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <div class="footer-logo">Meridian<em>.</em></div>
-        <p>Navigate What's Next.</p>
+        <p data-i18n="footer.tagline">Navigate What's Next.</p>
       </div>
       <div class="footer-cols">
         <div class="fc">
-          <h4>Company</h4>
+          <h4 data-i18n="footer.company">Company</h4>
           <a href="#team">About</a>
           <a href="#team">Leadership</a>
           <a href="#contact">Careers</a>
           <a href="#contact">Press</a>
         </div>
         <div class="fc">
-          <h4>Services</h4>
+          <h4 data-i18n="footer.services">Services</h4>
           <a href="#services">Strategy</a>
           <a href="#services">Technology</a>
           <a href="#services">Digital</a>
           <a href="#services">Finance</a>
         </div>
         <div class="fc">
-          <h4>Work</h4>
+          <h4 data-i18n="footer.work">Work</h4>
           <a href="#projects">All Projects</a>
           <a href="#projects">Banking</a>
           <a href="#projects">Healthcare</a>
           <a href="#projects">Technology</a>
         </div>
         <div class="fc">
-          <h4>Connect</h4>
+          <h4 data-i18n="footer.connect">Connect</h4>
           <a href="#contact">Contact</a>
           <a href="#contact">Offices</a>
           <a href="#contact">New Business</a>

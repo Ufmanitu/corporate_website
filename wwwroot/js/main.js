@@ -6,6 +6,7 @@
 import { initJourney } from './journey.js'
 import { initScroll }  from './scroll.js'
 import { initContact } from './contact.js'
+import { initI18n }    from './i18n.js'
 
 // ── GSAP SETUP ──────────────────────────────────────────────────────────────
 gsap.registerPlugin(ScrollTrigger)
@@ -68,20 +69,9 @@ function initNav() {
   })
 }
 
-// ── LANGUAGE SWITCHING ───────────────────────────────────────────────────────
+// ── LANGUAGE SWITCHING (delegated to i18n.js) ────────────────────────────────
 function initLang() {
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.lang-btn').forEach(b => {
-        b.classList.remove('active')
-        b.removeAttribute('aria-current')
-      })
-      btn.classList.add('active')
-      btn.setAttribute('aria-current', 'true')
-      // In production, navigate to locale or update content via API
-      console.log('[lang] switched to', btn.dataset.lang)
-    })
-  })
+  initI18n()
 }
 
 // ── CURSOR ──────────────────────────────────────────────────────────────────
