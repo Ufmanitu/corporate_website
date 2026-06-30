@@ -298,40 +298,70 @@ function buildEarthZone(scene) {
   group.position.x = 3
 
   const R = 4.5
-  const earthGeo = new THREE.SphereGeometry(R, 64, 64)
+  const earthGeo = new THREE.SphereGeometry(R, 80, 80)
 
-  // Brighter, higher-contrast vertex colours
+  // Realistic Earth vertex colors: green land, blue ocean, white poles
   const vColors = []
   const posArr  = earthGeo.attributes.position.array
   for (let i = 0; i < posArr.length; i += 3) {
-    const nx = posArr[i], ny = posArr[i+1], nz = posArr[i+2]
-    const len = Math.sqrt(nx*nx + ny*ny + nz*nz)
-    const noise = Math.sin((nx/len)*9) * Math.cos((ny/len)*6) * Math.sin((nz/len)*8)
-    vColors.push(...(noise > 0.1 ? [0.06, 0.22, 0.55] : [0.01, 0.06, 0.22]))
+    const nx = posArr[i] / R, ny = posArr[i+1] / R, nz = posArr[i+2] / R
+
+    const latDeg = Math.asin(Math.max(-1, Math.min(1, ny))) * (180 / Math.PI)
+    const lat = Math.abs(latDeg)
+
+    const n1 = Math.sin(nx * 8 + nz * 5.5) * Math.cos(ny * 7 - nz * 3.2)
+    const n2 = Math.sin(nx * 15 + 1.1 + nz * 9) * Math.cos(ny * 12 - nx * 4) * 0.4
+    const noise = n1 + n2
+
+    let r, g, b
+    if (lat > 68) {
+      const t = Math.min(1, (lat - 68) / 16)
+      r = lerp(0.12, 0.88, t); g = lerp(0.35, 0.91, t); b = lerp(0.65, 0.95, t)
+    } else if (noise > 0.18) {
+      if (noise > 1.05)    { r = 0.60; g = 0.55; b = 0.48 }  // mountain
+      else if (lat > 56)   { r = 0.32; g = 0.40; b = 0.25 }  // tundra
+      else if (lat < 22) {
+        if (Math.sin(nx * 23 + nz * 17) > 0.28) { r = 0.72; g = 0.56; b = 0.24 }  // desert
+        else                                      { r = 0.13; g = 0.50; b = 0.20 }  // tropical forest
+      } else if (lat < 48) {
+        if (Math.sin(nx * 11 + ny * 8 - nz * 7) > 0.22) { r = 0.64; g = 0.51; b = 0.27 }  // steppe
+        else                                               { r = 0.22; g = 0.43; b = 0.22 }  // temperate forest
+      } else { r = 0.28; g = 0.38; b = 0.24 }  // boreal
+    } else {
+      const depth = Math.max(0, Math.min(1, (0.18 - noise) / 1.58))
+      r = lerp(0.07, 0.02, depth); g = lerp(0.35, 0.13, depth); b = lerp(0.72, 0.46, depth)
+    }
+    vColors.push(r, g, b)
   }
   earthGeo.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(vColors), 3))
 
   const earth = new THREE.Mesh(earthGeo, new THREE.MeshPhongMaterial({
-    vertexColors: true, shininess: 30,
+    vertexColors: true, shininess: 45,
   }))
   group.add(earth)
 
+  // Thin cloud haze
+  group.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R + 0.08, 32, 32),
+    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.09, depthWrite: false })
+  ))
+
   // Gold wireframe grid
-  const wireGeo = new THREE.SphereGeometry(R + 0.02, 32, 32)
+  const wireGeo = new THREE.SphereGeometry(R + 0.04, 32, 32)
   const wire = new THREE.Mesh(wireGeo, new THREE.MeshBasicMaterial({
-    color: GOLD, wireframe: true, transparent: true, opacity: 0.12,
+    color: GOLD, wireframe: true, transparent: true, opacity: 0.08,
   }))
   group.add(wire)
 
-  // Blue atmosphere
+  // Atmosphere glow
   group.add(new THREE.Mesh(
-    new THREE.SphereGeometry(R + 0.5, 64, 64),
-    new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0.12, side: THREE.BackSide })
+    new THREE.SphereGeometry(R + 0.55, 64, 64),
+    new THREE.MeshBasicMaterial({ color: 0x4a90d9, transparent: true, opacity: 0.14, side: THREE.BackSide })
   ))
 
   // Outer haze
   group.add(new THREE.Mesh(
-    new THREE.SphereGeometry(R + 1.0, 32, 32),
+    new THREE.SphereGeometry(R + 1.1, 32, 32),
     new THREE.MeshBasicMaterial({ color: 0x0a2040, transparent: true, opacity: 0.07, side: THREE.BackSide })
   ))
 
@@ -404,10 +434,10 @@ function buildEarthZone(scene) {
 
   scene.add(group)
 
-  const keyL = new THREE.PointLight(BLUE, 5, 30)
-  keyL.position.set(-10, 5, Z.earth - 5)
+  const keyL = new THREE.PointLight(0xfff5e0, 8, 40)   // warm-white sun
+  keyL.position.set(-12, 6, Z.earth - 2)
   scene.add(keyL)
-  const rimL = new THREE.PointLight(GOLD, 3.5, 25)
+  const rimL = new THREE.PointLight(0x2060b0, 2.5, 28) // cool blue space rim
   rimL.position.set(16, -3, Z.earth)
   scene.add(rimL)
 
