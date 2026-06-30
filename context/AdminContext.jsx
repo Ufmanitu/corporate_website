@@ -18,11 +18,11 @@ export function AdminProvider({ children, page }) {
   }
 
   const enterAdmin = useCallback(async () => {
+    if (!supabase) return router.push(`/admin/login?next=${router.asPath}`)
     const { data: { session } } = await supabase.auth.getSession()
     if (session) {
       setIsAdmin(true)
     } else {
-      // Not logged in — send to login page with return URL
       router.push(`/admin/login?next=${router.asPath}`)
     }
   }, [router])
@@ -32,12 +32,13 @@ export function AdminProvider({ children, page }) {
   }, [])
 
   const logout = useCallback(async () => {
-    await supabase.auth.signOut()
+    if (supabase) await supabase.auth.signOut()
     setIsAdmin(false)
   }, [])
 
   // Save a single field immediately (called on contentEditable blur)
   const saveSingle = useCallback(async (key, value) => {
+    if (!supabase) return
     const { error } = await supabase
       .from('page_content')
       .upsert({ page: pageKey, key, value }, { onConflict: 'page,key' })
@@ -46,11 +47,10 @@ export function AdminProvider({ children, page }) {
       console.error('[admin] Save failed:', error.message)
       showToast('⚠ Save failed — check console')
     }
-    // No toast on single-field save to avoid spam
   }, [page])
 
-  // Save all visible editable fields at once (Save All button)
   const saveAll = useCallback(async () => {
+    if (!supabase) return showToast('⚠ Supabase not configured')
     const editables = document.querySelectorAll('[data-key]')
     const upserts = Array.from(editables).map(el => ({
       page: pageKey,
@@ -70,6 +70,7 @@ export function AdminProvider({ children, page }) {
   }, [page])
 
   const resetAll = useCallback(async () => {
+    if (!supabase) return
     if (!confirm('Reset all content on this page to defaults?')) return
     const { error } = await supabase
       .from('page_content')
