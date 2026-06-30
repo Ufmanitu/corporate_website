@@ -4,6 +4,7 @@
  */
 
 import { initJourney } from './journey.js'
+import { initGlobe }   from './globe.js'
 import { initScroll }  from './scroll.js'
 import { initContact } from './contact.js'
 import { initI18n }    from './i18n.js'
@@ -134,12 +135,14 @@ runLoader(() => {
   try {
     initJourney(canvas)
   } catch (err) {
-    console.error('journey init failed:', err)
-    const dbg = document.createElement('div')
-    dbg.style.cssText = 'position:fixed;top:80px;left:20px;z-index:9999;background:#7f1d1d;color:#fff;padding:14px 16px;font-size:12px;max-width:96vw;border-radius:8px;font-family:monospace;white-space:pre-wrap;line-height:1.5;'
-    dbg.textContent = err.stack || err.message
-    document.body.appendChild(dbg)
+    console.error('3D journey failed:', err)
   }
+
+  const globeEl = document.getElementById('presence-globe')
+  if (globeEl) {
+    try { initGlobe(globeEl) } catch (err) { console.error('Globe failed:', err) }
+  }
+
   initScroll()
   initNav()
   initLang()

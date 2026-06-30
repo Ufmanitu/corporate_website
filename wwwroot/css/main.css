@@ -568,18 +568,10 @@ main { position: relative; z-index: 1; }
 .presence-globe {
   aspect-ratio: 1;
   border-radius: 50%;
+  overflow: hidden;
   background: radial-gradient(circle, rgba(217,119,6,0.15), transparent 70%);
   border: 1px solid rgba(217,119,6,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
-}
-.globe-hint {
-  font-size: 0.75rem;
-  color: var(--subtle);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
 }
 
 /* ── TECHNOLOGY ── */

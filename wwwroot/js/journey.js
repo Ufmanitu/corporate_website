@@ -484,104 +484,89 @@ function buildBoardroomZone(scene) {
   group.position.z = Z.boardroom
 
   // Conference table
-  let tableGeo, table, tableEdges
-  try {
-    tableGeo = new THREE.BoxGeometry(16, 0.22, 6)
-    table = new THREE.Mesh(tableGeo, new THREE.MeshPhongMaterial({
-      color: 0x060d1e, emissive: 0x1a2f55, emissiveIntensity: 0.18, shininess: 130,
-    }))
-    table.position.y = -4
-    group.add(table)
-    tableEdges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(tableGeo),
-      new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.9 })
-    )
-    tableEdges.position.copy(table.position)
-    group.add(tableEdges)
-  } catch(e) { throw new Error('BR-table: ' + e.message) }
+  const tableGeo = new THREE.BoxGeometry(16, 0.22, 6)
+  const table = new THREE.Mesh(tableGeo, new THREE.MeshPhongMaterial({
+    color: 0x060d1e, emissive: 0x1a2f55, emissiveIntensity: 0.18, shininess: 130,
+  }))
+  table.position.y = -4
+  group.add(table)
+  const tableEdges = new THREE.LineSegments(
+    new THREE.EdgesGeometry(tableGeo),
+    new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.9 })
+  )
+  tableEdges.position.copy(table.position)
+  group.add(tableEdges)
 
-  // Chairs
-  try {
-    const chairXs = [-6, -3.2, -0.4, 2.4, 5.2]
-    for (const x of chairXs) {
-      for (const side of [-4.2, 4.2]) {
-        const chair = new THREE.LineSegments(
-          new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1.4, 0.9)),
-          new THREE.LineBasicMaterial({ color: BLUE, transparent: true, opacity: 0.35 })
-        )
-        chair.position.set(x, -3.9, side)
-        group.add(chair)
-      }
+  // Chairs — for...of to avoid nested .forEach on arrays
+  for (const x of [-6, -3.2, -0.4, 2.4, 5.2]) {
+    for (const side of [-4.2, 4.2]) {
+      const chair = new THREE.LineSegments(
+        new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1.4, 0.9)),
+        new THREE.LineBasicMaterial({ color: BLUE, transparent: true, opacity: 0.35 })
+      )
+      chair.position.set(x, -3.9, side)
+      group.add(chair)
     }
-  } catch(e) { throw new Error('BR-chairs: ' + e.message) }
+  }
 
-  // Holographic screens — use thin BoxGeometry edges instead of PlaneGeometry+EdgesGeometry
-  let screens
-  try {
-    const screenCfgs = [
-      { x: -5, color: GOLD2 },
-      { x:  0, color: BLUE  },
-      { x:  5, color: GREEN },
-    ]
-    screens = screenCfgs.map(({ x, color }) => {
-      const bg = new THREE.Mesh(
-        new THREE.BoxGeometry(3.4, 2.1, 0.02),
-        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.07 })
-      )
-      bg.position.set(x, 1.2, 0)
-      bg.rotation.x = -0.12
-      group.add(bg)
+  // Holographic screens — thin BoxGeometry (PlaneGeometry+EdgesGeometry crashed in r167)
+  const screenCfgs = [
+    { x: -5, color: GOLD2 },
+    { x:  0, color: BLUE  },
+    { x:  5, color: GREEN },
+  ]
+  const screens = screenCfgs.map(({ x, color }) => {
+    const bg = new THREE.Mesh(
+      new THREE.BoxGeometry(3.4, 2.1, 0.02),
+      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.07 })
+    )
+    bg.position.set(x, 1.2, 0)
+    bg.rotation.x = -0.12
+    group.add(bg)
 
-      const edges = new THREE.LineSegments(
-        new THREE.EdgesGeometry(new THREE.BoxGeometry(3.4, 2.1, 0.02)),
-        new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.75 })
-      )
-      edges.position.copy(bg.position)
-      edges.rotation.copy(bg.rotation)
-      group.add(edges)
+    const edges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.BoxGeometry(3.4, 2.1, 0.02)),
+      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.75 })
+    )
+    edges.position.copy(bg.position)
+    edges.rotation.copy(bg.rotation)
+    group.add(edges)
 
-      const scan = new THREE.Mesh(
-        new THREE.BoxGeometry(3.2, 0.03, 0.02),
-        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.55 })
-      )
-      scan.position.copy(bg.position)
-      scan.rotation.copy(bg.rotation)
-      group.add(scan)
+    const scan = new THREE.Mesh(
+      new THREE.BoxGeometry(3.2, 0.03, 0.02),
+      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.55 })
+    )
+    scan.position.copy(bg.position)
+    scan.rotation.copy(bg.rotation)
+    group.add(scan)
 
-      const pl = new THREE.PointLight(color, 0.9, 9)
-      pl.position.copy(bg.position)
-      group.add(pl)
+    const pl = new THREE.PointLight(color, 0.9, 9)
+    pl.position.copy(bg.position)
+    group.add(pl)
 
-      return { bg, edges, scan, pl }
-    })
-  } catch(e) { throw new Error('BR-screens: ' + e.message) }
+    return { bg, edges, scan, pl }
+  })
 
-  // Overhead gold light — PointLight instead of SpotLight to avoid r167 issues
-  let overheadPl
-  try {
-    overheadPl = new THREE.PointLight(GOLD2, 6, 35)
-    overheadPl.position.set(0, 12, 0)
-    group.add(overheadPl)
-  } catch(e) { throw new Error('BR-light: ' + e.message) }
+  // Overhead gold light
+  const overheadPl = new THREE.PointLight(GOLD2, 6, 35)
+  overheadPl.position.set(0, 12, 0)
+  group.add(overheadPl)
 
   // Gold ambient dust particles
-  let pGeo, pVel, N
-  try {
-    N = 3000
-    const pPos = new Float32Array(N * 3)
-    pVel = new Float32Array(N)
-    for (let i = 0; i < N; i++) {
-      pPos[i*3]   = rand(-28, 28)
-      pPos[i*3+1] = rand(-16, 16)
-      pPos[i*3+2] = rand(-14, 14)
-      pVel[i] = (Math.random() - 0.5) * 0.007
-    }
-    pGeo = new THREE.BufferGeometry()
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3))
-    group.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
-      color: GOLD2, size: 0.055, transparent: true, opacity: 0.5,
-    })))
-  } catch(e) { throw new Error('BR-particles: ' + e.message) }
+  const N = 3000
+  const pPos = new Float32Array(N * 3)
+  const pVel = new Float32Array(N)
+  for (let i = 0; i < N; i++) {
+    pPos[i*3]   = rand(-28, 28)
+    pPos[i*3+1] = rand(-16, 16)
+    pPos[i*3+2] = rand(-14, 14)
+    pVel[i] = (Math.random() - 0.5) * 0.007
+  }
+  const pGeo = new THREE.BufferGeometry()
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3))
+  group.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
+    color: GOLD2, size: 0.055, transparent: true, opacity: 0.5,
+  })))
 
   scene.add(group)
 
@@ -631,23 +616,13 @@ export function initJourney(canvas) {
 
   scene.add(new THREE.AmbientLight(0x304060, 1.0))
 
-  // Build zones — individual try-catch to identify which zone fails
-  const zoneBuilders = [
-    ['skyline',   () => buildSkylineZone(scene)],
-    ['data',      () => buildDataZone(scene)],
-    ['earth',     () => buildEarthZone(scene)],
-    ['monoliths', () => buildMonolithZone(scene)],
-    ['boardroom', () => buildBoardroomZone(scene)],
+  const zones = [
+    buildSkylineZone(scene),
+    buildDataZone(scene),
+    buildEarthZone(scene),
+    buildMonolithZone(scene),
+    buildBoardroomZone(scene),
   ]
-  const zones = []
-  for (const [name, fn] of zoneBuilders) {
-    try {
-      zones.push(fn())
-    } catch (e) {
-      console.error(`Zone "${name}" failed:`, e)
-      throw new Error(`Zone "${name}" failed — ${e.message}`)
-    }
-  }
 
   // Camera Z target for each zone
   const zCam = [
@@ -694,8 +669,8 @@ export function initJourney(canvas) {
     camera.position.z = lerp(camera.position.z, camTargetZ,    0.055)
     camera.lookAt(camera.position.x * 0.15, camera.position.y * 0.15, camera.position.z - 5)
 
-    try { zones.forEach(z => z.update(dt)) } catch (e) { throw new Error('zones.update — ' + e.message) }
-    try { renderer.render(scene, camera) } catch (e) { throw new Error('renderer.render — ' + e.message) }
+    zones.forEach(z => z.update(dt))
+    renderer.render(scene, camera)
   }
 
   animate()
