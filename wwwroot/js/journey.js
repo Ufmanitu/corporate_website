@@ -2,20 +2,17 @@
  * Meridian Group v3 — Corporate Journey
  * Theme: The Architecture of Business
  *
- * Camera travels along the Z-axis through five corporate zones.
- * Each zone function returns { update(dt) } like v2.
+ * Solid filled geometry, rich materials, dark navy background.
+ * Five corporate zones driven by scroll.
  */
 
 import * as THREE from 'three'
 
-// ── ZONE Z-POSITIONS ──────────────────────────────────────────────────────────
 const Z = { skyline: 0, data: -40, earth: -80, monoliths: -120, boardroom: -165 }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
 function lerp(a, b, t) { return a + (b - a) * t }
 function rand(min, max) { return min + Math.random() * (max - min) }
 
-// Corporate palette
 const GOLD  = 0xD97706
 const GOLD2 = 0xF59E0B
 const BLUE  = 0x3B82F6
@@ -24,75 +21,113 @@ const GREEN = 0x10B981
 const PURP  = 0x8B5CF6
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ZONE 1 — SKYLINE (Hero)
-// A rotating corporate polyhedron wrapped in gold orbit rings + particle cloud
+// ZONE 1 — SKYLINE  (Hero)
+// Solid gold crystal + filled city skyline buildings + particle field
 // ─────────────────────────────────────────────────────────────────────────────
 function buildSkylineZone(scene) {
   const group = new THREE.Group()
   group.position.z = Z.skyline
 
-  // Central rotating dodecahedron — the "corporate crystal"
+  // Solid inner gold core — IcosahedronGeometry for a gem-like look
+  const coreSolid = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.0, 2),
+    new THREE.MeshPhongMaterial({ color: GOLD2, emissive: GOLD2, emissiveIntensity: 0.7, shininess: 120 })
+  )
+  group.add(coreSolid)
+
+  // Wireframe cage around the solid core
   const core = new THREE.Mesh(
-    new THREE.DodecahedronGeometry(1.5, 0),
-    new THREE.MeshBasicMaterial({ color: GOLD2, wireframe: true, transparent: true, opacity: 0.95 })
+    new THREE.DodecahedronGeometry(1.6, 0),
+    new THREE.MeshBasicMaterial({ color: GOLD2, wireframe: true, transparent: true, opacity: 0.55 })
   )
   group.add(core)
 
-  // Outer octahedron, counter-rotating
+  // Outer octahedron — solid semi-transparent gold facets
   const outer = new THREE.Mesh(
     new THREE.OctahedronGeometry(2.6, 1),
-    new THREE.MeshBasicMaterial({ color: GOLD, wireframe: true, transparent: true, opacity: 0.3 })
+    new THREE.MeshPhongMaterial({
+      color: 0x1a0800, emissive: GOLD, emissiveIntensity: 0.35,
+      shininess: 80, transparent: true, opacity: 0.5, side: THREE.DoubleSide,
+    })
   )
   group.add(outer)
 
-  // Equatorial orbit ring (gold)
+  // Orbit rings — brighter than before
   const ring1 = new THREE.Mesh(
-    new THREE.TorusGeometry(3.5, 0.015, 8, 128),
+    new THREE.TorusGeometry(3.5, 0.025, 8, 128),
     new THREE.MeshBasicMaterial({ color: GOLD2 })
   )
   ring1.rotation.x = Math.PI / 2
   group.add(ring1)
 
-  // Tilted ring (blue)
   const ring2 = new THREE.Mesh(
-    new THREE.TorusGeometry(4.2, 0.009, 8, 128),
-    new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0.55 })
+    new THREE.TorusGeometry(4.2, 0.015, 8, 128),
+    new THREE.MeshBasicMaterial({ color: BLUE2, transparent: true, opacity: 0.8 })
   )
   ring2.rotation.x = Math.PI / 3
   ring2.rotation.z = Math.PI / 5
   group.add(ring2)
 
-  // Third ring (green)
   const ring3 = new THREE.Mesh(
-    new THREE.TorusGeometry(2.8, 0.007, 8, 100),
-    new THREE.MeshBasicMaterial({ color: GREEN, transparent: true, opacity: 0.4 })
+    new THREE.TorusGeometry(2.8, 0.012, 8, 100),
+    new THREE.MeshBasicMaterial({ color: GREEN, transparent: true, opacity: 0.7 })
   )
   ring3.rotation.x = Math.PI / 6
   ring3.rotation.y = Math.PI / 4
   group.add(ring3)
 
-  // Fast orbiting dot (gold)
   const dot = new THREE.Mesh(
-    new THREE.SphereGeometry(0.07, 8, 8),
+    new THREE.SphereGeometry(0.12, 8, 8),
     new THREE.MeshBasicMaterial({ color: 0xffffff })
   )
   group.add(dot)
 
-  // Second orbiting dot (blue)
   const dot2 = new THREE.Mesh(
-    new THREE.SphereGeometry(0.05, 8, 8),
+    new THREE.SphereGeometry(0.09, 8, 8),
     new THREE.MeshBasicMaterial({ color: BLUE2 })
   )
   group.add(dot2)
 
-  // Particle cloud — spherical, gold/blue gradient
-  const COUNT = 3000
+  // City skyline — SOLID buildings, not wireframe outlines
+  const skylineData = [
+    [-9, 5.5, 0.7], [-7.5, 8.5, 0.6], [-6, 12, 0.8], [-4.5, 7.5, 0.7],
+    [-3, 15, 0.9], [-1.5, 9.5, 0.8], [1.5, 9.5, 0.8], [3, 15, 0.9],
+    [4.5, 7.5, 0.7], [6, 12, 0.8], [7.5, 8.5, 0.6], [9, 5.5, 0.7],
+  ]
+  skylineData.forEach(([x, h, w]) => {
+    const bGeo = new THREE.BoxGeometry(w, h, w)
+
+    const building = new THREE.Mesh(bGeo, new THREE.MeshPhongMaterial({
+      color: 0x071220, emissive: 0x0d2040, emissiveIntensity: 0.5, shininess: 60,
+      transparent: true, opacity: 0.88,
+    }))
+    building.position.set(x, h / 2 - 19, -8)
+    group.add(building)
+
+    const bEdges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(bGeo),
+      new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0.55 })
+    )
+    bEdges.position.copy(building.position)
+    group.add(bEdges)
+
+    // Gold roof accent
+    const roof = new THREE.Mesh(
+      new THREE.BoxGeometry(w + 0.06, 0.07, w + 0.06),
+      new THREE.MeshBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.9 })
+    )
+    roof.position.set(x, h - 19 + 0.035, -8)
+    group.add(roof)
+  })
+
+  // Dense particle cloud
+  const COUNT = 5000
   const positions = new Float32Array(COUNT * 3)
   const colors    = new Float32Array(COUNT * 3)
   const cGold = new THREE.Color(GOLD2)
   const cBlue = new THREE.Color(BLUE2)
   for (let i = 0; i < COUNT; i++) {
-    const r     = rand(4, 10)
+    const r     = rand(3.5, 13)
     const theta = Math.random() * Math.PI * 2
     const phi   = Math.acos(2 * Math.random() - 1)
     positions[i*3]   = r * Math.sin(phi) * Math.cos(theta)
@@ -105,131 +140,134 @@ function buildSkylineZone(scene) {
   pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
   pGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3))
   group.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
-    size: 0.03, vertexColors: true, transparent: true, opacity: 0.7, sizeAttenuation: true,
+    size: 0.05, vertexColors: true, transparent: true, opacity: 0.9, sizeAttenuation: true,
   })))
-
-  // City skyline silhouette behind the main shape
-  const skylineData = [
-    [-9, 5, 0.6], [-7.5, 8, 0.5], [-6, 11, 0.7], [-4.5, 7, 0.6],
-    [-3, 14, 0.8], [-1.5, 9, 0.7], [1.5, 9, 0.7], [3, 14, 0.8],
-    [4.5, 7, 0.6], [6, 11, 0.7], [7.5, 8, 0.5], [9, 5, 0.6],
-  ]
-  skylineData.forEach(([x, h, w]) => {
-    const edges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, w)),
-      new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0.22 })
-    )
-    edges.position.set(x, h / 2 - 18, -8)
-    group.add(edges)
-  })
 
   scene.add(group)
 
-  const gl1 = new THREE.PointLight(GOLD2, 8, 30); gl1.position.set(4, 3, 3)
-  const gl2 = new THREE.PointLight(BLUE2, 5, 22); gl2.position.set(-4, -2, -2)
-  const gl3 = new THREE.PointLight(GREEN, 3, 16); gl3.position.set(0, 5, 0)
+  const gl1 = new THREE.PointLight(GOLD2, 10, 30); gl1.position.set(4, 3, 3)
+  const gl2 = new THREE.PointLight(BLUE2,  6, 22); gl2.position.set(-4, -2, -2)
+  const gl3 = new THREE.PointLight(GREEN,  4, 16); gl3.position.set(0, 5, 0)
   scene.add(gl1, gl2, gl3)
 
   let t = 0
   return {
     update(dt) {
       t += dt
-      core.rotation.x  += 0.005; core.rotation.y  += 0.008
-      outer.rotation.x -= 0.003; outer.rotation.z  += 0.005
-      ring1.rotation.z += 0.003; ring2.rotation.y  += 0.002; ring3.rotation.x += 0.004
-      dot.position.x = Math.cos(t * 0.7) * 3.5
-      dot.position.y = 0
-      dot.position.z = Math.sin(t * 0.7) * 3.5 + Z.skyline
+      coreSolid.rotation.x += 0.004; coreSolid.rotation.y += 0.006
+      core.rotation.x      += 0.005; core.rotation.y       += 0.008
+      outer.rotation.x     -= 0.003; outer.rotation.z      += 0.005
+      ring1.rotation.z += 0.003; ring2.rotation.y += 0.002; ring3.rotation.x += 0.004
+      dot.position.x  = Math.cos(t * 0.7) * 3.5
+      dot.position.y  = 0
+      dot.position.z  = Math.sin(t * 0.7) * 3.5 + Z.skyline
       dot2.position.x = Math.cos(t * 0.4 + Math.PI) * 4.2
       dot2.position.y = Math.sin(t * 0.3) * 0.5
       dot2.position.z = Math.sin(t * 0.4 + Math.PI) * 4.2 + Z.skyline
-      gl1.intensity = 7 + Math.sin(t * 1.1) * 1.5
-      gl2.intensity = 4 + Math.cos(t * 0.7) * 1.0
+      gl1.intensity = 9 + Math.sin(t * 1.1) * 2
+      gl2.intensity = 5 + Math.cos(t * 0.7) * 1.5
     }
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ZONE 2 — DATA (Stats)
-// Four rising bar columns with pulsing caps and floating network nodes
+// ZONE 2 — DATA  (Stats)
+// Solid coloured bar charts + reflective floor + floating data nodes
 // ─────────────────────────────────────────────────────────────────────────────
 function buildDataZone(scene) {
   const group = new THREE.Group()
   group.position.z = Z.data
 
   const bars = [
-    { x: -7.5, h: 7,   color: GOLD2 },
-    { x: -2.5, h: 4.5, color: BLUE  },
-    { x:  2.5, h: 9,   color: GREEN },
-    { x:  7.5, h: 8,   color: PURP  },
+    { x: -7.5, h: 8,   color: GOLD2 },
+    { x: -2.5, h: 5.5, color: BLUE  },
+    { x:  2.5, h: 10,  color: GREEN },
+    { x:  7.5, h: 9,   color: PURP  },
   ]
 
   const barMeshes = []
   bars.forEach(({ x, h, color }, i) => {
-    const geo = new THREE.BoxGeometry(1.6, h, 1.6)
+    const geo = new THREE.BoxGeometry(1.8, h, 1.8)
 
+    // SOLID bar — full opacity, strong emissive colour
     const body = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({
-      color, emissive: color, emissiveIntensity: 0.25,
-      transparent: true, opacity: 0.1,
+      color, emissive: color, emissiveIntensity: 0.45, shininess: 80,
     }))
     body.position.set(x, h / 2 - 8, 0)
     group.add(body)
 
     const edges = new THREE.LineSegments(
       new THREE.EdgesGeometry(geo),
-      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 })
+      new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.28 })
     )
     edges.position.copy(body.position)
     group.add(edges)
 
+    // Bright glowing cap slab
     const cap = new THREE.Mesh(
-      new THREE.PlaneGeometry(1.8, 1.8),
-      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.65, side: THREE.DoubleSide })
+      new THREE.BoxGeometry(2.0, 0.14, 2.0),
+      new THREE.MeshBasicMaterial({ color })
     )
-    cap.rotation.x = -Math.PI / 2
-    cap.position.set(x, h - 8 + 0.02, 0)
+    cap.position.set(x, h - 8 + 0.07, 0)
     group.add(cap)
 
-    const pl = new THREE.PointLight(color, 2.5, 14)
-    pl.position.copy(cap.position)
+    // Wider translucent halo under cap
+    const halo = new THREE.Mesh(
+      new THREE.BoxGeometry(2.6, 0.06, 2.6),
+      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.3 })
+    )
+    halo.position.set(x, h - 8 + 0.03, 0)
+    group.add(halo)
+
+    const pl = new THREE.PointLight(color, 4, 16)
+    pl.position.set(x, h - 8 + 0.5, 0)
     group.add(pl)
 
     barMeshes.push({ body, pl, i })
   })
 
-  // Trend line across tops
-  const trendPts = bars.map(b => new THREE.Vector3(b.x, b.h - 8 + 0.1, 0))
+  // Trend line across bar tops
+  const trendPts = bars.map(b => new THREE.Vector3(b.x, b.h - 8 + 0.15, 0))
   group.add(new THREE.Line(
     new THREE.BufferGeometry().setFromPoints(trendPts),
-    new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.6 })
+    new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.9 })
   ))
 
-  // Floor grid
-  const grid = new THREE.GridHelper(40, 20, 0x1a2f55, 0x0d1a33)
-  grid.position.y = -8
+  // Reflective floor slab
+  const floor = new THREE.Mesh(
+    new THREE.BoxGeometry(42, 0.07, 22),
+    new THREE.MeshPhongMaterial({
+      color: 0x050d1a, emissive: 0x0a1828, emissiveIntensity: 0.3, shininess: 200,
+    })
+  )
+  floor.position.y = -8
+  group.add(floor)
+
+  const grid = new THREE.GridHelper(42, 21, 0x1a3060, 0x0d1830)
+  grid.position.y = -7.96
   group.add(grid)
 
   // Floating data nodes
   const nodeData = []
   const nColors = [GOLD2, BLUE, GREEN, PURP]
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 80; i++) {
     const sphere = new THREE.Mesh(
-      new THREE.SphereGeometry(0.06 + Math.random() * 0.08, 8, 8),
-      new THREE.MeshBasicMaterial({ color: nColors[i % 4], transparent: true, opacity: 0.85 })
+      new THREE.SphereGeometry(0.07 + Math.random() * 0.09, 8, 8),
+      new THREE.MeshBasicMaterial({ color: nColors[i % 4] })
     )
-    const ox = rand(-18, 18), oy = rand(-10, 6)
-    sphere.position.set(ox, oy, rand(-5, 5))
+    const ox = rand(-18, 18), oy = rand(-6, 7)
+    sphere.position.set(ox, oy, rand(-6, 6))
     group.add(sphere)
     nodeData.push({ mesh: sphere, ox, oy, speed: rand(0.15, 0.4), radius: rand(0.6, 2.5), phase: Math.random() * Math.PI * 2 })
   }
 
-  // Static connection lines
-  for (let i = 0; i < 20; i++) {
-    const a = new THREE.Vector3(rand(-16, 16), rand(-8, 5), rand(-3, 3))
-    const b = new THREE.Vector3(rand(-16, 16), rand(-8, 5), rand(-3, 3))
+  // Connection lines
+  for (let i = 0; i < 30; i++) {
+    const a = new THREE.Vector3(rand(-16, 16), rand(-7, 6), rand(-4, 4))
+    const b = new THREE.Vector3(rand(-16, 16), rand(-7, 6), rand(-4, 4))
     group.add(new THREE.Line(
       new THREE.BufferGeometry().setFromPoints([a, b]),
-      new THREE.LineBasicMaterial({ color: GOLD, transparent: true, opacity: 0.15 })
+      new THREE.LineBasicMaterial({ color: nColors[i % 4], transparent: true, opacity: 0.28 })
     ))
   }
 
@@ -240,8 +278,7 @@ function buildDataZone(scene) {
     update(dt) {
       t += dt
       barMeshes.forEach(({ body, pl, i }) => {
-        body.material.opacity = 0.08 + Math.abs(Math.sin(t * 1.8 + i * 0.9)) * 0.15
-        pl.intensity = 2 + Math.sin(t * 2.5 + i * 1.3) * 1.2
+        pl.intensity = 3.5 + Math.sin(t * 2.5 + i * 1.3) * 1.5
       })
       nodeData.forEach(nd => {
         nd.mesh.position.x = nd.ox + Math.sin(t * nd.speed + nd.phase) * nd.radius
@@ -252,7 +289,8 @@ function buildDataZone(scene) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ZONE 3 — EARTH (Global Presence)
+// ZONE 3 — EARTH  (Global Presence)
+// Globe with brighter vertex colours, orbit ring, office markers + arcs
 // ─────────────────────────────────────────────────────────────────────────────
 function buildEarthZone(scene) {
   const group = new THREE.Group()
@@ -262,36 +300,49 @@ function buildEarthZone(scene) {
   const R = 4.5
   const earthGeo = new THREE.SphereGeometry(R, 64, 64)
 
-  // Procedural vertex colors
+  // Brighter, higher-contrast vertex colours
   const vColors = []
   const posArr  = earthGeo.attributes.position.array
   for (let i = 0; i < posArr.length; i += 3) {
     const nx = posArr[i], ny = posArr[i+1], nz = posArr[i+2]
     const len = Math.sqrt(nx*nx + ny*ny + nz*nz)
     const noise = Math.sin((nx/len)*9) * Math.cos((ny/len)*6) * Math.sin((nz/len)*8)
-    vColors.push(...(noise > 0.1 ? [0.04, 0.12, 0.30] : [0.02, 0.05, 0.15]))
+    vColors.push(...(noise > 0.1 ? [0.06, 0.22, 0.55] : [0.01, 0.06, 0.22]))
   }
   earthGeo.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(vColors), 3))
 
   const earth = new THREE.Mesh(earthGeo, new THREE.MeshPhongMaterial({
-    vertexColors: true, shininess: 20,
+    vertexColors: true, shininess: 30,
   }))
   group.add(earth)
 
-  // Gold wireframe overlay (separate geometry to avoid conflicts)
+  // Gold wireframe grid
   const wireGeo = new THREE.SphereGeometry(R + 0.02, 32, 32)
   const wire = new THREE.Mesh(wireGeo, new THREE.MeshBasicMaterial({
-    color: GOLD, wireframe: true, transparent: true, opacity: 0.08,
+    color: GOLD, wireframe: true, transparent: true, opacity: 0.12,
   }))
   group.add(wire)
 
   // Blue atmosphere
   group.add(new THREE.Mesh(
-    new THREE.SphereGeometry(R + 0.3, 64, 64),
-    new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0.09, side: THREE.BackSide })
+    new THREE.SphereGeometry(R + 0.5, 64, 64),
+    new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0.12, side: THREE.BackSide })
   ))
 
-  // Lat/lon helper (local group coordinates)
+  // Outer haze
+  group.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R + 1.0, 32, 32),
+    new THREE.MeshBasicMaterial({ color: 0x0a2040, transparent: true, opacity: 0.07, side: THREE.BackSide })
+  ))
+
+  // Orbit ring around the globe
+  const orbitRing = new THREE.Mesh(
+    new THREE.TorusGeometry(R + 1.8, 0.04, 8, 120),
+    new THREE.MeshBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.55 })
+  )
+  orbitRing.rotation.x = Math.PI / 4
+  group.add(orbitRing)
+
   function latLon(lat, lon, r) {
     const phi   = (90 - lat) * (Math.PI / 180)
     const theta = (lon + 180) * (Math.PI / 180)
@@ -314,16 +365,25 @@ function buildEarthZone(scene) {
   const rings = []
   offices.forEach((o, idx) => {
     const pos = latLon(o.lat, o.lon, R + 0.1)
+
     const dot = new THREE.Mesh(
-      new THREE.SphereGeometry(0.1, 8, 8),
+      new THREE.SphereGeometry(0.14, 8, 8),
       new THREE.MeshBasicMaterial({ color: GOLD2 })
     )
     dot.position.copy(pos)
     group.add(dot)
 
+    // Soft glow halo around each office dot
+    const glow = new THREE.Mesh(
+      new THREE.SphereGeometry(0.28, 8, 8),
+      new THREE.MeshBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.22 })
+    )
+    glow.position.copy(pos)
+    group.add(glow)
+
     const ring = new THREE.Mesh(
-      new THREE.RingGeometry(0.13, 0.26, 16),
-      new THREE.MeshBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.55, side: THREE.DoubleSide })
+      new THREE.TorusGeometry(0.18, 0.025, 8, 16),
+      new THREE.MeshBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.75 })
     )
     ring.position.copy(pos)
     ring.lookAt(new THREE.Vector3(0, 0, 0))
@@ -331,7 +391,6 @@ function buildEarthZone(scene) {
     rings.push({ ring, idx })
   })
 
-  // Gold arcs
   const pairs = [[0,1],[1,2],[0,5],[2,3],[3,4],[4,5],[0,3],[1,5]]
   pairs.forEach(([a, b]) => {
     const p1  = latLon(offices[a].lat, offices[a].lon, R + 0.1)
@@ -339,16 +398,16 @@ function buildEarthZone(scene) {
     const mid = p1.clone().add(p2).multiplyScalar(0.5).normalize().multiplyScalar(R + 2.4)
     group.add(new THREE.Line(
       new THREE.BufferGeometry().setFromPoints(new THREE.QuadraticBezierCurve3(p1, mid, p2).getPoints(56)),
-      new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.65 })
+      new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.7 })
     ))
   })
 
   scene.add(group)
 
-  const keyL = new THREE.PointLight(BLUE, 3, 28)
+  const keyL = new THREE.PointLight(BLUE, 5, 30)
   keyL.position.set(-10, 5, Z.earth - 5)
   scene.add(keyL)
-  const rimL = new THREE.PointLight(GOLD, 2, 22)
+  const rimL = new THREE.PointLight(GOLD, 3.5, 25)
   rimL.position.set(16, -3, Z.earth)
   scene.add(rimL)
 
@@ -358,36 +417,38 @@ function buildEarthZone(scene) {
       t += dt
       earth.rotation.y = t * 0.055
       wire.rotation.y  = t * 0.055
+      orbitRing.rotation.z = t * 0.02
       rings.forEach(({ ring, idx }) => {
-        const s = 1 + Math.abs(Math.sin(t * 1.2 + idx * 0.9)) * 1.8
+        const s = 1 + Math.abs(Math.sin(t * 1.2 + idx * 0.9)) * 1.6
         ring.scale.setScalar(s)
-        ring.material.opacity = 0.55 / s
+        ring.material.opacity = 0.75 / s
       })
     }
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ZONE 4 — MONOLITHS (Services / Technology)
-// Four tall floating corporate slabs with halo rings
+// ZONE 4 — MONOLITHS  (Services)
+// Dark glass skyscrapers with strong colour glow + floor plane
 // ─────────────────────────────────────────────────────────────────────────────
 function buildMonolithZone(scene) {
   const group = new THREE.Group()
   group.position.z = Z.monoliths
 
   const configs = [
-    { x: -8,   y:  3.5, color: GOLD2, rotY:  0.4, h: 9,   w: 2.4, d: 0.5 },
-    { x:  8,   y:  3.5, color: BLUE,  rotY: -0.4, h: 9,   w: 2.4, d: 0.5 },
-    { x: -4.5, y: -3,   color: GREEN, rotY:  0.2, h: 6,   w: 1.8, d: 0.45 },
-    { x:  4.5, y: -3,   color: PURP,  rotY: -0.2, h: 6,   w: 1.8, d: 0.45 },
+    { x: -8,   y:  3.5, color: GOLD2, rotY:  0.4, h: 10,  w: 2.4, d: 0.6 },
+    { x:  8,   y:  3.5, color: BLUE,  rotY: -0.4, h: 10,  w: 2.4, d: 0.6 },
+    { x: -4.5, y: -2.5, color: GREEN, rotY:  0.2, h: 7,   w: 1.8, d: 0.5 },
+    { x:  4.5, y: -2.5, color: PURP,  rotY: -0.2, h: 7,   w: 1.8, d: 0.5 },
   ]
 
   const monoliths = configs.map(cfg => {
     const geo = new THREE.BoxGeometry(cfg.w, cfg.h, cfg.d)
 
+    // Dark glass body — high emissive so colour actually shows
     const body = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({
-      color: 0x050a16, emissive: cfg.color, emissiveIntensity: 0.06,
-      shininess: 100, transparent: true, opacity: 0.92,
+      color: 0x05101e, emissive: cfg.color, emissiveIntensity: 0.35,
+      shininess: 160, transparent: true, opacity: 0.92,
     }))
     body.position.set(cfg.x, cfg.y, 0)
     body.rotation.y = cfg.rotY
@@ -395,28 +456,28 @@ function buildMonolithZone(scene) {
 
     const edges = new THREE.LineSegments(
       new THREE.EdgesGeometry(geo),
-      new THREE.LineBasicMaterial({ color: cfg.color, transparent: true, opacity: 0.9 })
+      new THREE.LineBasicMaterial({ color: cfg.color, transparent: true, opacity: 1.0 })
     )
     edges.position.copy(body.position)
     edges.rotation.copy(body.rotation)
     group.add(edges)
 
     const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(cfg.h * 0.65, 0.03, 8, 80),
-      new THREE.MeshBasicMaterial({ color: cfg.color, transparent: true, opacity: 0.35 })
+      new THREE.TorusGeometry(cfg.h * 0.65, 0.045, 8, 80),
+      new THREE.MeshBasicMaterial({ color: cfg.color, transparent: true, opacity: 0.5 })
     )
     ring.position.copy(body.position)
     ring.rotation.x = Math.PI / 2
     group.add(ring)
 
     const beam = new THREE.Mesh(
-      new THREE.BoxGeometry(0.07, 9, 0.07),
-      new THREE.MeshBasicMaterial({ color: cfg.color, transparent: true, opacity: 0.13 })
+      new THREE.BoxGeometry(0.1, 9, 0.1),
+      new THREE.MeshBasicMaterial({ color: cfg.color, transparent: true, opacity: 0.22 })
     )
     beam.position.set(cfg.x, cfg.y + cfg.h / 2 + 4.5, 0)
     group.add(beam)
 
-    const pl = new THREE.PointLight(cfg.color, 2, 14)
+    const pl = new THREE.PointLight(cfg.color, 4, 18)
     pl.position.copy(body.position)
     group.add(pl)
 
@@ -424,32 +485,51 @@ function buildMonolithZone(scene) {
   })
 
   const outerRing = new THREE.Mesh(
-    new THREE.TorusGeometry(16, 0.05, 8, 140),
-    new THREE.MeshBasicMaterial({ color: GOLD, transparent: true, opacity: 0.2 })
+    new THREE.TorusGeometry(16, 0.07, 8, 140),
+    new THREE.MeshBasicMaterial({ color: GOLD, transparent: true, opacity: 0.38 })
   )
   outerRing.rotation.x = Math.PI / 3.5
   group.add(outerRing)
 
   const innerRing = new THREE.Mesh(
-    new THREE.TorusGeometry(10, 0.03, 8, 100),
-    new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0.22 })
+    new THREE.TorusGeometry(10, 0.05, 8, 100),
+    new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0.42 })
   )
   innerRing.rotation.x = Math.PI / 4
   innerRing.rotation.z = Math.PI / 6
   group.add(innerRing)
 
-  // Ambient particles
-  const N = 2500
+  // Reflective floor
+  const floor = new THREE.Mesh(
+    new THREE.BoxGeometry(50, 0.07, 30),
+    new THREE.MeshPhongMaterial({
+      color: 0x040c1a, emissive: 0x0a1830, emissiveIntensity: 0.28, shininess: 160,
+    })
+  )
+  floor.position.y = -6
+  group.add(floor)
+
+  const grid = new THREE.GridHelper(50, 25, 0x1a3060, 0x0d1830)
+  grid.position.y = -5.96
+  group.add(grid)
+
+  // Multi-colour ambient particles
+  const N = 4000
   const aPos = new Float32Array(N * 3)
+  const aCol = new Float32Array(N * 3)
+  const cPalette = [new THREE.Color(GOLD2), new THREE.Color(BLUE), new THREE.Color(GREEN), new THREE.Color(PURP)]
   for (let i = 0; i < N; i++) {
     aPos[i*3]   = rand(-28, 28)
     aPos[i*3+1] = rand(-18, 18)
-    aPos[i*3+2] = rand(-10, 10)
+    aPos[i*3+2] = rand(-12, 12)
+    const c = cPalette[i % 4]
+    aCol[i*3] = c.r; aCol[i*3+1] = c.g; aCol[i*3+2] = c.b
   }
   const pGeo = new THREE.BufferGeometry()
   pGeo.setAttribute('position', new THREE.BufferAttribute(aPos, 3))
+  pGeo.setAttribute('color',    new THREE.BufferAttribute(aCol, 3))
   group.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
-    color: GOLD, size: 0.055, transparent: true, opacity: 0.45,
+    size: 0.07, vertexColors: true, transparent: true, opacity: 0.7,
   })))
 
   scene.add(group)
@@ -459,14 +539,14 @@ function buildMonolithZone(scene) {
     update(dt) {
       t += dt
       monoliths.forEach(({ body, edges, ring, beam, pl, cfg, bx, by }, i) => {
-        const float = Math.sin(t * 0.5 + i * 1.35) * 0.4
+        const float = Math.sin(t * 0.5 + i * 1.35) * 0.45
         body.position.y  = by + float
         edges.position.y = by + float
         ring.position.y  = by + float
         beam.position.y  = by + cfg.h / 2 + 4.5 + float
         pl.position.y    = by + float
         ring.rotation.z  = t * 0.3 * (i % 2 === 0 ? 1 : -1)
-        pl.intensity = 1.8 + Math.sin(t * 1.9 + i * 1.2) * 0.7
+        pl.intensity = 3.5 + Math.sin(t * 1.9 + i * 1.2) * 1.2
       })
       outerRing.rotation.z = t * 0.035
       innerRing.rotation.z = -t * 0.06
@@ -476,40 +556,80 @@ function buildMonolithZone(scene) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ZONE 5 — BOARDROOM (Contact)
-// Wireframe conference table + floating holographic screens + gold dust
+// ZONE 5 — BOARDROOM  (Contact)
+// Solid polished table, detailed chairs, glowing screens with data rows, dust
 // ─────────────────────────────────────────────────────────────────────────────
 function buildBoardroomZone(scene) {
   const group = new THREE.Group()
   group.position.z = Z.boardroom
 
-  // Conference table
-  const tableGeo = new THREE.BoxGeometry(16, 0.22, 6)
+  // Polished conference table
+  const tableGeo = new THREE.BoxGeometry(16, 0.25, 6)
   const table = new THREE.Mesh(tableGeo, new THREE.MeshPhongMaterial({
-    color: 0x060d1e, emissive: 0x1a2f55, emissiveIntensity: 0.18, shininess: 130,
+    color: 0x08111e, emissive: 0x1a2f55, emissiveIntensity: 0.25, shininess: 200,
   }))
   table.position.y = -4
   group.add(table)
+
   const tableEdges = new THREE.LineSegments(
     new THREE.EdgesGeometry(tableGeo),
-    new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.9 })
+    new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 1.0 })
   )
   tableEdges.position.copy(table.position)
   group.add(tableEdges)
 
-  // Chairs — for...of to avoid nested .forEach on arrays
+  // Subtle gold surface sheen on table top
+  const sheen = new THREE.Mesh(
+    new THREE.BoxGeometry(15.8, 0.01, 5.8),
+    new THREE.MeshBasicMaterial({ color: GOLD, transparent: true, opacity: 0.08 })
+  )
+  sheen.position.set(0, -3.87, 0)
+  group.add(sheen)
+
+  // Floor
+  const floor = new THREE.Mesh(
+    new THREE.BoxGeometry(44, 0.07, 32),
+    new THREE.MeshPhongMaterial({
+      color: 0x04080f, emissive: 0x0a1428, emissiveIntensity: 0.22, shininess: 120,
+    })
+  )
+  floor.position.y = -5.2
+  group.add(floor)
+
+  // Chairs — solid seat + backrest (for...of to avoid any forEach-on-undefined issues)
   for (const x of [-6, -3.2, -0.4, 2.4, 5.2]) {
     for (const side of [-4.2, 4.2]) {
-      const chair = new THREE.LineSegments(
-        new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1.4, 0.9)),
-        new THREE.LineBasicMaterial({ color: BLUE, transparent: true, opacity: 0.35 })
+      const seatGeo = new THREE.BoxGeometry(1.0, 0.1, 0.9)
+      const seat = new THREE.Mesh(seatGeo, new THREE.MeshPhongMaterial({
+        color: 0x0c1a2e, emissive: 0x1a2f55, emissiveIntensity: 0.22, shininess: 60,
+      }))
+      seat.position.set(x, -3.9, side)
+      group.add(seat)
+
+      const seatEdges = new THREE.LineSegments(
+        new THREE.EdgesGeometry(seatGeo),
+        new THREE.LineBasicMaterial({ color: BLUE, transparent: true, opacity: 0.5 })
       )
-      chair.position.set(x, -3.9, side)
-      group.add(chair)
+      seatEdges.position.copy(seat.position)
+      group.add(seatEdges)
+
+      const backGeo = new THREE.BoxGeometry(1.0, 1.2, 0.08)
+      const back = new THREE.Mesh(backGeo, new THREE.MeshPhongMaterial({
+        color: 0x0c1a2e, emissive: 0x1a2f55, emissiveIntensity: 0.22, shininess: 60,
+      }))
+      back.position.set(x, -3.3, side + (side > 0 ? 0.46 : -0.46))
+      group.add(back)
+
+      const backEdges = new THREE.LineSegments(
+        new THREE.EdgesGeometry(backGeo),
+        new THREE.LineBasicMaterial({ color: BLUE, transparent: true, opacity: 0.5 })
+      )
+      backEdges.position.copy(back.position)
+      group.add(backEdges)
     }
   }
 
-  // Holographic screens — thin BoxGeometry (PlaneGeometry+EdgesGeometry crashed in r167)
+  // Holographic screens — visible glowing panels (BoxGeometry, not PlaneGeometry)
   const screenCfgs = [
     { x: -5, color: GOLD2 },
     { x:  0, color: BLUE  },
@@ -518,7 +638,7 @@ function buildBoardroomZone(scene) {
   const screens = screenCfgs.map(({ x, color }) => {
     const bg = new THREE.Mesh(
       new THREE.BoxGeometry(3.4, 2.1, 0.02),
-      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.07 })
+      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.2 })
     )
     bg.position.set(x, 1.2, 0)
     bg.rotation.x = -0.12
@@ -526,33 +646,57 @@ function buildBoardroomZone(scene) {
 
     const edges = new THREE.LineSegments(
       new THREE.EdgesGeometry(new THREE.BoxGeometry(3.4, 2.1, 0.02)),
-      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.75 })
+      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.95 })
     )
     edges.position.copy(bg.position)
     edges.rotation.copy(bg.rotation)
     group.add(edges)
 
+    // Data-line rows on the screen face
+    for (let row = 0; row < 5; row++) {
+      const w = 2.4 * (0.4 + Math.random() * 0.5)
+      const lineBar = new THREE.Mesh(
+        new THREE.BoxGeometry(w, 0.045, 0.015),
+        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.45 })
+      )
+      lineBar.position.set(x, 1.72 - row * 0.36, 0.025)
+      lineBar.rotation.x = -0.12
+      group.add(lineBar)
+    }
+
     const scan = new THREE.Mesh(
-      new THREE.BoxGeometry(3.2, 0.03, 0.02),
-      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.55 })
+      new THREE.BoxGeometry(3.2, 0.04, 0.02),
+      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.85 })
     )
     scan.position.copy(bg.position)
     scan.rotation.copy(bg.rotation)
     group.add(scan)
 
-    const pl = new THREE.PointLight(color, 0.9, 9)
+    const pl = new THREE.PointLight(color, 1.8, 10)
     pl.position.copy(bg.position)
     group.add(pl)
 
     return { bg, edges, scan, pl }
   })
 
-  // Overhead gold light
-  const overheadPl = new THREE.PointLight(GOLD2, 6, 35)
+  // Overhead point light
+  const overheadPl = new THREE.PointLight(GOLD2, 8, 40)
   overheadPl.position.set(0, 12, 0)
   group.add(overheadPl)
 
-  // Gold ambient dust particles
+  // Side accent columns
+  for (const cx of [-12, 12]) {
+    const col = new THREE.Mesh(
+      new THREE.BoxGeometry(0.45, 13, 0.45),
+      new THREE.MeshPhongMaterial({
+        color: 0x060f1e, emissive: GOLD, emissiveIntensity: 0.22, shininess: 90,
+      })
+    )
+    col.position.set(cx, 1.5, -3)
+    group.add(col)
+  }
+
+  // Gold ambient dust
   const N = 3000
   const pPos = new Float32Array(N * 3)
   const pVel = new Float32Array(N)
@@ -565,7 +709,7 @@ function buildBoardroomZone(scene) {
   const pGeo = new THREE.BufferGeometry()
   pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3))
   group.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
-    color: GOLD2, size: 0.055, transparent: true, opacity: 0.5,
+    color: GOLD2, size: 0.06, transparent: true, opacity: 0.6,
   })))
 
   scene.add(group)
@@ -580,7 +724,7 @@ function buildBoardroomZone(scene) {
         edges.position.y = floatY
         scan.position.y  = floatY + Math.sin(t * 1.3 + i) * 0.75
         pl.position.y    = floatY
-        pl.intensity = 0.75 + Math.sin(t * 1.9 + i * 0.9) * 0.3
+        pl.intensity = 1.5 + Math.sin(t * 1.9 + i * 0.9) * 0.6
       })
 
       const a = pGeo.attributes.position.array
@@ -590,13 +734,13 @@ function buildBoardroomZone(scene) {
         if (a[i*3+1] < -16) a[i*3+1] = 16
       }
       pGeo.attributes.position.needsUpdate = true
-      overheadPl.intensity = 5.5 + Math.sin(t * 0.4) * 1.0
+      overheadPl.intensity = 7 + Math.sin(t * 0.4) * 1.5
     }
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MAIN — exported init function (mirrors v2 structure exactly)
+// MAIN
 // ─────────────────────────────────────────────────────────────────────────────
 export function initJourney(canvas) {
   const W = window.innerWidth, H = window.innerHeight
@@ -605,16 +749,21 @@ export function initJourney(canvas) {
   renderer.setSize(W, H)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.toneMapping         = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.4
+  renderer.toneMappingExposure = 1.6
   renderer.outputColorSpace    = THREE.SRGBColorSpace
 
   const scene = new THREE.Scene()
-  scene.fog = new THREE.FogExp2(0x04060f, 0.008)
+  scene.background = new THREE.Color(0x020b18)
+  scene.fog = new THREE.FogExp2(0x020b18, 0.004)
 
   const camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 400)
   camera.position.set(0, 0, 6)
 
-  scene.add(new THREE.AmbientLight(0x304060, 1.0))
+  // Richer ambient + directional for solid object shading
+  scene.add(new THREE.AmbientLight(0x304060, 1.5))
+  const dirL = new THREE.DirectionalLight(0x5070a0, 0.8)
+  dirL.position.set(5, 10, 5)
+  scene.add(dirL)
 
   const zones = [
     buildSkylineZone(scene),
@@ -624,7 +773,6 @@ export function initJourney(canvas) {
     buildBoardroomZone(scene),
   ]
 
-  // Camera Z target for each zone
   const zCam = [
     Z.skyline   + 6,
     Z.data      + 8,
@@ -657,7 +805,6 @@ export function initJourney(canvas) {
     const dt      = elapsed - prevTime
     prevTime      = elapsed
 
-    // Map scroll → camera Z
     const t    = scrollProgress
     const segN = zCam.length - 1
     const seg  = Math.min(Math.floor(t * segN), segN - 1)
@@ -672,7 +819,6 @@ export function initJourney(canvas) {
     zones.forEach(z => z.update(dt))
     renderer.render(scene, camera)
   }
-
   animate()
 
   window.addEventListener('resize', () => {
