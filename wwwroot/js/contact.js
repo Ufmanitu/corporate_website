@@ -3,7 +3,7 @@
  * Submits to Formspree. Replace FORMSPREE_ID with your form ID from formspree.io
  */
 
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/FORMSPREE_ID'
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mwvdnqvo'
 
 export function initContact() {
   const form = document.getElementById('contactForm')
