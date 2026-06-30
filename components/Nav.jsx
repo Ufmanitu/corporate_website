@@ -17,10 +17,17 @@ const navLinks = {
     { href: '/clients',  label: 'Müşteriler' },
     { href: '/contact',  label: 'İletişim' },
   ],
+  hu: [
+    { href: '/services', label: 'Szolgáltatások' },
+    { href: '/about',    label: 'Rólunk' },
+    { href: '/work',     label: 'Munkáink' },
+    { href: '/clients',  label: 'Ügyfeleink' },
+    { href: '/contact',  label: 'Kapcsolat' },
+  ],
 }
 
-const cta = { en: 'Get in Touch', tr: 'İletişime Geçin' }
-const homeLabel = { en: 'Home', tr: 'Ana Sayfa' }
+const cta = { en: 'Get in Touch', tr: 'İletişime Geçin', hu: 'Lépjen kapcsolatba' }
+const homeLabel = { en: 'Home', tr: 'Ana Sayfa', hu: 'Főoldal' }
 
 export default function Nav() {
   const [scrolled, setScrolled]     = useState(false)
@@ -61,13 +68,14 @@ export default function Nav() {
         <div className="nav-right">
           <div className="lang-switch" onMouseLeave={() => setLangOpen(false)}>
             <button className="lang-btn" onClick={() => setLangOpen(o => !o)} aria-label="Switch language">
-              {locale === 'tr' ? 'TR' : 'EN'}<span className="lang-arrow">▾</span>
+              {locale === 'tr' ? 'TR' : locale === 'hu' ? 'HU' : 'EN'}<span className="lang-arrow">▾</span>
             </button>
             {langOpen && (
               <div className="lang-menu">
                 <div className="lang-menu-inner">
                   <button onClick={() => switchLocale('en')} className={locale === 'en' ? 'active' : ''}>English</button>
                   <button onClick={() => switchLocale('tr')} className={locale === 'tr' ? 'active' : ''}>Türkçe</button>
+                  <button onClick={() => switchLocale('hu')} className={locale === 'hu' ? 'active' : ''}>Magyar</button>
                 </div>
               </div>
             )}
@@ -92,6 +100,8 @@ export default function Nav() {
           <button onClick={() => switchLocale('en')} className={locale === 'en' ? 'active' : ''}>EN</button>
           <span style={{ color: 'rgba(255,255,255,.3)' }}>/</span>
           <button onClick={() => switchLocale('tr')} className={locale === 'tr' ? 'active' : ''}>TR</button>
+          <span style={{ color: 'rgba(255,255,255,.3)' }}>/</span>
+          <button onClick={() => switchLocale('hu')} className={locale === 'hu' ? 'active' : ''}>HU</button>
         </div>
       </div>
     </>

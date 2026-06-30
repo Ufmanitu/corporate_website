@@ -20,6 +20,15 @@ const t = {
     rights:  'Tüm hakları saklıdır.',
     privacy: 'Gizlilik Politikası', terms: 'Kullanım Şartları', cookies: 'Çerez Ayarları',
   },
+  hu: {
+    tag:     'Segítünk az ambiciózus szervezeteknek a komplexitásban való navigálásban és a tartós előny felépítésében.',
+    company: 'Cég', about: 'Rólunk', leadership: 'Vezetőség', careers: 'Karrierlehetőségek', press: 'Sajtó',
+    services:'Szolgáltatások', strategy:'Stratégia', tech:'Technológia', digital:'Digitális', finance:'Pénzügy',
+    work:    'Munkáink', allWork:'Összes esettanulmány', banking:'Bankszektor', healthcare:'Egészségügy', technology:'Technológia & Média',
+    connect: 'Kapcsolat', contact:'Lépjen kapcsolatba', offices:'Irodáink', newbiz:'Új üzlet', team:'Csapatunk',
+    rights:  'Minden jog fenntartva.',
+    privacy: 'Adatvédelmi irányelvek', terms: 'Felhasználási feltételek', cookies: 'Cookie beállítások',
+  },
 }
 
 export default function Footer() {
