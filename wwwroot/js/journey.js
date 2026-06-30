@@ -484,94 +484,104 @@ function buildBoardroomZone(scene) {
   group.position.z = Z.boardroom
 
   // Conference table
-  const tableGeo = new THREE.BoxGeometry(16, 0.22, 6)
-  const table = new THREE.Mesh(tableGeo, new THREE.MeshPhongMaterial({
-    color: 0x060d1e, emissive: 0x1a2f55, emissiveIntensity: 0.18, shininess: 130,
-  }))
-  table.position.y = -4
-  group.add(table)
-
-  const tableEdges = new THREE.LineSegments(
-    new THREE.EdgesGeometry(tableGeo),
-    new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.9 })
-  )
-  tableEdges.position.copy(table.position)
-  group.add(tableEdges)
+  let tableGeo, table, tableEdges
+  try {
+    tableGeo = new THREE.BoxGeometry(16, 0.22, 6)
+    table = new THREE.Mesh(tableGeo, new THREE.MeshPhongMaterial({
+      color: 0x060d1e, emissive: 0x1a2f55, emissiveIntensity: 0.18, shininess: 130,
+    }))
+    table.position.y = -4
+    group.add(table)
+    tableEdges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(tableGeo),
+      new THREE.LineBasicMaterial({ color: GOLD2, transparent: true, opacity: 0.9 })
+    )
+    tableEdges.position.copy(table.position)
+    group.add(tableEdges)
+  } catch(e) { throw new Error('BR-table: ' + e.message) }
 
   // Chairs
-  [-6, -3.2, -0.4, 2.4, 5.2].forEach(x => {
-    [-4.2, 4.2].forEach(side => {
-      const chair = new THREE.LineSegments(
-        new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1.4, 0.9)),
-        new THREE.LineBasicMaterial({ color: BLUE, transparent: true, opacity: 0.35 })
+  try {
+    const chairXs = [-6, -3.2, -0.4, 2.4, 5.2]
+    for (const x of chairXs) {
+      for (const side of [-4.2, 4.2]) {
+        const chair = new THREE.LineSegments(
+          new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1.4, 0.9)),
+          new THREE.LineBasicMaterial({ color: BLUE, transparent: true, opacity: 0.35 })
+        )
+        chair.position.set(x, -3.9, side)
+        group.add(chair)
+      }
+    }
+  } catch(e) { throw new Error('BR-chairs: ' + e.message) }
+
+  // Holographic screens — use thin BoxGeometry edges instead of PlaneGeometry+EdgesGeometry
+  let screens
+  try {
+    const screenCfgs = [
+      { x: -5, color: GOLD2 },
+      { x:  0, color: BLUE  },
+      { x:  5, color: GREEN },
+    ]
+    screens = screenCfgs.map(({ x, color }) => {
+      const bg = new THREE.Mesh(
+        new THREE.BoxGeometry(3.4, 2.1, 0.02),
+        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.07 })
       )
-      chair.position.set(x, -3.9, side)
-      group.add(chair)
+      bg.position.set(x, 1.2, 0)
+      bg.rotation.x = -0.12
+      group.add(bg)
+
+      const edges = new THREE.LineSegments(
+        new THREE.EdgesGeometry(new THREE.BoxGeometry(3.4, 2.1, 0.02)),
+        new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.75 })
+      )
+      edges.position.copy(bg.position)
+      edges.rotation.copy(bg.rotation)
+      group.add(edges)
+
+      const scan = new THREE.Mesh(
+        new THREE.BoxGeometry(3.2, 0.03, 0.02),
+        new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.55 })
+      )
+      scan.position.copy(bg.position)
+      scan.rotation.copy(bg.rotation)
+      group.add(scan)
+
+      const pl = new THREE.PointLight(color, 0.9, 9)
+      pl.position.copy(bg.position)
+      group.add(pl)
+
+      return { bg, edges, scan, pl }
     })
-  })
+  } catch(e) { throw new Error('BR-screens: ' + e.message) }
 
-  // Holographic screens
-  const screenCfgs = [
-    { x: -5, color: GOLD2 },
-    { x:  0, color: BLUE  },
-    { x:  5, color: GREEN },
-  ]
-
-  const screens = screenCfgs.map(({ x, color }) => {
-    const sGeo = new THREE.PlaneGeometry(3.4, 2.1)
-
-    const bg = new THREE.Mesh(sGeo, new THREE.MeshBasicMaterial({
-      color, transparent: true, opacity: 0.07, side: THREE.DoubleSide,
-    }))
-    bg.position.set(x, 1.2, 0)
-    bg.rotation.x = -0.12
-    group.add(bg)
-
-    const edges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(sGeo),
-      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.75 })
-    )
-    edges.position.copy(bg.position)
-    edges.rotation.copy(bg.rotation)
-    group.add(edges)
-
-    const scan = new THREE.Mesh(
-      new THREE.PlaneGeometry(3.2, 0.03),
-      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.55, side: THREE.DoubleSide })
-    )
-    scan.position.copy(bg.position)
-    scan.rotation.copy(bg.rotation)
-    group.add(scan)
-
-    const pl = new THREE.PointLight(color, 0.9, 9)
-    pl.position.copy(bg.position)
-    group.add(pl)
-
-    return { bg, edges, scan, pl }
-  })
-
-  // Overhead gold spot
-  const spot = new THREE.SpotLight(GOLD2, 6, 35, Math.PI / 7.5, 0.3)
-  spot.position.set(0, 16, 2)
-  spot.target.position.set(0, -4, 0)
-  group.add(spot)
-  group.add(spot.target)
+  // Overhead gold light — PointLight instead of SpotLight to avoid r167 issues
+  let overheadPl
+  try {
+    overheadPl = new THREE.PointLight(GOLD2, 6, 35)
+    overheadPl.position.set(0, 12, 0)
+    group.add(overheadPl)
+  } catch(e) { throw new Error('BR-light: ' + e.message) }
 
   // Gold ambient dust particles
-  const N = 3000
-  const pPos = new Float32Array(N * 3)
-  const pVel = new Float32Array(N)
-  for (let i = 0; i < N; i++) {
-    pPos[i*3]   = rand(-28, 28)
-    pPos[i*3+1] = rand(-16, 16)
-    pPos[i*3+2] = rand(-14, 14)
-    pVel[i] = (Math.random() - 0.5) * 0.007
-  }
-  const pGeo = new THREE.BufferGeometry()
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3))
-  group.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
-    color: GOLD2, size: 0.055, transparent: true, opacity: 0.5,
-  })))
+  let pGeo, pVel, N
+  try {
+    N = 3000
+    const pPos = new Float32Array(N * 3)
+    pVel = new Float32Array(N)
+    for (let i = 0; i < N; i++) {
+      pPos[i*3]   = rand(-28, 28)
+      pPos[i*3+1] = rand(-16, 16)
+      pPos[i*3+2] = rand(-14, 14)
+      pVel[i] = (Math.random() - 0.5) * 0.007
+    }
+    pGeo = new THREE.BufferGeometry()
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3))
+    group.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
+      color: GOLD2, size: 0.055, transparent: true, opacity: 0.5,
+    })))
+  } catch(e) { throw new Error('BR-particles: ' + e.message) }
 
   scene.add(group)
 
@@ -595,7 +605,7 @@ function buildBoardroomZone(scene) {
         if (a[i*3+1] < -16) a[i*3+1] = 16
       }
       pGeo.attributes.position.needsUpdate = true
-      spot.intensity = 5.5 + Math.sin(t * 0.4) * 1.0
+      overheadPl.intensity = 5.5 + Math.sin(t * 0.4) * 1.0
     }
   }
 }
