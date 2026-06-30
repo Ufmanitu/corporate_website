@@ -1,10 +1,12 @@
 /**
  * Meridian Group v2 — Contact Form
- * Handles form validation and API submission.
+ * Submits to Formspree. Replace FORMSPREE_ID with your form ID from formspree.io
  */
 
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/FORMSPREE_ID'
+
 export function initContact() {
-  const form    = document.getElementById('contactForm')
+  const form = document.getElementById('contactForm')
   if (!form) return
 
   const btnDefault = form.querySelector('.btn-default')
@@ -20,15 +22,12 @@ export function initContact() {
   form.addEventListener('submit', async e => {
     e.preventDefault()
 
-    const data = {
-      name:    form.querySelector('[name=name]').value.trim(),
-      email:   form.querySelector('[name=email]').value.trim(),
-      company: form.querySelector('[name=company]').value.trim(),
-      message: form.querySelector('[name=message]').value.trim(),
-    }
+    const name    = form.querySelector('[name=name]').value.trim()
+    const email   = form.querySelector('[name=email]').value.trim()
+    const company = form.querySelector('[name=company]').value.trim()
+    const message = form.querySelector('[name=message]').value.trim()
 
-    if (!data.name || !data.email || !data.message) {
-      // Shake invalid fields
+    if (!name || !email || !message) {
       form.querySelectorAll('[required]').forEach(el => {
         if (!el.value.trim()) {
           gsap.fromTo(el.closest('.form-group'), { x: -6 }, { x: 0, duration: 0.4, ease: 'elastic.out(1, 0.3)' })
@@ -40,31 +39,26 @@ export function initContact() {
     setState('sending')
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, company, message }),
       })
 
-      if (!res.ok) throw new Error('Server error')
+      if (!res.ok) throw new Error('Submit failed')
 
       setState('sent')
       form.reset()
 
-      // Success particle burst
       if (window._contactDisperse) window._contactDisperse(true)
       setTimeout(() => window._contactDisperse && window._contactDisperse(false), 3000)
-
-      // Reset button after 4s
       setTimeout(() => setState('idle'), 4000)
 
     } catch {
       setState('idle')
-      // Brief error color flash on button
       const btn = form.querySelector('.btn-submit')
-      const orig = btn.style.background
       btn.style.background = '#ef4444'
-      setTimeout(() => { btn.style.background = orig }, 1200)
+      setTimeout(() => { btn.style.background = '' }, 1200)
     }
   })
 

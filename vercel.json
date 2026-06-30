@@ -1,0 +1,8 @@
+{
+  "outputDirectory": "wwwroot",
+  "buildCommand": "",
+  "installCommand": "",
+  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false
+}
