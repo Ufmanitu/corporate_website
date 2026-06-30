@@ -7,10 +7,6 @@
  */
 
 import * as THREE from 'three'
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
-import { RenderPass }     from 'three/addons/postprocessing/RenderPass.js'
-import { UnrealBloomPass }from 'three/addons/postprocessing/UnrealBloomPass.js'
-import { OutputPass }     from 'three/addons/postprocessing/OutputPass.js'
 
 // ── ZONE Z-POSITIONS ──────────────────────────────────────────────────────────
 const Z = { skyline: 0, data: -40, earth: -80, monoliths: -120, boardroom: -165 }
@@ -129,9 +125,9 @@ function buildSkylineZone(scene) {
 
   scene.add(group)
 
-  const gl1 = new THREE.PointLight(GOLD2, 5.5, 25); gl1.position.set(4, 3, 3)
-  const gl2 = new THREE.PointLight(BLUE,  3.0, 18); gl2.position.set(-4, -2, -2)
-  const gl3 = new THREE.PointLight(GREEN, 1.5, 12); gl3.position.set(0, 5, 0)
+  const gl1 = new THREE.PointLight(GOLD2, 8, 30); gl1.position.set(4, 3, 3)
+  const gl2 = new THREE.PointLight(BLUE2, 5, 22); gl2.position.set(-4, -2, -2)
+  const gl3 = new THREE.PointLight(GREEN, 3, 16); gl3.position.set(0, 5, 0)
   scene.add(gl1, gl2, gl3)
 
   let t = 0
@@ -147,8 +143,8 @@ function buildSkylineZone(scene) {
       dot2.position.x = Math.cos(t * 0.4 + Math.PI) * 4.2
       dot2.position.y = Math.sin(t * 0.3) * 0.5
       dot2.position.z = Math.sin(t * 0.4 + Math.PI) * 4.2 + Z.skyline
-      gl1.intensity = 5 + Math.sin(t * 1.1) * 0.8
-      gl2.intensity = 2.8 + Math.cos(t * 0.7) * 0.5
+      gl1.intensity = 7 + Math.sin(t * 1.1) * 1.5
+      gl2.intensity = 4 + Math.cos(t * 0.7) * 1.0
     }
   }
 }
@@ -610,33 +606,20 @@ function buildBoardroomZone(scene) {
 export function initJourney(canvas) {
   const W = window.innerWidth, H = window.innerHeight
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
   renderer.setSize(W, H)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.toneMapping         = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.1
+  renderer.toneMappingExposure = 1.4
   renderer.outputColorSpace    = THREE.SRGBColorSpace
 
   const scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x04060f)
-  scene.fog = new THREE.FogExp2(0x04060f, 0.010)
+  scene.fog = new THREE.FogExp2(0x04060f, 0.008)
 
   const camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 400)
   camera.position.set(0, 0, 6)
 
-  scene.add(new THREE.AmbientLight(0x304060, 0.8))
-
-  // Post-processing
-  let composer = null
-  try {
-    composer = new EffectComposer(renderer)
-    composer.addPass(new RenderPass(scene, camera))
-    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.9, 0.5, 0.15))
-    composer.addPass(new OutputPass())
-  } catch (e) {
-    console.warn('Bloom unavailable, using direct render:', e)
-    composer = null
-  }
+  scene.add(new THREE.AmbientLight(0x304060, 1.0))
 
   // Build zones
   const zones = [
@@ -693,8 +676,7 @@ export function initJourney(canvas) {
     camera.lookAt(camera.position.x * 0.15, camera.position.y * 0.15, camera.position.z - 5)
 
     zones.forEach(z => z.update(dt))
-    if (composer) composer.render()
-    else renderer.render(scene, camera)
+    renderer.render(scene, camera)
   }
 
   animate()
@@ -704,6 +686,5 @@ export function initJourney(canvas) {
     camera.aspect = W / H
     camera.updateProjectionMatrix()
     renderer.setSize(W, H)
-    if (composer) composer.setSize(W, H)
   })
 }
