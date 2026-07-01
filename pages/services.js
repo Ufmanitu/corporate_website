@@ -59,28 +59,62 @@ function ServicesContent({ content }) {
         </div>
       </section>
 
-      {/* Service cards */}
+      {/* Service bento */}
       <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
-          <div className="srv-card-grid">
-            {services.map((s, i) => (
-              <div key={i} className={`srv-card-v2 rev d${(i % 2) + 1}`}>
+          <div className="srv-bento-wrap">
+
+            {/* Top row: featured large + secondary */}
+            <div className="srv-bento-top">
+              {/* Featured — dark card, full content */}
+              <div className="srv-bc srv-bc-feat rev d1">
                 <div className="scv2-head">
-                  <div className="srv-ico">{s.ico}</div>
+                  <div className="srv-ico">{services[0].ico}</div>
                   <div className="scv2-stat">
-                    <div className="scv2-stat-num">{s.stat}</div>
-                    <div className="scv2-stat-lbl">{s.lbl}</div>
+                    <div className="scv2-stat-num">{services[0].stat}</div>
+                    <div className="scv2-stat-lbl">{services[0].lbl}</div>
                   </div>
                 </div>
-                <Editable tag="h3" id={s.t} content={c(s.t, s.dt)} className="scv2-title" />
-                <Editable tag="p"  id={s.p} content={c(s.p, s.dp)} className="scv2-desc" />
+                <Editable tag="h3" id={services[0].t} content={c(services[0].t, services[0].dt)} className="scv2-title" />
+                <Editable tag="p"  id={services[0].p} content={c(services[0].p, services[0].dp)} className="scv2-desc" />
                 <ul className="srv-bullets">
-                  {s.bullets.map((bk, bi) => (
-                    <li key={bi}><Editable tag="span" id={bk} content={c(bk, s.db[bi])} /></li>
+                  {services[0].bullets.map((bk, bi) => (
+                    <li key={bi}><Editable tag="span" id={bk} content={c(bk, services[0].db[bi])} /></li>
                   ))}
                 </ul>
               </div>
-            ))}
+
+              {/* Secondary — light card, no bullets */}
+              <div className="srv-bc rev d2">
+                <div className="scv2-head">
+                  <div className="srv-ico">{services[1].ico}</div>
+                  <div className="scv2-stat">
+                    <div className="scv2-stat-num">{services[1].stat}</div>
+                    <div className="scv2-stat-lbl">{services[1].lbl}</div>
+                  </div>
+                </div>
+                <Editable tag="h3" id={services[1].t} content={c(services[1].t, services[1].dt)} className="scv2-title" />
+                <Editable tag="p"  id={services[1].p} content={c(services[1].p, services[1].dp)} className="scv2-desc" />
+              </div>
+            </div>
+
+            {/* Bottom row: 4 compact cards — icon, stat, title only */}
+            <div className="srv-bento-bottom">
+              {services.slice(2).map((s, i) => (
+                <div key={i} className={`srv-bc srv-bc-mini rev d${i + 1}`}>
+                  <div className="scv2-head">
+                    <div className="srv-ico">{s.ico}</div>
+                    <div className="scv2-stat">
+                      <div className="scv2-stat-num">{s.stat}</div>
+                      <div className="scv2-stat-lbl">{s.lbl}</div>
+                    </div>
+                  </div>
+                  <Editable tag="h3" id={s.t} content={c(s.t, s.dt)} className="scv2-title" />
+                  <Editable tag="p"  id={s.p} content={c(s.p, s.dp)} className="scv2-desc" />
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
       </section>

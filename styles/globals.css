@@ -198,19 +198,38 @@ footer { background:var(--dark); padding:5rem 0 2.5rem }
 .fleg a { font-size:.78rem; color:var(--mist); transition:color .3s }
 .fleg a:hover { color:#fff }
 
-/* ── SERVICE CARDS (services page) ──────────────────────────────────────── */
-.srv-card-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem }
-.srv-card-v2 { background:var(--white); border:1px solid rgba(14,31,46,.09); border-radius:22px; padding:2.2rem; display:flex; flex-direction:column; gap:1rem; transition:transform .35s var(--spring),box-shadow .35s,border-color .35s }
-.srv-card-v2:hover { transform:translateY(-6px); box-shadow:0 24px 60px rgba(14,31,46,.12); border-color:rgba(232,168,71,.18) }
+/* ── SERVICE BENTO (services page) ──────────────────────────────────────── */
+.srv-bento-wrap { display:flex; flex-direction:column; gap:1.2rem }
+.srv-bento-top { display:grid; grid-template-columns:1.5fr 1fr; gap:1.2rem }
+.srv-bento-bottom { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem }
+
+.srv-bc { border-radius:22px; padding:2.2rem; display:flex; flex-direction:column; gap:1rem; transition:transform .35s var(--spring),box-shadow .35s,border-color .35s }
+/* Featured dark card */
+.srv-bc-feat { background:var(--dark); border:1px solid rgba(255,255,255,.07); position:relative; overflow:hidden }
+.srv-bc-feat::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 100% 0%,rgba(232,168,71,.08) 0%,transparent 60%); pointer-events:none }
+.srv-bc-feat:hover { transform:translateY(-4px); box-shadow:0 28px 60px rgba(0,0,0,.3) }
+.srv-bc-feat .scv2-title { color:var(--white) }
+.srv-bc-feat .scv2-desc { color:var(--text-m) }
+.srv-bc-feat .scv2-stat-num { color:var(--white) }
+.srv-bc-feat .srv-bullets li { color:var(--text-m) }
+/* Light cards */
+.srv-bc:not(.srv-bc-feat) { background:var(--white); border:1px solid rgba(14,31,46,.09) }
+.srv-bc:not(.srv-bc-feat):hover { transform:translateY(-5px); box-shadow:0 20px 52px rgba(14,31,46,.11); border-color:rgba(232,168,71,.2) }
+/* Mini bottom cards show only icon/stat/title */
+.srv-bc-mini .scv2-desc { display:none }
+/* Hover on any card animates the icon */
+.srv-bc:hover .srv-ico { transform:scale(1.1) rotate(-4deg) }
+
+/* Shared inner elements */
 .scv2-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.3rem }
-.srv-card-v2 .srv-ico { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; transition:transform .35s }
-.srv-card-v2:hover .srv-ico { transform:scale(1.1) rotate(-4deg) }
-.srv-card-v2:nth-child(1) .srv-ico { background:rgba(232,168,71,.13) }
-.srv-card-v2:nth-child(2) .srv-ico { background:rgba(91,164,207,.13) }
-.srv-card-v2:nth-child(3) .srv-ico { background:rgba(82,201,125,.13) }
-.srv-card-v2:nth-child(4) .srv-ico { background:rgba(232,123,90,.13) }
-.srv-card-v2:nth-child(5) .srv-ico { background:rgba(154,117,228,.13) }
-.srv-card-v2:nth-child(6) .srv-ico { background:rgba(241,196,15,.13) }
+.srv-bc .srv-ico { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; transition:transform .35s }
+/* Icon colors */
+.srv-bc-feat .srv-ico { background:rgba(232,168,71,.18) }
+.srv-bento-top > *:nth-child(2) .srv-ico { background:rgba(91,164,207,.13) }
+.srv-bento-bottom > *:nth-child(1) .srv-ico { background:rgba(82,201,125,.13) }
+.srv-bento-bottom > *:nth-child(2) .srv-ico { background:rgba(232,123,90,.13) }
+.srv-bento-bottom > *:nth-child(3) .srv-ico { background:rgba(154,117,228,.13) }
+.srv-bento-bottom > *:nth-child(4) .srv-ico { background:rgba(241,196,15,.13) }
 .scv2-stat { text-align:right }
 .scv2-stat-num { font-family:var(--ff-h); font-size:2.2rem; font-weight:800; color:var(--text-d); line-height:1; letter-spacing:-.02em }
 .scv2-stat-lbl { font-size:.7rem; color:#8A9EB0; margin-top:.25rem; letter-spacing:.04em }
@@ -530,7 +549,9 @@ body.admin .editable:focus { outline:2px solid var(--amber); background:rgba(232
   .fb { grid-column:1/-1 }
   .fbot { flex-direction:column; gap:.75rem; text-align:center }
   .cta-sec { padding:5rem 1.5rem }
-  .srv-card-grid { grid-template-columns:1fr }
+  .srv-bento-top { grid-template-columns:1fr }
+  .srv-bento-bottom { grid-template-columns:repeat(2,1fr) }
+  .srv-bc-mini .scv2-desc { display:block }
   .srv-row { grid-template-columns:50px 1fr; gap:1.5rem }
   .srv-meta { display:none }
   .process-grid { grid-template-columns:1fr 1fr; gap:1.5rem }
@@ -547,6 +568,7 @@ body.admin .editable:focus { outline:2px solid var(--amber); background:rgba(232
   .trust-strip { padding:2rem 1.2rem }
   .approach-strip { padding:1.5rem }
   .srv-grid,.stats-grid,.ind-grid,.why-grid,.cs-grid,.work-grid { grid-template-columns:1fr }
+  .srv-bento-bottom { grid-template-columns:1fr }
   .tl-cards { grid-template-columns:1fr }
   .hero-card { width:100% }
   .offices-grid,.awards-grid,.ind-stats,.logos-grid { grid-template-columns:1fr }
