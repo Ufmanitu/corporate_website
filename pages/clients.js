@@ -27,6 +27,7 @@ function ClientsContent({ content }) {
     { featured: false, stars: 5, init: 'JP', q: "tst4-q", n: "tst4-n", r: "tst4-r", dq: "The analysis Meridian brought to our restructuring process was surgical. They saw paths that we couldn't see, and they had the courage to recommend them even when it wasn't what we wanted to hear.", dn: 'Jonathan Park',   dr: 'CFO, Vantage Capital' },
     { featured: false, stars: 5, init: 'LF', q: "tst5-q", n: "tst5-n", r: "tst5-r", dq: "In 25 years of working with consulting firms, Meridian is the only one I'd call again unprompted. They're that good. What separates them is that they actually care about the outcome, not about justifying the next engagement.", dn: 'Lena Fischer',    dr: 'CEO, Crestwood Energy' },
     { featured: false, stars: 5, init: 'RP', q: "tst6-q", n: "tst6-n", r: "tst6-r", dq: "They didn't just hand us a strategy — they built our team's capacity to think strategically. That lasting shift in capability is the real gift of the engagement.", dn: 'Raj Patel',       dr: 'VP Strategy, Elara Technologies' },
+    { featured: false, stars: 5, init: 'TH', q: "tst7-q", n: "tst7-n", r: "tst7-r", dq: "We've worked with Meridian across three separate engagements over five years. Each time, the quality of thinking and the commitment to outcome has been identical. That consistency is extraordinarily rare.", dn: 'Thomas Hargreaves', dr: 'CEO, Halston Group' },
   ]
 
   const sectors = [
