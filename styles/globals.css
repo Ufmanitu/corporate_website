@@ -534,3 +534,10 @@ body.admin .editable:focus { outline:2px solid var(--amber); background:rgba(232
   .ft { grid-template-columns:1fr }
   .process-grid { grid-template-columns:1fr }
 }
+
+/* Turkish has long compound words (e.g. "Şekillendirelim." = 16 chars) that
+   overflow the hero column at the sizes used for English and Hungarian.
+   Scale the title down specifically for Turkish while keeping other languages unchanged. */
+:lang(tr) .hero-h1 { font-size:clamp(2.6rem,4.2vw,3.4rem); letter-spacing:-.035em }
+@media(max-width:860px) { :lang(tr) .hero-h1 { font-size:clamp(2.4rem,6.5vw,4.6rem) } }
+@media(max-width:600px) { :lang(tr) .hero-h1 { font-size:clamp(1.9rem,7.5vw,3rem) } }

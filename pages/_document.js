@@ -1,8 +1,8 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
-export default function Document() {
+function MyDocument({ locale }) {
   return (
-    <Html lang="en">
+    <Html lang={locale || 'en'}>
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -18,3 +18,10 @@ export default function Document() {
     </Html>
   )
 }
+
+MyDocument.getInitialProps = async (ctx) => {
+  const initialProps = await Document.getInitialProps(ctx)
+  return { ...initialProps, locale: ctx.locale }
+}
+
+export default MyDocument
