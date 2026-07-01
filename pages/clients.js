@@ -18,7 +18,20 @@ export default function Clients({ content }) {
 function ClientsContent({ content }) {
   const c = (key, fallback = '') => content[key] ?? fallback
 
-  const logos = ['Apex Financial','Nordvale Health','Sienna Logistics','Vantage Capital','Elara Technologies','Crestwood Energy','Halston Group','Orion Pharma','Ravensworth Bank','Ironclad Solutions','Meridia Retail','Tethys Infrastructure']
+  const logos = [
+    { name: 'Apex Financial',       ini: 'AF', color: '#E8A847', sector: 'Banking' },
+    { name: 'Nordvale Health',       ini: 'NH', color: '#38B6FF', sector: 'Healthcare' },
+    { name: 'Sienna Logistics',      ini: 'SL', color: '#34D399', sector: 'Logistics' },
+    { name: 'Vantage Capital',       ini: 'VC', color: '#FB7185', sector: 'Finance' },
+    { name: 'Elara Technologies',    ini: 'ET', color: '#A78BFA', sector: 'Technology' },
+    { name: 'Crestwood Energy',      ini: 'CE', color: '#2DD4BF', sector: 'Energy' },
+    { name: 'Halston Group',         ini: 'HG', color: '#E8A847', sector: 'Industrials' },
+    { name: 'Orion Pharma',          ini: 'OP', color: '#38B6FF', sector: 'Pharma' },
+    { name: 'Ravensworth Bank',      ini: 'RB', color: '#34D399', sector: 'Banking' },
+    { name: 'Ironclad Solutions',    ini: 'IS', color: '#FB7185', sector: 'Operations' },
+    { name: 'Meridia Retail',        ini: 'MR', color: '#A78BFA', sector: 'Consumer' },
+    { name: 'Tethys Infrastructure', ini: 'TI', color: '#2DD4BF', sector: 'Infrastructure' },
+  ]
 
   const testimonials = [
     { featured: true,  stars: 5, init: 'SC', q: "tst1-q", n: "tst1-n", r: "tst1-r", dq: "Meridian didn't just advise us — they transformed how we think about strategy entirely. The clarity they brought to a genuinely complex problem was unlike anything we'd encountered before. Their ability to cut through noise and identify what actually matters is a rare and genuinely valuable skill. We've worked with most of the major firms, and Meridian is in a different category.", dn: 'Sarah Chen',     dr: 'CEO, Apex Financial' },
@@ -64,9 +77,11 @@ function ClientsContent({ content }) {
             <Editable tag="h2"   id="lg-title" content={c('lg-title', 'Organizations that trust Meridian.')} className="sec-title" style={{ color: 'var(--text-d)' }} />
           </div>
           <div className="logos-grid rev">
-            {logos.map((name, i) => (
-              <div key={i} className="logo-cell">
-                <span className="logo-text">{name}</span>
+            {logos.map((l, i) => (
+              <div key={i} className="logo-cell" style={{ '--lc': `${l.color}28` }}>
+                <div className="logo-mono" style={{ color: l.color }}>{l.ini}</div>
+                <span className="logo-text">{l.name}</span>
+                <span className="logo-sector">{l.sector}</span>
               </div>
             ))}
           </div>
