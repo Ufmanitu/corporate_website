@@ -190,6 +190,9 @@ footer { background:var(--dark); padding:5rem 0 2.5rem }
 .fc ul { list-style:none; display:flex; flex-direction:column; gap:.65rem }
 .fc ul a { font-size:.85rem; color:#6A8CA6; transition:color .3s }
 .fc ul a:hover { color:#fff }
+.fsoc { display:flex; gap:.6rem; margin-top:.5rem }
+.fsoc a { display:flex; align-items:center; justify-content:center; width:34px; height:34px; border:1px solid rgba(255,255,255,.12); border-radius:8px; color:var(--mist); transition:color .3s,border-color .3s,background .3s }
+.fsoc a:hover { color:#fff; border-color:rgba(232,168,71,.4); background:rgba(232,168,71,.06) }
 .fbot { display:flex; justify-content:space-between; align-items:center }
 .fcopy { font-size:.78rem; color:var(--mist) }
 .fleg { display:flex; gap:1.4rem }
