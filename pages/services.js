@@ -60,7 +60,7 @@ function ServicesContent({ content }) {
       </section>
 
       {/* Service bento */}
-      <section className="sec-pad" style={{ background: '#D6DDE8' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="srv-bento-wrap">
 
