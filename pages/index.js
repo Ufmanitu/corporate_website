@@ -82,20 +82,45 @@ function HomeContent({ content }) {
   const subRef   = useRef(null)
   const btnsRef  = useRef(null)
   const rightRef = useRef(null)
+
+  // Controls when stat card count-up fires (immediate on desktop, on-scroll on mobile)
+  const [cardsActive, setCardsActive] = useState(false)
+
   useEffect(() => {
+    const mobile = window.innerWidth <= 860
     const t = setTimeout(() => {
       wordsRef.current.forEach(el => el?.classList.add('up'))
       subRef.current?.classList.add('show')
       btnsRef.current?.classList.add('show')
-      rightRef.current?.classList.add('show')
+      if (!mobile) {
+        rightRef.current?.classList.add('show')
+        setCardsActive(true)
+      }
     }, 200)
     return () => clearTimeout(t)
   }, [])
 
-  // Count-up for hero stat cards — starts after a short delay so it's always visible
-  function useCountUp(target, duration = 1600, delay = 350) {
+  // On mobile: reveal cards + start count-up when they scroll into view
+  useEffect(() => {
+    if (window.innerWidth > 860) return
+    const el = rightRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        el.classList.add('show')
+        setCardsActive(true)
+        obs.disconnect()
+      }
+    }, { threshold: 0.25 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
+  // Count-up — only runs once `active` is true
+  function useCountUp(target, duration = 1600, delay = 300, active = false) {
     const [val, setVal] = useState(0)
     useEffect(() => {
+      if (!active) return
       const t = setTimeout(() => {
         let start = null
         function step(ts) {
@@ -107,14 +132,14 @@ function HomeContent({ content }) {
         requestAnimationFrame(step)
       }, delay)
       return () => clearTimeout(t)
-    }, [target, duration, delay])
+    }, [target, duration, delay, active])
     return val
   }
 
-  const clients   = useCountUp(200)
-  const retention = useCountUp(97)
-  const value4    = useCountUp(4)
-  const countries = useCountUp(15)
+  const clients   = useCountUp(200, 1600, 300, cardsActive)
+  const retention = useCountUp(97,  1600, 300, cardsActive)
+  const value4    = useCountUp(4,   1600, 300, cardsActive)
+  const countries = useCountUp(15,  1600, 300, cardsActive)
 
   // Testimonial carousel
   const [tstIdx, setTstIdx] = useState(0)
