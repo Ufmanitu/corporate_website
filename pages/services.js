@@ -60,13 +60,13 @@ function ServicesContent({ content }) {
       </section>
 
       {/* Service bento */}
-      <section className="sec-pad" style={{ background: 'var(--white)' }}>
+      <section className="sec-pad" style={{ background: '#080F1A' }}>
         <div className="si">
           <div className="srv-bento-wrap">
 
             {/* Top row: featured large + secondary */}
             <div className="srv-bento-top">
-              {/* Featured — dark card, full content */}
+              {/* Card 1 — Strategy, amber, full content */}
               <div className="srv-bc srv-bc-feat rev d1">
                 <div className="scv2-head">
                   <div className="srv-ico">{services[0].ico}</div>
@@ -84,8 +84,8 @@ function ServicesContent({ content }) {
                 </ul>
               </div>
 
-              {/* Secondary — light card, no bullets */}
-              <div className="srv-bc rev d2">
+              {/* Card 2 — Technology, sky blue */}
+              <div className="srv-bc srv-bc-tech rev d2">
                 <div className="scv2-head">
                   <div className="srv-ico">{services[1].ico}</div>
                   <div className="scv2-stat">
@@ -98,21 +98,59 @@ function ServicesContent({ content }) {
               </div>
             </div>
 
-            {/* Bottom row: 4 compact cards — icon, stat, title only */}
+            {/* Bottom row: 4 cards in 2×2, each with title + description */}
             <div className="srv-bento-bottom">
-              {services.slice(2).map((s, i) => (
-                <div key={i} className={`srv-bc srv-bc-mini rev d${i + 1}`}>
-                  <div className="scv2-head">
-                    <div className="srv-ico">{s.ico}</div>
-                    <div className="scv2-stat">
-                      <div className="scv2-stat-num">{s.stat}</div>
-                      <div className="scv2-stat-lbl">{s.lbl}</div>
-                    </div>
+              {/* Card 3 — Digital, emerald */}
+              <div className="srv-bc srv-bc-dig rev d1">
+                <div className="scv2-head">
+                  <div className="srv-ico">{services[2].ico}</div>
+                  <div className="scv2-stat">
+                    <div className="scv2-stat-num">{services[2].stat}</div>
+                    <div className="scv2-stat-lbl">{services[2].lbl}</div>
                   </div>
-                  <Editable tag="h3" id={s.t} content={c(s.t, s.dt)} className="scv2-title" />
-                  <Editable tag="p"  id={s.p} content={c(s.p, s.dp)} className="scv2-desc" />
                 </div>
-              ))}
+                <Editable tag="h3" id={services[2].t} content={c(services[2].t, services[2].dt)} className="scv2-title" />
+                <Editable tag="p"  id={services[2].p} content={c(services[2].p, services[2].dp)} className="scv2-desc" />
+              </div>
+
+              {/* Card 4 — Financial, rose */}
+              <div className="srv-bc srv-bc-fin rev d2">
+                <div className="scv2-head">
+                  <div className="srv-ico">{services[3].ico}</div>
+                  <div className="scv2-stat">
+                    <div className="scv2-stat-num">{services[3].stat}</div>
+                    <div className="scv2-stat-lbl">{services[3].lbl}</div>
+                  </div>
+                </div>
+                <Editable tag="h3" id={services[3].t} content={c(services[3].t, services[3].dt)} className="scv2-title" />
+                <Editable tag="p"  id={services[3].p} content={c(services[3].p, services[3].dp)} className="scv2-desc" />
+              </div>
+
+              {/* Card 5 — Operations, lavender */}
+              <div className="srv-bc srv-bc-ops rev d3">
+                <div className="scv2-head">
+                  <div className="srv-ico">{services[4].ico}</div>
+                  <div className="scv2-stat">
+                    <div className="scv2-stat-num">{services[4].stat}</div>
+                    <div className="scv2-stat-lbl">{services[4].lbl}</div>
+                  </div>
+                </div>
+                <Editable tag="h3" id={services[4].t} content={c(services[4].t, services[4].dt)} className="scv2-title" />
+                <Editable tag="p"  id={services[4].p} content={c(services[4].p, services[4].dp)} className="scv2-desc" />
+              </div>
+
+              {/* Card 6 — Risk, teal */}
+              <div className="srv-bc srv-bc-risk rev d4">
+                <div className="scv2-head">
+                  <div className="srv-ico">{services[5].ico}</div>
+                  <div className="scv2-stat">
+                    <div className="scv2-stat-num">{services[5].stat}</div>
+                    <div className="scv2-stat-lbl">{services[5].lbl}</div>
+                  </div>
+                </div>
+                <Editable tag="h3" id={services[5].t} content={c(services[5].t, services[5].dt)} className="scv2-title" />
+                <Editable tag="p"  id={services[5].p} content={c(services[5].p, services[5].dp)} className="scv2-desc" />
+              </div>
             </div>
 
           </div>
