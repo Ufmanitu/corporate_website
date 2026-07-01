@@ -83,7 +83,7 @@ a { text-decoration:none; color:inherit }
 .hero-inner { position:relative; z-index:2; max-width:1160px; margin:0 auto; padding:9rem 3rem 5rem; display:grid; grid-template-columns:1.1fr .9fr; gap:4rem; align-items:center; width:100% }
 .hero-left { display:flex; flex-direction:column; gap:1.4rem }
 .hero-eyebrow { font-size:.75rem; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:var(--amber) }
-.hero-h1 { font-family:var(--ff-h); font-size:clamp(2.8rem,5.5vw,5.2rem); font-weight:700; color:var(--white); line-height:1.12; letter-spacing:-.015em }
+.hero-h1 { font-family:var(--ff-h); font-size:clamp(4rem,7vw,6.5rem); font-weight:700; color:var(--white); line-height:1.08; letter-spacing:-.02em }
 .hero-h1 .line { overflow:hidden; display:block }
 .hero-h1 .word { display:block; transform:translateY(110%); opacity:0; transition:transform .9s var(--spring),opacity .9s ease }
 .hero-h1 .word.up { transform:translateY(0); opacity:1 }
@@ -477,10 +477,11 @@ body.admin .editable:focus { outline:2px solid var(--amber); background:rgba(232
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
 @media(max-width:600px) {
-  .hero-h1 { font-size:clamp(1.55rem,6.5vw,2.5rem) }
+  .hero-h1 { font-size:clamp(2.8rem,13vw,5.5rem) }
   .hero-btns { flex-direction:column }
 }
 @media(max-width:860px) {
+  .hero-h1 { font-size:clamp(3.5rem,10.5vw,7rem) }
   .si,.ph-inner,.fi { padding-left:1.5rem; padding-right:1.5rem }
   .sec-pad { padding:5rem 0 }
   .ph { padding:6.5rem 0 4rem }
