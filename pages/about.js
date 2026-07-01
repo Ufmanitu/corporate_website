@@ -69,6 +69,15 @@ function AboutContent({ content }) {
           <Editable tag="h1"   id="ab-ph-title" content={c('ab-ph-title', 'Strategy is a<br>human business.')} className="ph-title" />
           <Editable tag="p"    id="ab-ph-sub"   content={c('ab-ph-sub', "We're 450 consultants who believe that the best analysis in the world is worth nothing without the trust, judgment, and relationships to act on it.")} className="ph-sub" />
           <div className="ph-line" />
+          <div className="ph-quick-stats">
+            <div className="ph-qs-item"><span className="ph-qs-num">450<em>+</em></span><span className="ph-qs-lbl">Consultants</span></div>
+            <div className="ph-qs-div" />
+            <div className="ph-qs-item"><span className="ph-qs-num">15</span><span className="ph-qs-lbl">Countries</span></div>
+            <div className="ph-qs-div" />
+            <div className="ph-qs-item"><span className="ph-qs-num">2008</span><span className="ph-qs-lbl">Founded</span></div>
+            <div className="ph-qs-div" />
+            <div className="ph-qs-item"><span className="ph-qs-num"><em>$</em>4.2B</span><span className="ph-qs-lbl">Value created</span></div>
+          </div>
         </div>
       </section>
 

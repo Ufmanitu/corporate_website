@@ -56,6 +56,15 @@ function ServicesContent({ content }) {
           <Editable tag="h1"   id="srv-ph-title" content={c('srv-ph-title', 'Six practices.<br>One firm.')} className="ph-title" />
           <Editable tag="p"    id="srv-ph-sub"   content={c('srv-ph-sub', 'An integrated approach to strategy, technology, and transformation.')} className="ph-sub" />
           <div className="ph-line" />
+          <div className="ph-quick-stats">
+            <div className="ph-qs-item"><span className="ph-qs-num">6</span><span className="ph-qs-lbl">Practice areas</span></div>
+            <div className="ph-qs-div" />
+            <div className="ph-qs-item"><span className="ph-qs-num">185<em>+</em></span><span className="ph-qs-lbl">Engagements/year</span></div>
+            <div className="ph-qs-div" />
+            <div className="ph-qs-item"><span className="ph-qs-num"><em>$</em>8B<em>+</em></span><span className="ph-qs-lbl">Transactions advised</span></div>
+            <div className="ph-qs-div" />
+            <div className="ph-qs-item"><span className="ph-qs-num">35<em>%</em></span><span className="ph-qs-lbl">Avg. efficiency gain</span></div>
+          </div>
         </div>
       </section>
 
