@@ -75,33 +75,22 @@ function AboutContent({ content }) {
       {/* Story */}
       <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
-          <div className="story-grid">
-            <div className="story-img rev">
-              <div className="story-img-bg">
-                <svg viewBox="0 0 80 80" fill="none"><rect x="8" y="8" width="64" height="64" rx="10" stroke="#0B1929" strokeWidth="2.5"/><path d="M8 28h64M28 8v64" stroke="#0B1929" strokeWidth="1.5" opacity=".4"/><circle cx="40" cy="40" r="12" stroke="#0B1929" strokeWidth="2" opacity=".5"/><circle cx="40" cy="40" r="4" fill="#E8A847"/></svg>
-              </div>
-              <div className="story-badge">
-                <span className="sb-num">2008</span>
-                <span className="sb-txt">Founded in London</span>
-              </div>
+          <div className="story-header rev">
+            <Editable tag="span" id="ab-story-eye"   content={c('ab-story-eye', 'Our Story')} className="eyebrow" />
+            <Editable tag="h2"   id="ab-story-title" content={c('ab-story-title', 'Built to challenge the conventional consulting model.')} className="sec-title" style={{ color: 'var(--text-d)' }} />
+            <div className="story-intro">
+              <Editable tag="p" id="ab-story-p1" content={c('ab-story-p1', `Meridian was founded in 2008 by four partners who had grown frustrated with the consulting industry they'd spent their careers in.`)} />
+              <Editable tag="p" id="ab-story-p2" content={c('ab-story-p2', 'The founding idea was simple: stay in the room until the work is done. Measure success by what actually changes in the organization, not by what gets presented in the boardroom.')} />
             </div>
-            <div className="story-text rev d2">
-              <Editable tag="span" id="ab-story-eye"   content={c('ab-story-eye', 'Our Story')} className="eyebrow" />
-              <Editable tag="h2"   id="ab-story-title" content={c('ab-story-title', 'Built to challenge the conventional consulting model.')} className="sec-title" style={{ color: 'var(--text-d)' }} />
-              <Editable tag="p"    id="ab-story-p1"    content={c('ab-story-p1', `Meridian was founded in 2008 by four partners who had grown frustrated with the consulting industry they'd spent their careers in.`)} />
-              <Editable tag="p"    id="ab-story-p2"    content={c('ab-story-p2', 'The founding idea was simple: stay in the room until the work is done. Measure success by what actually changes in the organization, not by what gets presented in the boardroom.')} />
-              <div className="timeline">
-                {timeline.map((tl, i) => (
-                  <div key={i} className="tl-item">
-                    <Editable tag="span" id={tl.y} content={c(tl.y, tl.dy)} className="tl-year" />
-                    <div className="tl-text">
-                      <Editable tag="h4" id={tl.t} content={c(tl.t, tl.dt)} />
-                      <Editable tag="p"  id={tl.d} content={c(tl.d, tl.dd)} />
-                    </div>
-                  </div>
-                ))}
+          </div>
+          <div className="tl-cards">
+            {timeline.map((tl, i) => (
+              <div key={i} className={`tl-card rev d${i + 1}`}>
+                <Editable tag="span" id={tl.y} content={c(tl.y, tl.dy)} className="tl-card-year" />
+                <Editable tag="h4"   id={tl.t} content={c(tl.t, tl.dt)} className="tl-card-title" />
+                <Editable tag="p"    id={tl.d} content={c(tl.d, tl.dd)} className="tl-card-desc" />
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
