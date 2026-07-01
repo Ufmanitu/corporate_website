@@ -59,28 +59,26 @@ function ServicesContent({ content }) {
         </div>
       </section>
 
-      {/* Service rows */}
+      {/* Service cards */}
       <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
-          <div className="srv-rows">
+          <div className="srv-card-grid">
             {services.map((s, i) => (
-              <div key={i} className="srv-row rev">
-                <div className="srv-ico">{s.ico}</div>
-                <div className="srv-content">
-                  <Editable tag="h3" id={s.t} content={c(s.t, s.dt)} />
-                  <Editable tag="p"  id={s.p} content={c(s.p, s.dp)} />
-                  <ul className="srv-bullets">
-                    {s.bullets.map((bk, bi) => (
-                      <li key={bi}><Editable tag="span" id={bk} content={c(bk, s.db[bi])} /></li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="srv-meta">
-                  <div className="srv-stat">
-                    <div className="srv-stat-num">{s.stat}</div>
-                    <div className="srv-stat-lbl">{s.lbl}</div>
+              <div key={i} className={`srv-card-v2 rev d${(i % 2) + 1}`}>
+                <div className="scv2-head">
+                  <div className="srv-ico">{s.ico}</div>
+                  <div className="scv2-stat">
+                    <div className="scv2-stat-num">{s.stat}</div>
+                    <div className="scv2-stat-lbl">{s.lbl}</div>
                   </div>
                 </div>
+                <Editable tag="h3" id={s.t} content={c(s.t, s.dt)} className="scv2-title" />
+                <Editable tag="p"  id={s.p} content={c(s.p, s.dp)} className="scv2-desc" />
+                <ul className="srv-bullets">
+                  {s.bullets.map((bk, bi) => (
+                    <li key={bi}><Editable tag="span" id={bk} content={c(bk, s.db[bi])} /></li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
