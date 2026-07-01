@@ -26,12 +26,12 @@ function AboutContent({ content }) {
   ]
 
   const team = [
-    { ini: 'EV', n: 't1-n', r: 't1-r', b: 't1-b', dn: 'Elena Vasquez',         dr: 'Chief Executive Officer',             db: '20-year strategy veteran and former McKinsey Senior Partner.' },
-    { ini: 'JT', n: 't2-n', r: 't2-r', b: 't2-b', dn: 'James Thornton',         dr: 'Managing Partner, Technology',        db: 'Former CTO of two Fortune 500 companies. Holds patents in distributed systems.' },
-    { ini: 'PM', n: 't3-n', r: 't3-r', b: 't3-b', dn: 'Priya Mehta',            dr: 'Managing Partner, Financial Services', db: 'Former Goldman Sachs Managing Director, specialist in emerging market M&A.' },
-    { ini: 'DO', n: 't4-n', r: 't4-r', b: 't4-b', dn: 'David Osei',             dr: 'Managing Partner, Operations',        db: 'MIT Operations Research PhD. Pioneered Meridian\'s supply chain resilience framework.' },
-    { ini: 'SL', n: 't5-n', r: 't5-r', b: 't5-b', dn: 'Sophie Laurent',         dr: 'Chief People Officer',                db: "Author of 'The Consulting Compact'. Built and led teams in 12 countries." },
-    { ini: 'RK', n: 't6-n', r: 't6-r', b: 't6-b', dn: 'Rahul Krishnamurthy',    dr: 'Chief Innovation Officer',            db: 'AI researcher and former Google Brain lead. Holds 14 patents in machine learning.' },
+    { ini: 'EV', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80&auto=format&fit=crop&crop=face', n: 't1-n', r: 't1-r', b: 't1-b', dn: 'Elena Vasquez',         dr: 'Chief Executive Officer',             db: '20-year strategy veteran and former McKinsey Senior Partner.' },
+    { ini: 'JT', photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80&auto=format&fit=crop&crop=face', n: 't2-n', r: 't2-r', b: 't2-b', dn: 'James Thornton',         dr: 'Managing Partner, Technology',        db: 'Former CTO of two Fortune 500 companies. Holds patents in distributed systems.' },
+    { ini: 'PM', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop&crop=face', n: 't3-n', r: 't3-r', b: 't3-b', dn: 'Priya Mehta',            dr: 'Managing Partner, Financial Services', db: 'Former Goldman Sachs Managing Director, specialist in emerging market M&A.' },
+    { ini: 'DO', photo: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=600&q=80&auto=format&fit=crop&crop=face', n: 't4-n', r: 't4-r', b: 't4-b', dn: 'David Osei',             dr: 'Managing Partner, Operations',        db: 'MIT Operations Research PhD. Pioneered Meridian\'s supply chain resilience framework.' },
+    { ini: 'SL', photo: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&q=80&auto=format&fit=crop&crop=face', n: 't5-n', r: 't5-r', b: 't5-b', dn: 'Sophie Laurent',         dr: 'Chief People Officer',                db: "Author of 'The Consulting Compact'. Built and led teams in 12 countries." },
+    { ini: 'RK', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80&auto=format&fit=crop&crop=face', n: 't6-n', r: 't6-r', b: 't6-b', dn: 'Rahul Krishnamurthy',    dr: 'Chief Innovation Officer',            db: 'AI researcher and former Google Brain lead. Holds 14 patents in machine learning.' },
   ]
 
   const timeline = [
@@ -124,7 +124,7 @@ function AboutContent({ content }) {
           <div className="team-grid">
             {team.map((t, i) => (
               <div key={i} className={`team-card rev d${(i % 3) + 1}`}>
-                <div className="team-img"><span className="team-initials">{t.ini}</span></div>
+                <div className="team-img"><img src={t.photo} alt={c(t.n, t.dn)} loading="lazy" /></div>
                 <div className="team-body">
                   <Editable tag="div" id={t.n} content={c(t.n, t.dn)} className="team-name" />
                   <Editable tag="div" id={t.r} content={c(t.r, t.dr)} className="team-role" />

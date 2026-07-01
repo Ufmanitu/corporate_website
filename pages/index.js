@@ -316,12 +316,15 @@ function HomeContent({ content }) {
           </div>
           <div className="work-grid">
             {[
-              { tag: 'Banking · Transformation', cat: 'Apex Financial',   t: 'Core banking digital overhaul',       d: 'Redesigned the entire technology infrastructure of a tier-1 bank — from legacy mainframes to cloud-native microservices — in under 18 months.', res: '40% operational efficiency gain' },
-              { tag: 'Healthcare · Operations',  cat: 'Nordvale Health',  t: 'Patient journey optimization',        d: 'Mapped and redesigned the end-to-end care experience across 50 hospitals, reducing wait times and increasing patient satisfaction scores.', res: '€2.1B in value unlocked' },
-              { tag: 'Logistics · AI',           cat: 'Sienna Logistics', t: 'AI-powered supply chain reinvention', d: 'Introduced machine learning at every node in a global distribution network — demand forecasting, routing optimization, and real-time anomaly detection.', res: '3× throughput increase' },
+              { tag: 'Banking · Transformation', cat: 'Apex Financial',   img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80&auto=format&fit=crop', t: 'Core banking digital overhaul',       d: 'Redesigned the entire technology infrastructure of a tier-1 bank — from legacy mainframes to cloud-native microservices — in under 18 months.', res: '40% operational efficiency gain' },
+              { tag: 'Healthcare · Operations',  cat: 'Nordvale Health',  img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900&q=80&auto=format&fit=crop', t: 'Patient journey optimization',        d: 'Mapped and redesigned the end-to-end care experience across 50 hospitals, reducing wait times and increasing patient satisfaction scores.', res: '€2.1B in value unlocked' },
+              { tag: 'Logistics · AI',           cat: 'Sienna Logistics', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&q=80&auto=format&fit=crop', t: 'AI-powered supply chain reinvention', d: 'Introduced machine learning at every node in a global distribution network — demand forecasting, routing optimization, and real-time anomaly detection.', res: '3× throughput increase' },
             ].map((w, i) => (
               <div key={i} className={`work-card rev d${i + 1}`}>
-                <div className="work-img"><span className="work-tag">{w.tag}</span></div>
+                <div className="work-img">
+                  <img src={w.img} alt={w.cat} loading="lazy" />
+                  <span className="work-tag">{w.tag}</span>
+                </div>
                 <div className="work-body">
                   <div className="work-cat">{w.cat}</div>
                   <h3>{w.t}</h3>
