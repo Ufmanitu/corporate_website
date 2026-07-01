@@ -283,27 +283,24 @@ function HomeContent({ content }) {
       {/* ── ABOUT ── */}
       <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
-          <div className="about-grid">
-            <div className="about-img-wrap rev">
-              <div className="about-img-bg">
-                <svg viewBox="0 0 80 80" fill="none"><rect x="10" y="10" width="60" height="60" rx="8" stroke="#0B1929" strokeWidth="3"/><path d="M10 30h60M30 10v60" stroke="#0B1929" strokeWidth="2"/><circle cx="40" cy="40" r="10" stroke="#0B1929" strokeWidth="2.5"/></svg>
-              </div>
-              <div className="about-badge">
-                <span className="ab-num">16</span>
-                <span className="ab-txt">Years of experience</span>
-              </div>
-            </div>
-            <div className="about-text rev d2">
+          <div className="about-split">
+            <div className="about-text rev">
               <Editable tag="span" id="about-eye"   content={c('about-eye', 'Who We Are')} className="eyebrow" />
               <Editable tag="h2"   id="about-title" content={c('about-title', 'Strategy is only as good as the people who execute it.')} className="sec-title" style={{ color: 'var(--text-d)' }} />
               <Editable tag="p"    id="about-p1"    content={c('about-p1', "Founded in 2008, Meridian Group has guided Fortune 500 companies through their most complex transformations. We're not a firm that hands over a report and disappears — we stay in the room until the work is done.")} />
               <Editable tag="p"    id="about-p2"    content={c('about-p2', 'Our teams combine deep industry expertise with cutting-edge analytical capabilities.')} />
-              <ul className="about-list">
+              <div><Link href="/about" className="btn-a">Learn About Us</Link></div>
+            </div>
+            <div className="about-panel rev d2">
+              <div className="about-panel-stat">
+                <span className="ap-num">16</span>
+                <span className="ap-lbl">Years of experience</span>
+              </div>
+              <ul className="about-panel-list">
                 {['Offices in London, New York, Singapore, and Dubai','450+ consultants across 12 disciplines','FT Global Consulting Firm of the Year, 2022 & 2023','B Corp certified since 2019'].map((li, i) => (
                   <li key={i}>{li}</li>
                 ))}
               </ul>
-              <div><Link href="/about" className="btn-a">Learn About Us</Link></div>
             </div>
           </div>
         </div>

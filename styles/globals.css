@@ -132,18 +132,17 @@ a { text-decoration:none; color:inherit }
 .stat-lbl { font-size:.82rem; color:var(--mist); font-weight:400; letter-spacing:.04em }
 
 /* ── ABOUT (home) ────────────────────────────────────────────────────────── */
-.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:5.5rem; align-items:center }
-.about-img-wrap { position:relative; border-radius:24px; overflow:hidden; aspect-ratio:4/3 }
-.about-img-bg { width:100%; height:100%; background:linear-gradient(135deg,#DEDAD4 0%,#C8C2B6 100%); display:flex; align-items:center; justify-content:center }
-.about-img-bg svg { width:72px; height:72px; opacity:.25 }
-.about-badge { position:absolute; bottom:1.5rem; left:1.5rem; background:var(--dark); border-radius:14px; padding:.9rem 1.3rem; display:flex; flex-direction:column; gap:.2rem }
-.ab-num { font-family:var(--ff-h); font-size:1.6rem; font-weight:800; color:var(--amber); line-height:1 }
-.ab-txt { font-size:.73rem; color:var(--mist) }
+.about-split { display:grid; grid-template-columns:1.1fr .9fr; gap:5rem; align-items:center }
 .about-text { display:flex; flex-direction:column; gap:1.3rem }
 .about-text p { font-size:.97rem; font-weight:400; line-height:1.85; color:#3E5566 }
-.about-list { list-style:none; display:flex; flex-direction:column; gap:.7rem }
-.about-list li { display:flex; align-items:center; gap:.75rem; font-size:.9rem; color:var(--text-d); font-weight:400 }
-.about-list li::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--amber); flex-shrink:0 }
+.about-panel { background:var(--dark); border-radius:24px; padding:2.5rem; display:flex; flex-direction:column; gap:1.8rem; position:relative; overflow:hidden }
+.about-panel::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 100% 0%,rgba(232,168,71,.07) 0%,transparent 60%); pointer-events:none }
+.about-panel-stat { display:flex; flex-direction:column; gap:.25rem; padding-bottom:1.6rem; border-bottom:1px solid rgba(255,255,255,.08) }
+.ap-num { font-family:var(--ff-h); font-size:5.5rem; font-weight:800; color:var(--amber); line-height:1; letter-spacing:-.03em }
+.ap-lbl { font-size:.75rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--mist) }
+.about-panel-list { list-style:none; display:flex; flex-direction:column; gap:.85rem; position:relative; z-index:1 }
+.about-panel-list li { display:flex; align-items:flex-start; gap:.75rem; font-size:.875rem; color:var(--text-m); line-height:1.6 }
+.about-panel-list li::before { content:'→'; color:var(--amber); font-weight:700; flex-shrink:0; margin-top:1px }
 
 /* ── WORK CARDS (home) ───────────────────────────────────────────────────── */
 .work-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.3rem }
@@ -491,7 +490,7 @@ body.admin .editable:focus { outline:2px solid var(--amber); background:rgba(232
   .hero-card { width:calc(50% - .6rem) }
   .srv-grid { grid-template-columns:1fr 1fr }
   .stats-grid { grid-template-columns:1fr 1fr }
-  .about-grid { grid-template-columns:1fr; gap:3rem }
+  .about-split { grid-template-columns:1fr; gap:3rem }
   .story-intro { grid-template-columns:1fr }
   .tl-cards { grid-template-columns:1fr 1fr }
   .work-grid,.cs-grid { grid-template-columns:1fr 1fr }
