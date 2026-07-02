@@ -83,7 +83,7 @@ export default function Nav() {
           <Link href="/contact" className="nav-cta">{cta[locale] ?? cta.en}</Link>
         </div>
 
-        <button className="nav-burger" onClick={() => setMobileOpen(true)}>
+        <button className={`nav-burger${mobileOpen ? ' open' : ''}`} onClick={() => setMobileOpen(o => !o)}>
           <span /><span /><span />
         </button>
       </nav>

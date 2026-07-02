@@ -35,11 +35,15 @@ a { text-decoration:none; color:inherit }
 .lang-menu button:hover { background:rgba(255,255,255,.07); color:#fff }
 .lang-menu button.active { color:var(--amber); font-weight:600 }
 @media(max-width:860px) { .nav-links,.nav-right { display:none } .nav-burger { display:flex } .nav { padding:1.1rem 1.5rem } }
-.mobile-nav { position:fixed; inset:0; z-index:199; background:var(--dark); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2rem; transform:translateX(100%); transition:.4s var(--spring) }
+.mobile-nav { position:fixed; inset:0; z-index:201; background:var(--dark); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2rem; transform:translateX(100%); transition:.4s var(--spring) }
 .mobile-nav.open { transform:translateX(0) }
 .mobile-nav a { font-family:var(--ff-h); font-size:2rem; color:#fff; font-weight:700 }
 .mobile-nav a:hover, .mobile-nav a.active { color:var(--amber) }
-.mobile-nav .close-btn { position:absolute; top:1.5rem; right:2rem; font-size:2rem; color:#fff; background:0; border:0; cursor:pointer }
+.mobile-nav .close-btn { position:absolute; top:1.5rem; right:2rem; font-size:2rem; color:#fff; background:0; border:0; cursor:pointer; transition:color .2s }
+.mobile-nav .close-btn:hover { color:var(--amber) }
+.nav-burger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg) }
+.nav-burger.open span:nth-child(2) { opacity:0; transform:scaleX(0) }
+.nav-burger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg) }
 .mobile-lang { display:flex; align-items:center; gap:.75rem; margin-top:.5rem }
 .mobile-lang button { background:transparent; border:0; font-family:var(--ff-h); font-size:1.4rem; font-weight:700; color:rgba(255,255,255,.4); cursor:pointer; transition:color .2s }
 .mobile-lang button.active, .mobile-lang button:hover { color:var(--amber) }
