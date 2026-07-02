@@ -32,7 +32,7 @@ export default function AdminBar() {
         <div id="admin-bar" style={{ display: 'flex' }}>
           <span className="ab-label">Admin Mode</span>
           <span className="ab-sep" />
-          <span style={{ fontSize: '.72rem', color: 'rgba(255,255,255,.4)' }}>
+          <span className="ab-hint" style={{ fontSize: '.72rem', color: 'rgba(255,255,255,.4)' }}>
             Click any highlighted text to edit
           </span>
           <span className="ab-sep" />
