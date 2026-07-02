@@ -12,18 +12,24 @@ export default function Globe() {
     if (!container) return
 
     import('three').then(THREE => {
-      const size = container.offsetWidth || 420
+      let canvasSize = container.offsetWidth || 420
+      container.style.position = 'relative'
 
       const canvas = document.createElement('canvas')
       canvas.style.cssText = 'display:block;width:100%;height:100%;cursor:grab;'
       container.innerHTML = ''
       container.appendChild(canvas)
 
+      // Transparent overlay for city labels
+      const overlay = document.createElement('div')
+      overlay.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden;'
+      container.appendChild(overlay)
+
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
-      renderer.setSize(size, size)
+      renderer.setSize(canvasSize, canvasSize)
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       renderer.toneMapping = THREE.ACESFilmicToneMapping
-      renderer.toneMappingExposure = 1.3
+      renderer.toneMappingExposure = 1.2
       renderer.outputColorSpace = THREE.SRGBColorSpace
       rendererRef.current = renderer
 
@@ -50,7 +56,7 @@ export default function Globe() {
         new THREE.MeshBasicMaterial({ color: 0xD97706, wireframe: true, transparent: true, opacity: 0.09 })
       ))
 
-      // Atmosphere glow — slightly thicker and more visible
+      // Atmosphere glow
       globe.add(new THREE.Mesh(
         new THREE.SphereGeometry(R + 0.14, 32, 32),
         new THREE.MeshBasicMaterial({ color: 0x4B9FFF, transparent: true, opacity: 0.13, side: THREE.BackSide })
@@ -67,38 +73,66 @@ export default function Globe() {
       }
 
       const offices = [
-        { lat: 51.51,  lon:  -0.13  }, // London
-        { lat: 40.71,  lon: -74.01  }, // New York
-        { lat:  1.35,  lon: 103.82  }, // Singapore
-        { lat: 25.20,  lon:  55.27  }, // Dubai
-        { lat: 35.68,  lon: 139.69  }, // Tokyo
-        { lat:-23.55,  lon: -46.63  }, // São Paulo
-        { lat:-33.87,  lon: 151.21  }, // Sydney
-        { lat: 19.08,  lon:  72.88  }, // Mumbai
+        { lat: 51.51,  lon:  -0.13,  name: 'London'    },
+        { lat: 40.71,  lon: -74.01,  name: 'New York'  },
+        { lat:  1.35,  lon: 103.82,  name: 'Singapore' },
+        { lat: 25.20,  lon:  55.27,  name: 'Dubai'     },
+        { lat: 35.68,  lon: 139.69,  name: 'Tokyo'     },
+        { lat:-23.55,  lon: -46.63,  name: 'São Paulo' },
+        { lat:-33.87,  lon: 151.21,  name: 'Sydney'    },
+        { lat: 19.08,  lon:  72.88,  name: 'Mumbai'    },
       ]
 
-      const rings = []
-      for (const o of offices) {
-        const pos = latLon(o.lat, o.lon, R + 0.015)
+      const rings      = []
+      const labelItems = []
 
+      for (const o of offices) {
+        const localPos = latLon(o.lat, o.lon, R + 0.015)
+
+        // Dot
         const dot = new THREE.Mesh(
-          new THREE.SphereGeometry(0.03, 8, 8),
+          new THREE.SphereGeometry(0.028, 8, 8),
           new THREE.MeshBasicMaterial({ color: 0xF59E0B })
         )
-        dot.position.copy(pos)
+        dot.position.copy(localPos)
         globe.add(dot)
 
+        // Pulsing ring
         const ring = new THREE.Mesh(
-          new THREE.TorusGeometry(0.06, 0.01, 8, 24),
+          new THREE.TorusGeometry(0.055, 0.009, 8, 24),
           new THREE.MeshBasicMaterial({ color: 0xF59E0B, transparent: true, opacity: 0.65 })
         )
-        ring.position.copy(pos)
+        ring.position.copy(localPos)
         ring.lookAt(new THREE.Vector3(0, 0, 0))
         globe.add(ring)
         rings.push(ring)
+
+        // City label
+        const el = document.createElement('div')
+        el.textContent = o.name
+        el.style.cssText = [
+          'position:absolute',
+          'transform:translate(-50%,calc(-100% - 11px))',
+          'background:rgba(8,18,32,0.82)',
+          'color:#fff',
+          'font-family:system-ui,sans-serif',
+          'font-size:10px',
+          'font-weight:700',
+          'letter-spacing:.07em',
+          'text-transform:uppercase',
+          'padding:3px 8px',
+          'border-radius:4px',
+          'border:1px solid rgba(232,168,71,.55)',
+          'white-space:nowrap',
+          'pointer-events:none',
+          'transition:opacity .12s',
+          'opacity:0',
+        ].join(';')
+        overlay.appendChild(el)
+        labelItems.push({ el, localPos: localPos.clone() })
       }
 
-      // Lighting — sunlight from the front-left, soft fill to keep dark side visible
+      // Lighting
       scene.add(new THREE.AmbientLight(0x334455, 0.9))
       const sun = new THREE.DirectionalLight(0xfff5e0, 2.2)
       sun.position.set(-3, 2, 4)
@@ -142,6 +176,7 @@ export default function Globe() {
         globe.rotation.y = rotY
         globe.rotation.x = rotX
 
+        // Pulsing rings
         for (let i = 0; i < rings.length; i++) {
           const s = 1 + Math.abs(Math.sin(t * 1.5 + i * 1.1)) * 0.7
           rings[i].scale.setScalar(s)
@@ -149,20 +184,40 @@ export default function Globe() {
         }
 
         renderer.render(scene, camera)
+
+        // Update city labels — project 3D→2D and hide back-facing ones
+        globe.updateMatrixWorld()
+        for (const { el, localPos } of labelItems) {
+          const worldPos = localPos.clone().applyMatrix4(globe.matrixWorld)
+
+          // dot > 0 → office faces camera
+          const toCamera = camera.position.clone().sub(worldPos).normalize()
+          const dot = worldPos.clone().normalize().dot(toCamera)
+
+          if (dot < 0.08) { el.style.opacity = '0'; continue }
+
+          const projected = worldPos.clone().project(camera)
+          const px = (projected.x + 1) / 2 * canvasSize
+          const py = -(projected.y - 1) / 2 * canvasSize
+
+          el.style.opacity = Math.min(1, (dot - 0.08) / 0.14).toString()
+          el.style.left    = px + 'px'
+          el.style.top     = py + 'px'
+        }
       }
       animate()
 
       const ro = new ResizeObserver(() => {
         const s = container.offsetWidth
-        if (s > 0) renderer.setSize(s, s)
+        if (s > 0) { renderer.setSize(s, s); canvasSize = s }
       })
       ro.observe(container)
       roRef.current = ro
     })
 
     return () => {
-      if (animRef.current)    cancelAnimationFrame(animRef.current)
-      if (roRef.current)      roRef.current.disconnect()
+      if (animRef.current)     cancelAnimationFrame(animRef.current)
+      if (roRef.current)       roRef.current.disconnect()
       if (rendererRef.current) rendererRef.current.dispose()
       listenersRef.current.forEach(([el, ev, fn]) => el.removeEventListener(ev, fn))
       listenersRef.current = []
