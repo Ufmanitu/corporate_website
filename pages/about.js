@@ -1,11 +1,14 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import AdminBar from '../components/AdminBar'
 import Editable from '../components/Editable'
 import { AdminProvider } from '../context/AdminContext'
 import { getPageContent } from '../lib/content'
+
+const Globe = dynamic(() => import('../components/Globe'), { ssr: false })
 
 export default function About({ content }) {
   return (
@@ -143,14 +146,17 @@ function AboutContent({ content }) {
             <Editable tag="span" id="off-eye"   content={c('off-eye', 'Our Offices')} className="eyebrow" />
             <Editable tag="h2"   id="off-title" content={c('off-title', "Where you'll find us.")} className="sec-title" style={{ color: 'var(--white)' }} />
           </div>
-          <div className="offices-grid">
-            {offices.map((o, i) => (
-              <div key={i} className={`office-card rev d${i + 1}`}>
-                <Editable tag="div" id={o.city} content={c(o.city, o.dc)} className="office-city" />
-                <Editable tag="div" id={o.tag}  content={c(o.tag, o.dt)}  className="office-tag" />
-                <Editable tag="p"   id={o.addr} content={c(o.addr, o.da)} className="office-addr" />
-              </div>
-            ))}
+          <div className="offices-globe-layout rev">
+            <Globe />
+            <div className="offices-grid">
+              {offices.map((o, i) => (
+                <div key={i} className={`office-card d${i + 1}`}>
+                  <Editable tag="div" id={o.city} content={c(o.city, o.dc)} className="office-city" />
+                  <Editable tag="div" id={o.tag}  content={c(o.tag, o.dt)}  className="office-tag" />
+                  <Editable tag="p"   id={o.addr} content={c(o.addr, o.da)} className="office-addr" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
