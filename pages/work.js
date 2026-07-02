@@ -57,8 +57,8 @@ function WorkContent({ content }) {
           </div>
           <div className="feat rev">
             <div className="feat-vis">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80&auto=format&fit=crop" alt="Apex Financial" loading="lazy" className="feat-vis-img" />
               <Editable tag="div" id="feat-tag" content={c('feat-tag', 'Banking · Digital Transformation · 2023')} className="feat-tag" />
-              <div className="feat-bg-num">AF</div>
               <div style={{ flex: 1 }} />
               <div className="feat-results">
                 <div className="feat-r-item">
@@ -74,7 +74,6 @@ function WorkContent({ content }) {
                   <Editable tag="span" id="feat-r3l" content={c('feat-r3l', 'Cost base addressed')} className="feat-r-lbl" />
                 </div>
               </div>
-              <div className="feat-client">Apex</div>
             </div>
             <div className="feat-body">
               <Editable tag="div" id="feat-lb" content={c('feat-lb', 'Core Banking Infrastructure Overhaul')} className="feat-label" />

@@ -354,12 +354,12 @@ footer { background:var(--dark); padding:5rem 0 2.5rem }
 
 /* ── WORK PAGE ───────────────────────────────────────────────────────────── */
 .feat { display:grid; grid-template-columns:1fr 1fr; border-radius:28px; overflow:hidden; box-shadow:0 32px 80px rgba(14,31,46,.16) }
-.feat-vis { background:linear-gradient(140deg,#0E1E30,#162B3E); display:flex; flex-direction:column; justify-content:space-between; padding:3.5rem; position:relative; overflow:hidden }
-.feat-vis::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(232,168,71,.06),transparent 60%) }
-.feat-bg-num { position:absolute; right:-20px; bottom:-30px; font-family:var(--ff-h); font-size:14rem; font-weight:800; color:rgba(255,255,255,.03); line-height:1; pointer-events:none }
-.feat-tag { font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--amber); position:relative; z-index:1 }
-.feat-client { font-family:var(--ff-h); font-size:3rem; font-weight:800; color:rgba(255,255,255,.12); position:relative; z-index:1; line-height:1; margin-top:auto }
-.feat-results { display:flex; gap:2rem; position:relative; z-index:1 }
+.feat-vis { background:#0E1E30; display:flex; flex-direction:column; justify-content:space-between; padding:3.5rem; position:relative; overflow:hidden }
+.feat-vis-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; transition:transform .7s var(--spring) }
+.feat:hover .feat-vis-img { transform:scale(1.05) }
+.feat-vis::after { content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(to top,rgba(5,12,22,.88) 0%,rgba(5,12,22,.55) 50%,rgba(5,12,22,.3) 100%) }
+.feat-tag { font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--amber); position:relative; z-index:2 }
+.feat-results { display:flex; gap:2rem; position:relative; z-index:2 }
 .feat-r-item { display:flex; flex-direction:column; gap:.2rem }
 .feat-r-num { font-family:var(--ff-h); font-size:1.8rem; font-weight:800; color:var(--amber); line-height:1 }
 .feat-r-lbl { font-size:.72rem; color:rgba(138,164,190,.7) }
