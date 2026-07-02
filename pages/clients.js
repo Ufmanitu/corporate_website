@@ -96,8 +96,11 @@ function ClientsContent({ content }) {
             <Editable tag="h2"   id="tst-title" content={c('tst-title', 'In their own words.')} className="sec-title" style={{ color: 'var(--text-d)' }} />
           </div>
           <div className="tst-grid">
-            {testimonials.map((t, i) => (
-              <div key={i} className={`tst-card rev d${(i % 3) + 1}${t.featured ? ' featured' : ''}`}>
+            {testimonials.map((t, i) => {
+              const nfi = testimonials.slice(0, i).filter(x => !x.featured).length
+              const delay = t.featured ? 'd1' : `d${(nfi % 2) + 1}`
+              return (
+              <div key={i} className={`tst-card rev ${delay}${t.featured ? ' featured' : ''}`}>
                 <div className="tst-stars">{'★'.repeat(t.stars).split('').map((s, j) => <span key={j} className="tst-star">{s}</span>)}</div>
                 <div className="tst-qmark">"</div>
                 <Editable tag="p" id={t.q} content={c(t.q, t.dq)} className="tst-q" />
@@ -109,7 +112,8 @@ function ClientsContent({ content }) {
                   </div>
                 </div>
               </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
