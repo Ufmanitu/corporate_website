@@ -183,7 +183,7 @@ function ServicesContent({ content }) {
       </section>
 
       {/* Industries */}
-      <section className="sec-pad" style={{ background: 'var(--cream)' }}>
+      <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="sh c rev">
             <Editable tag="span" id="ind-eye"   content={c('ind-eye', 'Industries')} className="eyebrow" />

@@ -89,7 +89,7 @@ function ContactContent({ content }) {
 
             {/* FORM */}
             <div className="rev">
-              <div className="sh" style={{ marginBottom: '2.2rem' }}>
+              <div className="sh sm">
                 <Editable tag="span" id="ct-form-eye"  content={c('ct-form-eye', 'Send us a message')} className="eyebrow" />
                 <Editable tag="h2"   id="ct-form-title" content={c('ct-form-title', 'Tell us about your challenge.')} className="sec-title" style={{ color: 'var(--text-d)', fontSize: 'clamp(1.6rem,3vw,2.2rem)' }} />
                 <Editable tag="p"    id="ct-form-sub"  content={c('ct-form-sub', "We read every message ourselves. You'll hear from a partner within 48 hours.")} style={{ fontSize: '.92rem', fontWeight: 400, color: '#4D6070', lineHeight: 1.8 }} />
@@ -145,7 +145,7 @@ function ContactContent({ content }) {
                     <input type="checkbox" id="f-consent" checked={form.consent} onChange={update('consent')} />
                     <label htmlFor="f-consent">I agree to Meridian Group's <Link href="#">Privacy Policy</Link> and consent to being contacted about this inquiry.</label>
                   </div>
-                  {errorMsg && <div style={{ fontSize: '.82rem', color: '#cc4444', background: 'rgba(204,68,68,.08)', padding: '.6rem .9rem', borderRadius: 8 }}>{errorMsg}</div>}
+                  {errorMsg && <div className="form-error">{errorMsg}</div>}
                   <button type="submit" className="submit-btn" disabled={status === 'loading'}>
                     {status === 'loading' ? 'Sending…' : 'Send Message →'}
                   </button>
@@ -154,7 +154,7 @@ function ContactContent({ content }) {
             </div>
 
             {/* INFO PANEL */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.8rem' }} className="rev d2">
+            <div className="info-panel rev d2">
               <div className="info-card">
                 <Editable tag="h4" id="ct-contact-h" content={c('ct-contact-h', 'Direct Contact')} />
                 <div className="info-item"><span className="info-ico">✉</span><span className="info-text"><strong>New Business</strong><br /><a href={`mailto:${c('ct-email','hello@meridiangroup.com')}`}>{c('ct-email','hello@meridiangroup.com')}</a></span></div>
@@ -167,10 +167,10 @@ function ContactContent({ content }) {
                 <div className="info-item"><span className="info-ico">2</span><Editable tag="span" id="ct-e2" content={c('ct-e2', "We'll suggest a 30-minute call to understand your situation before discussing scope.")} className="info-text" /></div>
                 <div className="info-item"><span className="info-ico">3</span><Editable tag="span" id="ct-e3" content={c('ct-e3', "If we're a good fit, we'll outline a tailored proposal within a week. If not, we'll say so honestly.")} className="info-text" /></div>
               </div>
-              <div className="info-card" style={{ background: 'var(--dark)' }}>
-                <Editable tag="h4" id="ct-careers-h" content={c('ct-careers-h', 'Thinking about joining us?')} style={{ color: '#fff' }} />
-                <Editable tag="p" id="ct-careers-t" content={c('ct-careers-t', 'We hire a small number of exceptional consultants each year — people who combine analytical rigor with genuine curiosity.')} style={{ fontSize: '.85rem', color: 'var(--mist)', lineHeight: 1.7, marginTop: '.5rem' }} />
-                <a href="mailto:careers@meridiangroup.com" style={{ display: 'inline-flex', alignItems: 'center', gap: '.4rem', fontSize: '.82rem', fontWeight: 500, color: 'var(--amber)', marginTop: '1rem' }}>careers@meridiangroup.com →</a>
+              <div className="info-card dark">
+                <Editable tag="h4" id="ct-careers-h" content={c('ct-careers-h', 'Thinking about joining us?')} />
+                <Editable tag="p" id="ct-careers-t" content={c('ct-careers-t', 'We hire a small number of exceptional consultants each year — people who combine analytical rigor with genuine curiosity.')} className="careers-body" />
+                <a href="mailto:careers@meridiangroup.com" className="careers-link">careers@meridiangroup.com →</a>
               </div>
             </div>
           </div>
