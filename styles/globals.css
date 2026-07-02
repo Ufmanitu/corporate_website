@@ -587,6 +587,9 @@ body.admin .editable:focus { outline:2px solid var(--amber); background:rgba(232
   .hero-h1 { font-size:clamp(3rem,14vw,6rem) }
   .hero-btns { flex-direction:column }
 }
+@media(max-width:960px) {
+  .feat-results { flex-direction:column; gap:.65rem }
+}
 @media(max-width:860px) {
   .hero-h1 { font-size:clamp(4rem,12vw,8rem) }
   .si,.ph-inner,.fi { padding-left:1.5rem; padding-right:1.5rem }
@@ -634,7 +637,6 @@ body.admin .editable:focus { outline:2px solid var(--amber); background:rgba(232
   #testimonials { padding:4rem 0 }
   .cta-sec { padding:4rem 1.5rem }
   .feat-vis,.feat-body { padding:2rem 1.5rem }
-  .feat-results { gap:1.2rem; flex-wrap:wrap }
   .trust-strip { padding:2rem 1.2rem }
   .approach-strip { padding:1.5rem }
   .srv-grid,.stats-grid,.ind-grid,.why-grid,.cs-grid,.work-grid { grid-template-columns:1fr }
