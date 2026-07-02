@@ -65,8 +65,6 @@ function ContactContent({ content }) {
     { flag: '🇦🇪', city: 'co4-c', tag: 'co4-t', addr: 'co4-a', dc: 'Dubai',     dt: 'Middle East',          da: 'DIFC Gate Village, Building 4\nLevel 5, Dubai, UAE\n+971 4 555 0234' },
   ]
 
-  const inputStyle = { fontFamily: 'var(--ff-b)', fontSize: '.92rem', color: 'var(--text-d)', background: 'var(--white)', border: '1.5px solid rgba(14,31,46,.15)', borderRadius: 12, padding: '.85rem 1rem', outline: 'none', width: '100%' }
-
   return (
     <>
       <Head><title>Contact — Meridian Group</title></Head>
@@ -108,40 +106,40 @@ function ContactContent({ content }) {
                   <div className="form-row">
                     <div className="form-group">
                       <label htmlFor="f-name">Full Name *</label>
-                      <input id="f-name" type="text" style={inputStyle} placeholder="Elena Vasquez" value={form.name} onChange={update('name')} required />
+                      <input id="f-name" type="text" placeholder="Elena Vasquez" value={form.name} onChange={update('name')} required />
                     </div>
                     <div className="form-group">
                       <label htmlFor="f-company">Company</label>
-                      <input id="f-company" type="text" style={inputStyle} placeholder="Apex Financial" value={form.company} onChange={update('company')} />
+                      <input id="f-company" type="text" placeholder="Apex Financial" value={form.company} onChange={update('company')} />
                     </div>
                   </div>
                   <div className="form-row">
                     <div className="form-group">
                       <label htmlFor="f-email">Work Email *</label>
-                      <input id="f-email" type="email" style={inputStyle} placeholder="elena@apexfinancial.com" value={form.email} onChange={update('email')} required />
+                      <input id="f-email" type="email" placeholder="elena@apexfinancial.com" value={form.email} onChange={update('email')} required />
                     </div>
                     <div className="form-group">
                       <label htmlFor="f-phone">Phone</label>
-                      <input id="f-phone" type="tel" style={inputStyle} placeholder="+44 20 7946 0000" value={form.phone} onChange={update('phone')} />
+                      <input id="f-phone" type="tel" placeholder="+44 20 7946 0000" value={form.phone} onChange={update('phone')} />
                     </div>
                   </div>
                   <div className="form-group">
                     <label htmlFor="f-service">Primary Area of Interest</label>
-                    <select id="f-service" style={{ ...inputStyle, backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238AA4BE' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E\")", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', paddingRight: '2.5rem' }} value={form.service} onChange={update('service')}>
+                    <select id="f-service" value={form.service} onChange={update('service')}>
                       <option value="">Select a practice area…</option>
                       {['Strategy & Transformation','Technology Advisory','Digital Innovation','Financial Consulting','Operations Excellence','Risk & Compliance','Not sure yet'].map(o => <option key={o}>{o}</option>)}
                     </select>
                   </div>
                   <div className="form-group">
                     <label htmlFor="f-budget">Approximate Engagement Budget</label>
-                    <select id="f-budget" style={{ ...inputStyle, backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238AA4BE' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E\")", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', paddingRight: '2.5rem' }} value={form.budget} onChange={update('budget')}>
+                    <select id="f-budget" value={form.budget} onChange={update('budget')}>
                       <option value="">Select a range…</option>
                       {['€150K – €500K','€500K – €2M','€2M – €10M','€10M+','Prefer to discuss'].map(o => <option key={o}>{o}</option>)}
                     </select>
                   </div>
                   <div className="form-group">
                     <label htmlFor="f-msg">What are you working on? *</label>
-                    <textarea id="f-msg" style={{ ...inputStyle, resize: 'vertical', minHeight: 120, lineHeight: 1.6 }} placeholder="Describe the challenge, the context, and what success would look like for you." value={form.message} onChange={update('message')} required />
+                    <textarea id="f-msg" placeholder="Describe the challenge, the context, and what success would look like for you." value={form.message} onChange={update('message')} required />
                   </div>
                   <div className="form-consent">
                     <input type="checkbox" id="f-consent" checked={form.consent} onChange={update('consent')} />
