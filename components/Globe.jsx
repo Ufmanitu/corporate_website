@@ -13,9 +13,13 @@ export default function Globe({ selectedOffice }) {
   // Recompute target whenever the parent changes the selected office
   useEffect(() => {
     if (!selectedOffice) { targetRef.current = null; return }
-    const tX  = -selectedOffice.lat * Math.PI / 180
-    let   tY  = -(selectedOffice.lon + 90) * Math.PI / 180
-    // Find the nearest equivalent angle to avoid spinning the long way round
+    // tY: spin globe so the city's longitude reaches the front meridian.
+    // Derivation: lon=-90 maps to +Z (front) at rotY=0, so we need
+    // rotY = -(lon + 90) * PI/180. tX is reset to 0 (globe upright) so
+    // the city appears at its correct latitude in the upper/lower half.
+    let tY = -(selectedOffice.lon + 90) * Math.PI / 180
+    const tX = 0
+    // Shortest-path wrap so the globe never spins more than 180°
     const curY = stateRef.current.rotY
     const diff = ((tY - curY) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI
     targetRef.current = { y: curY + diff, x: tX }
