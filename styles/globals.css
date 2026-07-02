@@ -587,7 +587,10 @@ body.admin .editable:focus { outline:2px solid var(--amber); background:rgba(232
   .hero-h1 { font-size:clamp(3rem,14vw,6rem) }
   .hero-btns { flex-direction:column }
 }
-@media(max-width:960px) {
+@media(max-width:1000px) and (min-width:861px) {
+  .feat-results { flex-direction:column; gap:.65rem }
+}
+@media(max-width:650px) {
   .feat-results { flex-direction:column; gap:.65rem }
 }
 @media(max-width:860px) {
