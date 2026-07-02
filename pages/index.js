@@ -145,9 +145,9 @@ function HomeContent({ content }) {
   const [tstIdx, setTstIdx] = useState(0)
   const tstTimer = useRef(null)
   const testimonials = [
-    { q: c('tst1-q', "Meridian didn't just advise us — they transformed how we think about strategy entirely."), name: c('tst1-n', 'Sarah Chen'), role: c('tst1-r', 'CEO, Apex Financial') },
-    { q: c('tst2-q', 'The depth of insight and the speed of execution were remarkable. They had a practical recommendation on the table within a week.'), name: c('tst2-n', 'Marcus Hoffmann'), role: c('tst2-r', 'CTO, Nordvale Health') },
-    { q: c('tst3-q', 'Working with Meridian was the single best decision we made last year. Full stop.'), name: c('tst3-n', 'Amara Diallo'), role: c('tst3-r', 'COO, Sienna Logistics') },
+    { init: 'SC', q: c('tst1-q', "Meridian didn't just advise us — they transformed how we think about strategy entirely."), name: c('tst1-n', 'Sarah Chen'), role: c('tst1-r', 'CEO, Apex Financial') },
+    { init: 'MH', q: c('tst2-q', 'The depth of insight and the speed of execution were remarkable. They had a practical recommendation on the table within a week.'), name: c('tst2-n', 'Marcus Hoffmann'), role: c('tst2-r', 'CTO, Nordvale Health') },
+    { init: 'AD', q: c('tst3-q', 'Working with Meridian was the single best decision we made last year. Full stop.'), name: c('tst3-n', 'Amara Diallo'), role: c('tst3-r', 'COO, Sienna Logistics') },
   ]
   function goTo(i) {
     setTstIdx(i)
@@ -352,8 +352,11 @@ function HomeContent({ content }) {
               <div key={i} className={`tst-item-h${tstIdx === i ? ' on' : ''}`}>
                 <p className="tst-q-h">"{t.q}"</p>
                 <div className="tst-author">
-                  <span className="tst-name" style={{ color: 'var(--white)' }}>{t.name}</span>
-                  <span className="tst-role">{t.role}</span>
+                  <div className="tst-avatar">{t.init}</div>
+                  <div>
+                    <div className="tst-name">{t.name}</div>
+                    <div className="tst-role">{t.role}</div>
+                  </div>
                 </div>
               </div>
             ))}

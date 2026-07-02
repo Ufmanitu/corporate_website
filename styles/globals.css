@@ -167,6 +167,11 @@ a { text-decoration:none; color:inherit }
 .tst-item-h { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; gap:1.4rem; opacity:0; transform:translateY(14px); transition:opacity .6s ease,transform .6s ease; pointer-events:none }
 .tst-item-h.on { opacity:1; transform:translateY(0); pointer-events:auto; position:relative }
 .tst-q-h { font-size:clamp(1rem,2.2vw,1.3rem); font-weight:400; color:var(--text-l); line-height:1.8; font-style:italic }
+/* Author block inside the homepage carousel */
+#testimonials .tst-author { border-top-color:rgba(255,255,255,.1); justify-content:center; display:inline-flex }
+#testimonials .tst-avatar { background:rgba(255,255,255,.1); color:var(--white); border:1px solid rgba(255,255,255,.18); font-size:.8rem }
+#testimonials .tst-name { color:var(--white); font-weight:600; font-size:.9rem }
+#testimonials .tst-role { color:var(--mist); font-size:.78rem }
 .tst-dots { display:flex; justify-content:center; gap:.55rem }
 .tdot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); cursor:pointer; transition:all .35s }
 .tdot.on { background:var(--amber); border-color:var(--amber); width:24px; border-radius:4px }
