@@ -4,6 +4,7 @@ function MyDocument({ locale }) {
   return (
     <Html lang={locale || 'en'}>
       <Head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
