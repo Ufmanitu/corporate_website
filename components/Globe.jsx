@@ -1,11 +1,25 @@
 import { useEffect, useRef } from 'react'
 
-export default function Globe() {
+export default function Globe({ selectedOffice }) {
   const containerRef = useRef(null)
   const animRef      = useRef(null)
   const rendererRef  = useRef(null)
   const roRef        = useRef(null)
   const listenersRef = useRef([])
+  // Mutable rotation state — shared between event handlers and animation loop
+  const stateRef  = useRef({ rotY: 0.5, rotX: -0.15, vx: 0, vy: 0, dragging: false })
+  const targetRef = useRef(null) // { y, x } while a city is selected; null = auto-rotate
+
+  // Recompute target whenever the parent changes the selected office
+  useEffect(() => {
+    if (!selectedOffice) { targetRef.current = null; return }
+    const tX  = -selectedOffice.lat * Math.PI / 180
+    let   tY  = -(selectedOffice.lon + 90) * Math.PI / 180
+    // Find the nearest equivalent angle to avoid spinning the long way round
+    const curY = stateRef.current.rotY
+    const diff = ((tY - curY) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI
+    targetRef.current = { y: curY + diff, x: tX }
+  }, [selectedOffice])
 
   useEffect(() => {
     const container = containerRef.current
@@ -20,7 +34,6 @@ export default function Globe() {
       container.innerHTML = ''
       container.appendChild(canvas)
 
-      // Transparent overlay for city labels
       const overlay = document.createElement('div')
       overlay.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden;'
       container.appendChild(overlay)
@@ -43,12 +56,10 @@ export default function Globe() {
 
       // Real Earth texture
       const earthTex = new THREE.TextureLoader().load('/earth.jpg')
-      const geo = new THREE.SphereGeometry(R, 64, 64)
-      globe.add(new THREE.Mesh(geo, new THREE.MeshPhongMaterial({
-        map: earthTex,
-        shininess: 18,
-        specular: new THREE.Color(0x1a3a6a),
-      })))
+      globe.add(new THREE.Mesh(
+        new THREE.SphereGeometry(R, 64, 64),
+        new THREE.MeshPhongMaterial({ map: earthTex, shininess: 18, specular: new THREE.Color(0x1a3a6a) })
+      ))
 
       // Amber wireframe grid
       globe.add(new THREE.Mesh(
@@ -89,7 +100,6 @@ export default function Globe() {
       for (const o of offices) {
         const localPos = latLon(o.lat, o.lon, R + 0.015)
 
-        // Dot
         const dot = new THREE.Mesh(
           new THREE.SphereGeometry(0.028, 8, 8),
           new THREE.MeshBasicMaterial({ color: 0xF59E0B })
@@ -97,7 +107,6 @@ export default function Globe() {
         dot.position.copy(localPos)
         globe.add(dot)
 
-        // Pulsing ring
         const ring = new THREE.Mesh(
           new THREE.TorusGeometry(0.055, 0.009, 8, 24),
           new THREE.MeshBasicMaterial({ color: 0xF59E0B, transparent: true, opacity: 0.65 })
@@ -107,7 +116,6 @@ export default function Globe() {
         globe.add(ring)
         rings.push(ring)
 
-        // City label
         const el = document.createElement('div')
         el.textContent = o.name
         el.style.cssText = [
@@ -141,25 +149,25 @@ export default function Globe() {
       fill.position.set(4, -1, -3)
       scene.add(fill)
 
-      // Drag + touch
-      let dragging = false, lastX = 0, lastY = 0, vx = 0, vy = 0
-      let rotY = 0.5, rotX = -0.15
+      // Drag + touch — write directly into stateRef
+      const s = stateRef.current
+      let lastX = 0, lastY = 0
 
       const on = (el, ev, fn, opts) => { el.addEventListener(ev, fn, opts); listenersRef.current.push([el, ev, fn]) }
 
-      on(canvas, 'mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; canvas.style.cursor = 'grabbing' })
-      on(window, 'mouseup',   ()  => { dragging = false; canvas.style.cursor = 'grab' })
+      on(canvas, 'mousedown', e  => { s.dragging = true; lastX = e.clientX; lastY = e.clientY; canvas.style.cursor = 'grabbing' })
+      on(window, 'mouseup',   ()  => { s.dragging = false; canvas.style.cursor = 'grab' })
       on(window, 'mousemove', e  => {
-        if (!dragging) return
-        vx = (e.clientX - lastX) * 0.007; vy = (e.clientY - lastY) * 0.005
-        rotY += vx; rotX += vy; lastX = e.clientX; lastY = e.clientY
+        if (!s.dragging) return
+        s.vx = (e.clientX - lastX) * 0.007; s.vy = (e.clientY - lastY) * 0.005
+        s.rotY += s.vx; s.rotX += s.vy; lastX = e.clientX; lastY = e.clientY
       })
-      on(canvas, 'touchstart', e => { dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY }, { passive: true })
-      on(window, 'touchend',   ()  => { dragging = false })
+      on(canvas, 'touchstart', e => { s.dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY }, { passive: true })
+      on(window, 'touchend',   ()  => { s.dragging = false })
       on(window, 'touchmove',  e  => {
-        if (!dragging) return
-        vx = (e.touches[0].clientX - lastX) * 0.007; vy = (e.touches[0].clientY - lastY) * 0.005
-        rotY += vx; rotX += vy; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY
+        if (!s.dragging) return
+        s.vx = (e.touches[0].clientX - lastX) * 0.007; s.vy = (e.touches[0].clientY - lastY) * 0.005
+        s.rotY += s.vx; s.rotX += s.vy; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY
       }, { passive: true })
 
       const clock = new THREE.Clock()
@@ -168,38 +176,43 @@ export default function Globe() {
       function animate() {
         animRef.current = requestAnimationFrame(animate)
         const dt = clock.getDelta(); t += dt
+        const target = targetRef.current
 
-        if (!dragging) { rotY += 0.008; vx *= 0.92; vy *= 0.92; rotY += vx; rotX += vy }
-        else           { vx *= 0.9; vy *= 0.9 }
-        rotX = Math.max(-1.2, Math.min(1.2, rotX))
+        if (s.dragging) {
+          s.vx *= 0.9; s.vy *= 0.9
+        } else if (target) {
+          // Smooth ease-out to selected city; stops when close enough
+          s.rotY += (target.y - s.rotY) * 0.045
+          s.rotX += (target.x - s.rotX) * 0.045
+        } else {
+          // Free auto-rotate with momentum decay
+          s.rotY += 0.008
+          s.vx *= 0.92; s.vy *= 0.92
+          s.rotY += s.vx; s.rotX += s.vy
+        }
+        s.rotX = Math.max(-1.2, Math.min(1.2, s.rotX))
 
-        globe.rotation.y = rotY
-        globe.rotation.x = rotX
+        globe.rotation.y = s.rotY
+        globe.rotation.x = s.rotX
 
-        // Pulsing rings
         for (let i = 0; i < rings.length; i++) {
-          const s = 1 + Math.abs(Math.sin(t * 1.5 + i * 1.1)) * 0.7
-          rings[i].scale.setScalar(s)
-          rings[i].material.opacity = 0.65 / s
+          const sc = 1 + Math.abs(Math.sin(t * 1.5 + i * 1.1)) * 0.7
+          rings[i].scale.setScalar(sc)
+          rings[i].material.opacity = 0.65 / sc
         }
 
         renderer.render(scene, camera)
 
-        // Update city labels — project 3D→2D and hide back-facing ones
+        // Project labels to screen — hide back-facing ones
         globe.updateMatrixWorld()
         for (const { el, localPos } of labelItems) {
           const worldPos = localPos.clone().applyMatrix4(globe.matrixWorld)
-
-          // dot > 0 → office faces camera
           const toCamera = camera.position.clone().sub(worldPos).normalize()
-          const dot = worldPos.clone().normalize().dot(toCamera)
-
+          const dot      = worldPos.clone().normalize().dot(toCamera)
           if (dot < 0.08) { el.style.opacity = '0'; continue }
-
           const projected = worldPos.clone().project(camera)
           const px = (projected.x + 1) / 2 * canvasSize
           const py = -(projected.y - 1) / 2 * canvasSize
-
           el.style.opacity = Math.min(1, (dot - 0.08) / 0.14).toString()
           el.style.left    = px + 'px'
           el.style.top     = py + 'px'
@@ -208,8 +221,8 @@ export default function Globe() {
       animate()
 
       const ro = new ResizeObserver(() => {
-        const s = container.offsetWidth
-        if (s > 0) { renderer.setSize(s, s); canvasSize = s }
+        const sz = container.offsetWidth
+        if (sz > 0) { renderer.setSize(sz, sz); canvasSize = sz }
       })
       ro.observe(container)
       roRef.current = ro

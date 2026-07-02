@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -20,6 +21,7 @@ export default function About({ content }) {
 
 function AboutContent({ content }) {
   const c = (key, fallback = '') => content[key] ?? fallback
+  const [selectedOffice, setSelectedOffice] = useState(null)
 
   const values = [
     { ico: '🔬', t: 'v1-t', d: 'v1-d', dt: 'Intellectual Honesty', dd: "We tell clients what they need to hear — including when the answer is uncomfortable or when we're not the right firm for the job." },
@@ -45,10 +47,14 @@ function AboutContent({ content }) {
   ]
 
   const offices = [
-    { city: 'o1-city', tag: 'o1-tag', addr: 'o1-addr', dc: 'London',    dt: 'Headquarters', da: '10 Grosvenor Square, Mayfair\nLondon W1K 6JP, United Kingdom' },
-    { city: 'o2-city', tag: 'o2-tag', addr: 'o2-addr', dc: 'New York',  dt: 'Americas',     da: '1 World Trade Center, Floor 68\nNew York, NY 10007' },
-    { city: 'o3-city', tag: 'o3-tag', addr: 'o3-addr', dc: 'Singapore', dt: 'Asia-Pacific', da: 'Marina Bay Financial Centre\nTower 3, Level 24, Singapore 018982' },
-    { city: 'o4-city', tag: 'o4-tag', addr: 'o4-addr', dc: 'Dubai',     dt: 'Middle East',  da: 'DIFC Gate Village, Building 4\nLevel 5, Dubai, UAE' },
+    { city: 'o1-city', tag: 'o1-tag', addr: 'o1-addr', dc: 'London',    dt: 'Headquarters', da: '10 Grosvenor Square, Mayfair, London W1K 6JP',             lat: 51.51,  lon:  -0.13  },
+    { city: 'o2-city', tag: 'o2-tag', addr: 'o2-addr', dc: 'New York',  dt: 'Americas',     da: '1 World Trade Center, Floor 68, New York NY 10007',         lat: 40.71,  lon: -74.01  },
+    { city: 'o3-city', tag: 'o3-tag', addr: 'o3-addr', dc: 'Singapore', dt: 'Asia-Pacific', da: 'Marina Bay Financial Centre, Tower 3, Level 24',            lat:  1.35,  lon: 103.82  },
+    { city: 'o4-city', tag: 'o4-tag', addr: 'o4-addr', dc: 'Dubai',     dt: 'Middle East',  da: 'DIFC Gate Village, Building 4, Level 5, Dubai',             lat: 25.20,  lon:  55.27  },
+    { city: 'o5-city', tag: 'o5-tag', addr: 'o5-addr', dc: 'Tokyo',     dt: 'East Asia',    da: 'Tokyo Midtown Hibiya, 1-1-2 Yurakucho, Chiyoda-ku',         lat: 35.68,  lon: 139.69  },
+    { city: 'o6-city', tag: 'o6-tag', addr: 'o6-addr', dc: 'São Paulo', dt: 'South America',da: 'Av. Brigadeiro Faria Lima 3477, Itaim Bibi, São Paulo',      lat:-23.55,  lon: -46.63  },
+    { city: 'o7-city', tag: 'o7-tag', addr: 'o7-addr', dc: 'Sydney',    dt: 'Australia',    da: '1 Martin Place, Level 31, Sydney NSW 2000',                  lat:-33.87,  lon: 151.21  },
+    { city: 'o8-city', tag: 'o8-tag', addr: 'o8-addr', dc: 'Mumbai',    dt: 'South Asia',   da: 'Bandra Kurla Complex, Unit G-7, Mumbai 400 051',             lat: 19.08,  lon:  72.88  },
   ]
 
   const awards = [
@@ -147,10 +153,14 @@ function AboutContent({ content }) {
             <Editable tag="h2"   id="off-title" content={c('off-title', "Where you'll find us.")} className="sec-title" style={{ color: 'var(--white)' }} />
           </div>
           <div className="offices-globe-layout rev">
-            <Globe />
+            <Globe selectedOffice={selectedOffice} />
             <div className="offices-grid">
               {offices.map((o, i) => (
-                <div key={i} className={`office-card d${i + 1}`}>
+                <div
+                  key={i}
+                  className={`office-card d${(i % 4) + 1}${selectedOffice?.dc === o.dc ? ' active' : ''}`}
+                  onClick={() => setSelectedOffice(prev => prev?.dc === o.dc ? null : o)}
+                >
                   <Editable tag="div" id={o.city} content={c(o.city, o.dc)} className="office-city" />
                   <Editable tag="div" id={o.tag}  content={c(o.tag, o.dt)}  className="office-tag" />
                   <Editable tag="p"   id={o.addr} content={c(o.addr, o.da)} className="office-addr" />
