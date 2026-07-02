@@ -106,7 +106,7 @@ function WorkContent({ content }) {
           </div>
           <div className="cs-grid">
             {caseStudies.map((cs, i) => (
-              <div key={i} className={`cs-card rev d${(i % 3) + 1}${filter !== 'all' && filter !== cs.cat ? ' hidden' : ''}`} data-category={cs.cat}>
+              <div key={i} className={`cs-card d${(i % 3) + 1}${filter !== 'all' && filter !== cs.cat ? ' hidden' : ''}`} data-category={cs.cat}>
                 <div className="cs-img">
                   <img src={cs.img} alt={cs.client} loading="lazy" />
                   <span className="cs-img-tag">{cs.tag}</span>

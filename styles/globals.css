@@ -374,7 +374,7 @@ footer { background:var(--dark); padding:5rem 0 2.5rem }
 .feat-vis { background:#0E1E30; display:flex; flex-direction:column; justify-content:space-between; padding:3.5rem; position:relative; overflow:hidden }
 .feat-vis-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; transition:transform .7s var(--spring) }
 .feat:hover .feat-vis-img { transform:scale(1.05) }
-.feat-vis::after { content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(to top,rgba(5,12,22,.88) 0%,rgba(5,12,22,.55) 50%,rgba(5,12,22,.3) 100%) }
+.feat-vis::after { content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(to top,rgba(5,12,22,1) 0%,rgba(5,12,22,.82) 30%,rgba(5,12,22,.45) 65%,rgba(5,12,22,.12) 100%) }
 .feat-tag { font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--amber); position:relative; z-index:2 }
 .feat-results { display:flex; gap:2rem; position:relative; z-index:2 }
 .feat-r-item { display:flex; flex-direction:column; gap:.2rem; min-width:0 }
@@ -391,9 +391,12 @@ footer { background:var(--dark); padding:5rem 0 2.5rem }
 .flt:hover { border-color:var(--amber-d); color:var(--text-d) }
 .flt.on { background:var(--dark); color:#fff; border-color:var(--dark) }
 .cs-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.3rem }
-.cs-card { border-radius:20px; overflow:hidden; background:var(--white); border:1px solid rgba(14,31,46,.08); transition:transform .35s var(--spring),box-shadow .35s,opacity .3s; display:flex; flex-direction:column }
+@keyframes cs-fadein { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:none } }
+.cs-card { border-radius:20px; overflow:hidden; background:var(--white); border:1px solid rgba(14,31,46,.08); transition:transform .35s var(--spring),box-shadow .35s; display:flex; flex-direction:column; animation:cs-fadein .45s ease both }
+.cs-card.d2 { animation-delay:.09s }
+.cs-card.d3 { animation-delay:.18s }
 .cs-card:hover { transform:translateY(-7px); box-shadow:0 28px 64px rgba(14,31,46,.13) }
-.cs-card.hidden { opacity:0; pointer-events:none; transform:scale(.96) }
+.cs-card.hidden { display:none }
 .cs-img { aspect-ratio:16/9; display:flex; align-items:flex-end; padding:1.1rem; position:relative; overflow:hidden; background:#0B1929; flex-shrink:0 }
 .cs-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .55s var(--spring) }
 .cs-card:hover .cs-img img { transform:scale(1.07) }
