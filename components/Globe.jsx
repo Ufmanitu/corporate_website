@@ -35,42 +35,14 @@ export default function Globe() {
       const globe = new THREE.Group()
       scene.add(globe)
 
-      // Procedural Earth-like sphere — ocean, land, desert, polar ice
-      const geo     = new THREE.SphereGeometry(R, 64, 64)
-      const posArr  = geo.attributes.position.array
-      const vColors = new Float32Array(posArr.length)
-      for (let i = 0; i < posArr.length; i += 3) {
-        const nx = posArr[i] / R, ny = posArr[i + 1] / R, nz = posArr[i + 2] / R
-        const lat  = ny  // −1 south pole … +1 north pole
-        const n    = Math.sin(nx * 9) * Math.cos(ny * 6) * Math.sin(nz * 8)
-        const n2   = Math.sin(nx * 5) * Math.cos(nz * 7)
-        const polar = Math.abs(lat) > 0.72
-
-        if (polar) {
-          // Ice caps — bright blue-white
-          const blend = (Math.abs(lat) - 0.72) / 0.28
-          vColors[i] = 0.72 + blend * 0.25; vColors[i+1] = 0.82 + blend * 0.15; vColors[i+2] = 0.92 + blend * 0.07
-        } else if (n > 0.08) {
-          // Land — green in temperate, sandy-brown near equator
-          const tropical = Math.abs(lat) < 0.25
-          if (tropical && n2 > 0.1) {
-            // Desert / arid band
-            vColors[i] = 0.62; vColors[i+1] = 0.44; vColors[i+2] = 0.14
-          } else if (tropical) {
-            // Tropical forest — deep green
-            vColors[i] = 0.07; vColors[i+1] = 0.38; vColors[i+2] = 0.10
-          } else {
-            // Temperate — mid green
-            vColors[i] = 0.13; vColors[i+1] = 0.48; vColors[i+2] = 0.16
-          }
-        } else {
-          // Ocean — brighter blue, slightly lighter near equator
-          const depth = 0.5 + Math.abs(lat) * 0.3
-          vColors[i] = 0.04; vColors[i+1] = 0.18 + depth * 0.08; vColors[i+2] = 0.52 + depth * 0.15
-        }
-      }
-      geo.setAttribute('color', new THREE.BufferAttribute(vColors, 3))
-      globe.add(new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ vertexColors: true, shininess: 55, specular: 0x224488 })))
+      // Real Earth texture
+      const earthTex = new THREE.TextureLoader().load('/earth.jpg')
+      const geo = new THREE.SphereGeometry(R, 64, 64)
+      globe.add(new THREE.Mesh(geo, new THREE.MeshPhongMaterial({
+        map: earthTex,
+        shininess: 18,
+        specular: new THREE.Color(0x1a3a6a),
+      })))
 
       // Amber wireframe grid
       globe.add(new THREE.Mesh(
@@ -126,17 +98,14 @@ export default function Globe() {
         rings.push(ring)
       }
 
-      // Lighting — brighter ambient so colours read clearly
-      scene.add(new THREE.AmbientLight(0x607890, 1.4))
-      const keyL = new THREE.PointLight(0xC8E0FF, 4.5, 20)
-      keyL.position.set(-4, 3, 5)
-      scene.add(keyL)
-      const rimL = new THREE.PointLight(0xFFD070, 2.8, 14)
-      rimL.position.set(4, -2, 3)
-      scene.add(rimL)
-      const fillL = new THREE.PointLight(0x80B0FF, 1.8, 18)
-      fillL.position.set(2, 4, -4)
-      scene.add(fillL)
+      // Lighting — sunlight from the front-left, soft fill to keep dark side visible
+      scene.add(new THREE.AmbientLight(0x334455, 0.9))
+      const sun = new THREE.DirectionalLight(0xfff5e0, 2.2)
+      sun.position.set(-3, 2, 4)
+      scene.add(sun)
+      const fill = new THREE.DirectionalLight(0x2244aa, 0.5)
+      fill.position.set(4, -1, -3)
+      scene.add(fill)
 
       // Drag + touch
       let dragging = false, lastX = 0, lastY = 0, vx = 0, vy = 0
