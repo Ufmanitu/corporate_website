@@ -55,6 +55,8 @@ function AboutContent({ content }) {
     { city: 'o6-city', tag: 'o6-tag', addr: 'o6-addr', dc: 'São Paulo', dt: 'South America',da: 'Av. Brigadeiro Faria Lima 3477, Itaim Bibi, São Paulo',      lat:-23.55,  lon: -46.63  },
     { city: 'o7-city', tag: 'o7-tag', addr: 'o7-addr', dc: 'Sydney',    dt: 'Australia',    da: '1 Martin Place, Level 31, Sydney NSW 2000',                  lat:-33.87,  lon: 151.21  },
     { city: 'o8-city', tag: 'o8-tag', addr: 'o8-addr', dc: 'Mumbai',    dt: 'South Asia',   da: 'Bandra Kurla Complex, Unit G-7, Mumbai 400 051',             lat: 19.08,  lon:  72.88  },
+    { city: 'o9-city', tag: 'o9-tag', addr: 'o9-addr', dc: 'Budapest',  dt: 'Central Europe', da: 'Magyar Posta Building, Váci út 1-3, Budapest 1062',        lat: 47.50,  lon:  19.04  },
+    { city: 'o10-city',tag: 'o10-tag',addr: 'o10-addr',dc: 'Istanbul',  dt: 'Eurasia',      da: 'Levent 199, Büyükdere Cad. No.199, Şişli, İstanbul',         lat: 41.01,  lon:  28.95  },
   ]
 
   const awards = [

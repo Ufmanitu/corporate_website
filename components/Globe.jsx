@@ -95,6 +95,8 @@ export default function Globe({ selectedOffice }) {
         { lat:-23.55,  lon: -46.63,  name: 'São Paulo' },
         { lat:-33.87,  lon: 151.21,  name: 'Sydney'    },
         { lat: 19.08,  lon:  72.88,  name: 'Mumbai'    },
+        { lat: 47.50,  lon:  19.04,  name: 'Budapest'  },
+        { lat: 41.01,  lon:  28.95,  name: 'Istanbul'  },
       ]
 
       const rings      = []
