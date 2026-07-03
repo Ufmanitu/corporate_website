@@ -17,9 +17,8 @@ export default function Globe({ selectedOffice }) {
     // Derivation: lon=-90 maps to +Z (front) at rotY=0, so we need
     // rotY = -(lon + 90) * PI/180. tX is reset to 0 (globe upright) so
     // the city appears at its correct latitude in the upper/lower half.
-    let tY = -(selectedOffice.lon + 90) * Math.PI / 180
-    const tX = 0
-    // Shortest-path wrap so the globe never spins more than 180°
+    const tY  = -(selectedOffice.lon + 90) * Math.PI / 180
+    const tX  = selectedOffice.lat * Math.PI / 180
     const curY = stateRef.current.rotY
     const diff = ((tY - curY) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI
     targetRef.current = { y: curY + diff, x: tX }
@@ -65,10 +64,10 @@ export default function Globe({ selectedOffice }) {
         new THREE.MeshPhongMaterial({ map: earthTex, shininess: 18, specular: new THREE.Color(0x1a3a6a) })
       ))
 
-      // Amber wireframe grid
+      // Grid
       globe.add(new THREE.Mesh(
         new THREE.SphereGeometry(R + 0.012, 32, 32),
-        new THREE.MeshBasicMaterial({ color: 0xD97706, wireframe: true, transparent: true, opacity: 0.09 })
+        new THREE.MeshBasicMaterial({ color: 0xEF4444, wireframe: true, transparent: true, opacity: 0.07 })
       ))
 
       // Atmosphere glow
@@ -106,14 +105,14 @@ export default function Globe({ selectedOffice }) {
 
         const dot = new THREE.Mesh(
           new THREE.SphereGeometry(0.028, 8, 8),
-          new THREE.MeshBasicMaterial({ color: 0xF59E0B })
+          new THREE.MeshBasicMaterial({ color: 0xEF4444 })
         )
         dot.position.copy(localPos)
         globe.add(dot)
 
         const ring = new THREE.Mesh(
           new THREE.TorusGeometry(0.055, 0.009, 8, 24),
-          new THREE.MeshBasicMaterial({ color: 0xF59E0B, transparent: true, opacity: 0.65 })
+          new THREE.MeshBasicMaterial({ color: 0xEF4444, transparent: true, opacity: 0.65 })
         )
         ring.position.copy(localPos)
         ring.lookAt(new THREE.Vector3(0, 0, 0))
@@ -134,7 +133,7 @@ export default function Globe({ selectedOffice }) {
           'text-transform:uppercase',
           'padding:3px 8px',
           'border-radius:4px',
-          'border:1px solid rgba(232,168,71,.55)',
+          'border:1px solid rgba(239,68,68,.55)',
           'white-space:nowrap',
           'pointer-events:none',
           'transition:opacity .12s',
@@ -159,14 +158,14 @@ export default function Globe({ selectedOffice }) {
 
       const on = (el, ev, fn, opts) => { el.addEventListener(ev, fn, opts); listenersRef.current.push([el, ev, fn]) }
 
-      on(canvas, 'mousedown', e  => { s.dragging = true; lastX = e.clientX; lastY = e.clientY; canvas.style.cursor = 'grabbing' })
+      on(canvas, 'mousedown', e  => { s.dragging = true; lastX = e.clientX; lastY = e.clientY; canvas.style.cursor = 'grabbing'; targetRef.current = null })
       on(window, 'mouseup',   ()  => { s.dragging = false; canvas.style.cursor = 'grab' })
       on(window, 'mousemove', e  => {
         if (!s.dragging) return
         s.vx = (e.clientX - lastX) * 0.007; s.vy = (e.clientY - lastY) * 0.005
         s.rotY += s.vx; s.rotX += s.vy; lastX = e.clientX; lastY = e.clientY
       })
-      on(canvas, 'touchstart', e => { s.dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY }, { passive: true })
+      on(canvas, 'touchstart', e => { s.dragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; targetRef.current = null }, { passive: true })
       on(window, 'touchend',   ()  => { s.dragging = false })
       on(window, 'touchmove',  e  => {
         if (!s.dragging) return
@@ -194,7 +193,7 @@ export default function Globe({ selectedOffice }) {
           s.vx *= 0.92; s.vy *= 0.92
           s.rotY += s.vx; s.rotX += s.vy
         }
-        s.rotX = Math.max(-1.2, Math.min(1.2, s.rotX))
+        s.rotX = Math.max(-1.5, Math.min(1.5, s.rotX))
 
         globe.rotation.y = s.rotY
         globe.rotation.x = s.rotX
