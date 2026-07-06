@@ -6,6 +6,7 @@ import CartDrawer from '../../components/CartDrawer'
 import ProductCard from '../../components/ProductCard'
 import ShopFooter from '../../components/ShopFooter'
 import { PRODUCTS } from '../../lib/products'
+import { useShopT } from '../../lib/shopI18n'
 
 const bestsellers = PRODUCTS.filter(p => p.isBestseller)
 
@@ -22,14 +23,8 @@ const testimonials = [
   { init: 'RB', q: 'The GaN charger replaced three separate bricks. Travels with me everywhere. Build quality is exceptional for the price.', name: 'Ravi B.', role: 'Product Manager, Singapore' },
 ]
 
-const whyItems = [
-  { ico: '🚚', title: 'Free 2-Day Shipping', desc: 'On all orders over $100. Free returns, always.' },
-  { ico: '🛡️', title: '2-Year Warranty', desc: 'Every NOUX product is covered, no questions asked.' },
-  { ico: '↩️', title: '30-Day Returns', desc: 'Not satisfied? Return it free within 30 days.' },
-  { ico: '💬', title: '24/7 Support', desc: 'Real humans, not bots. Always here when you need us.' },
-]
-
 export default function Home() {
+  const t = useShopT()
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -139,16 +134,21 @@ export default function Home() {
     return () => clearInterval(tstTimer.current)
   }, [])
 
+  const whyItems = [
+    { ico: '🚚', title: t.why1Title, desc: t.why1Desc },
+    { ico: '🛡️', title: t.why2Title, desc: t.why2Desc },
+    { ico: '↩️', title: t.why3Title, desc: t.why3Desc },
+    { ico: '💬', title: t.why4Title, desc: t.why4Desc },
+  ]
+
   return (
     <>
       <Head>
-        <title>NOUX — Premium Tech Accessories</title>
-        <meta name="description" content="Premium tech accessories engineered for focused professionals. Free 2-day shipping." />
+        <title>NOUX — {t.heroEyebrow}</title>
+        <meta name="description" content={t.heroSub} />
       </Head>
 
-      <div className="announce-bar">
-        Free shipping on orders over $100 &nbsp;·&nbsp; Use code <strong>LAUNCH</strong> for 10% off
-      </div>
+      <div className="announce-bar">{t.announce}</div>
 
       <ShopNav />
       <CartDrawer />
@@ -160,18 +160,15 @@ export default function Home() {
         <div className="hero-glow2" />
         <div className="hero-inner">
           <div className="hero-left">
-            <span className="shop-hero-eyebrow">Premium Tech Accessories</span>
+            <span className="shop-hero-eyebrow">{t.heroEyebrow}</span>
             <h1 className="hero-h1">
-              <span className="line"><span className="word" ref={el => wordsRef.current[0] = el}>Engineered</span></span>
-              <span className="line"><span className="word" ref={el => wordsRef.current[1] = el}>for the way</span></span>
-              <span className="line"><span className="word" ref={el => wordsRef.current[2] = el}>you work.</span></span>
+              <span className="line"><span className="word" ref={el => wordsRef.current[0] = el}>{t.heroH1a}</span></span>
+              <span className="line"><span className="word" ref={el => wordsRef.current[1] = el}>{t.heroH1b}</span></span>
             </h1>
-            <p className="hero-sub" ref={subRef}>
-              Premium accessories for focused professionals. Free 2-day shipping on every order.
-            </p>
+            <p className="hero-sub" ref={subRef}>{t.heroSub}</p>
             <div className="hero-btns" ref={btnsRef}>
-              <Link href="/shop/products" className="btn-a">Shop Now</Link>
-              <Link href="/shop/products" className="btn-b">View Collections</Link>
+              <Link href="/shop/products" className="btn-a">{t.heroCta1}</Link>
+              <Link href="/shop/collections" className="btn-b">{t.heroCta2}</Link>
             </div>
           </div>
           <div className="hero-right" ref={rightRef}>
@@ -204,16 +201,16 @@ export default function Home() {
       <section className="cat-section">
         <div className="si">
           <div className="sh rev">
-            <span className="eyebrow">Browse by Category</span>
-            <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>Everything for your setup.</h2>
+            <span className="eyebrow">{t.catTitle}</span>
+            <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>{t.catSub}</h2>
           </div>
           <div className="cat-grid">
             {categories.map((cat, i) => (
-              <Link key={cat.name} href={`/products?cat=${cat.name}`} className={`cat-tile rev d${i + 1}`}>
+              <Link key={cat.name} href={`/shop/products?cat=${cat.name}`} className={`cat-tile rev d${i + 1}`}>
                 <div className="cat-tile-ico">{cat.ico}</div>
                 <div className="cat-tile-name">{cat.name}</div>
-                <div className="cat-tile-count">{cat.count} products</div>
-                <div className="cat-tile-arrow">Shop {cat.name} →</div>
+                <div className="cat-tile-count">{cat.count} {t.products}</div>
+                <div className="cat-tile-arrow">{t.viewProducts} {cat.name} →</div>
               </Link>
             ))}
           </div>
@@ -224,9 +221,8 @@ export default function Home() {
       <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="sh rev">
-            <span className="eyebrow">Bestsellers</span>
-            <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>The favourites.</h2>
-            <p className="sec-sub" style={{ color: 'var(--text-d)' }}>Products our customers keep coming back for.</p>
+            <span className="eyebrow">{t.bestsellersEye}</span>
+            <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>{t.bestsellersTitle}</h2>
           </div>
           <div className="products-grid">
             {bestsellers.map((p, i) => (
@@ -236,7 +232,7 @@ export default function Home() {
             ))}
           </div>
           <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
-            <Link href="/shop/products" className="btn-dark">View All Products →</Link>
+            <Link href="/shop/products" className="btn-dark">{t.viewAll}</Link>
           </div>
         </div>
       </section>
@@ -245,12 +241,12 @@ export default function Home() {
       <section className="why-strip">
         <div className="si">
           <div className="sh c rev">
-            <span className="eyebrow">Why NOUX</span>
-            <h2 className="sec-title" style={{ color: 'var(--white)' }}>Built different. Backed properly.</h2>
+            <span className="eyebrow">{t.whyTitle}</span>
+            <h2 className="sec-title" style={{ color: 'var(--white)' }}>{t.whySub}</h2>
           </div>
           <div className="why-strip-grid">
             {whyItems.map((w, i) => (
-              <div key={w.title} className={`why-box rev d${i + 1}`}>
+              <div key={i} className={`why-box rev d${i + 1}`}>
                 <div className="why-box-ico">{w.ico}</div>
                 <div className="why-box-title">{w.title}</div>
                 <div className="why-box-desc">{w.desc}</div>
@@ -285,14 +281,14 @@ export default function Home() {
             <h2 className="sec-title" style={{ color: 'var(--white)' }}>Real people, real setups.</h2>
           </div>
           <div className="tst-track">
-            {testimonials.map((t, i) => (
+            {testimonials.map((tst, i) => (
               <div key={i} className={`tst-item-h${tstIdx === i ? ' on' : ''}`}>
-                <p className="tst-q-h">"{t.q}"</p>
+                <p className="tst-q-h">"{tst.q}"</p>
                 <div className="tst-author">
-                  <div className="tst-avatar">{t.init}</div>
+                  <div className="tst-avatar">{tst.init}</div>
                   <div>
-                    <div className="tst-name">{t.name}</div>
-                    <div className="tst-role">{t.role}</div>
+                    <div className="tst-name">{tst.name}</div>
+                    <div className="tst-role">{tst.role}</div>
                   </div>
                 </div>
               </div>
@@ -310,11 +306,11 @@ export default function Home() {
       <section className="newsletter-sec">
         <div className="newsletter-inner">
           <span className="eyebrow" style={{ color: 'rgba(255,255,255,.65)' }}>Stay in the Loop</span>
-          <h2>Join 50,000 customers.</h2>
-          <p>New drops, exclusive deals, and setup inspiration. No spam, unsubscribe anytime.</p>
+          <h2>{t.newsletterTitle}</h2>
+          <p>{t.newsletterSub}</p>
           <form className="nl-form" onSubmit={e => e.preventDefault()}>
-            <input className="nl-input" type="email" placeholder="your@email.com" />
-            <button className="nl-btn" type="submit">Subscribe</button>
+            <input className="nl-input" type="email" placeholder={t.newsletterPlaceholder} />
+            <button className="nl-btn" type="submit">{t.newsletterBtn}</button>
           </form>
         </div>
       </section>

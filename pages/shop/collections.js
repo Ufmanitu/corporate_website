@@ -4,6 +4,7 @@ import ShopNav from '../../components/ShopNav'
 import CartDrawer from '../../components/CartDrawer'
 import ShopFooter from '../../components/ShopFooter'
 import { PRODUCTS } from '../../lib/products'
+import { useShopT } from '../../lib/shopI18n'
 
 const collections = [
   {
@@ -45,14 +46,15 @@ const collections = [
 ]
 
 export default function Collections() {
+  const t = useShopT()
   return (
     <>
       <Head>
-        <title>Collections — NOUX</title>
-        <meta name="description" content="Browse NOUX collections: Audio, Workspace, Charging, and Storage." />
+        <title>{t.collectionsTitle} — NOUX</title>
+        <meta name="description" content={t.collectionsSub} />
       </Head>
 
-      <div className="announce-bar">Free shipping on orders over $100 · Use code LAUNCH for 10% off</div>
+      <div className="announce-bar">{t.announce}</div>
       <ShopNav />
       <CartDrawer />
 
@@ -60,10 +62,10 @@ export default function Collections() {
         <div className="ph-bg" />
         <div className="ph-inner">
           <div className="ph-breadcrumb">
-            <Link href="/">Home</Link><span>›</span><span>Collections</span>
+            <Link href="/">Home</Link><span>›</span><span>{t.collectionsTitle}</span>
           </div>
-          <h1 className="ph-title">Collections</h1>
-          <p className="ph-sub">Four focused ranges. Each designed to solve a specific problem with your setup.</p>
+          <h1 className="ph-title">{t.collectionsTitle}</h1>
+          <p className="ph-sub">{t.collectionsSub}</p>
           <div className="ph-line" />
         </div>
       </section>
@@ -76,7 +78,7 @@ export default function Collections() {
               return (
                 <Link
                   key={col.name}
-                  href={`/products?category=${col.slug}`}
+                  href={`/shop/products?category=${col.slug}`}
                   className={`col-card rev d${i + 1}`}
                   style={{ '--col-bg': col.color, '--col-accent': col.accent }}
                 >
@@ -87,7 +89,7 @@ export default function Collections() {
                     <span className="col-cat-label">{col.name}</span>
                     <h2 className="col-card-headline">{col.headline}</h2>
                     <p className="col-card-desc">{col.desc}</p>
-                    <span className="col-card-cta">Shop {count} products →</span>
+                    <span className="col-card-cta">{t.viewProducts} {count} {t.products} →</span>
                   </div>
                 </Link>
               )
@@ -98,9 +100,9 @@ export default function Collections() {
 
       <section className="cta-sec">
         <div className="cta-inner rev">
-          <h2 className="cta-title">Not sure where to start?</h2>
-          <p className="cta-sub">Browse everything at once, filter by category, and sort by price or rating.</p>
-          <Link href="/shop/products" className="btn-dark">View All Products →</Link>
+          <h2 className="cta-title">{t.notSureTitle}</h2>
+          <p className="cta-sub">{t.notSureSub}</p>
+          <Link href="/shop/products" className="btn-dark">{t.viewAll}</Link>
         </div>
       </section>
 

@@ -2,21 +2,25 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useCart } from '../context/CartContext'
-
-const navLinks = [
-  { href: '/shop/products', label: 'Shop' },
-  { href: '/shop/collections', label: 'Collections' },
-  { href: '/shop/about', label: 'About' },
-  { href: '/shop/contact', label: 'Contact' },
-]
+import { useShopT } from '../lib/shopI18n'
 
 export default function ShopNav() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchVal, setSearchVal] = useState('')
+  const [langOpen, setLangOpen] = useState(false)
   const router = useRouter()
+  const { locale, pathname, query, asPath } = router
   const { cartCount, setDrawerOpen } = useCart()
+  const t = useShopT()
+
+  const navLinks = [
+    { href: '/shop/products', label: t.navShop },
+    { href: '/shop/collections', label: t.navCollections },
+    { href: '/shop/about', label: t.navAbout },
+    { href: '/shop/contact', label: t.navContact },
+  ]
 
   useEffect(() => {
     function onScroll() { setScrolled(window.scrollY > 60) }
@@ -25,6 +29,11 @@ export default function ShopNav() {
   }, [])
 
   useEffect(() => { setMobileOpen(false) }, [router.pathname])
+
+  function switchLocale(l) {
+    router.push({ pathname, query }, asPath, { locale: l })
+    setLangOpen(false)
+  }
 
   function handleSearch(e) {
     e.preventDefault()
@@ -44,7 +53,7 @@ export default function ShopNav() {
 
         <ul className="nav-links">
           {navLinks.map(l => (
-            <li key={l.label}>
+            <li key={l.href}>
               <Link href={l.href} className={router.pathname === l.href ? 'active' : ''}>
                 {l.label}
               </Link>
@@ -53,7 +62,22 @@ export default function ShopNav() {
         </ul>
 
         <div className="nav-right">
-          <Link href="/" className="sn-switch-link">← Meridian</Link>
+          <Link href="/" className="sn-switch-link">{t.navBack}</Link>
+
+          <div className="lang-switch" onMouseLeave={() => setLangOpen(false)}>
+            <button className="lang-btn" onClick={() => setLangOpen(o => !o)} aria-label="Switch language">
+              {locale === 'tr' ? 'TR' : locale === 'hu' ? 'HU' : 'EN'}<span className="lang-arrow">▾</span>
+            </button>
+            {langOpen && (
+              <div className="lang-menu">
+                <div className="lang-menu-inner">
+                  <button onClick={() => switchLocale('en')} className={locale === 'en' ? 'active' : ''}>English</button>
+                  <button onClick={() => switchLocale('tr')} className={locale === 'tr' ? 'active' : ''}>Türkçe</button>
+                  <button onClick={() => switchLocale('hu')} className={locale === 'hu' ? 'active' : ''}>Magyar</button>
+                </div>
+              </div>
+            )}
+          </div>
 
           {searchOpen ? (
             <form onSubmit={handleSearch} className="sn-search-form">
@@ -61,7 +85,7 @@ export default function ShopNav() {
                 autoFocus
                 className="sn-search-input"
                 type="text"
-                placeholder="Search products…"
+                placeholder={t.navSearch}
                 value={searchVal}
                 onChange={e => setSearchVal(e.target.value)}
                 onBlur={() => { if (!searchVal) setSearchOpen(false) }}
@@ -86,7 +110,7 @@ export default function ShopNav() {
             </svg>
           </Link>
 
-          <button className="sn-cart-btn" onClick={() => setDrawerOpen(true)} aria-label={`Cart — ${cartCount} items`}>
+          <button className="sn-cart-btn" onClick={() => setDrawerOpen(true)} aria-label={`${t.navCart} — ${cartCount}`}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
@@ -104,17 +128,24 @@ export default function ShopNav() {
         <button className="close-btn" onClick={() => setMobileOpen(false)}>✕</button>
         <Link href="/shop">NOUX Home</Link>
         {navLinks.map(l => (
-          <Link key={l.label} href={l.href} className={router.pathname === l.href ? 'active' : ''}>
+          <Link key={l.href} href={l.href} className={router.pathname === l.href ? 'active' : ''}>
             {l.label}
           </Link>
         ))}
-        <Link href="/" style={{ fontSize: '1rem', color: 'rgba(255,255,255,.4)', marginTop: '1rem' }}>← Back to Meridian</Link>
+        <Link href="/" style={{ fontSize: '1rem', color: 'rgba(255,255,255,.4)', marginTop: '1rem' }}>{t.navBack}</Link>
         <button
           onClick={() => { setMobileOpen(false); setDrawerOpen(true) }}
           style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--ff-h)', fontSize: '2rem', color: '#fff', fontWeight: 700 }}
         >
-          Cart {cartCount > 0 && `(${cartCount})`}
+          {t.navCart} {cartCount > 0 && `(${cartCount})`}
         </button>
+        <div className="mobile-lang">
+          <button onClick={() => switchLocale('en')} className={locale === 'en' ? 'active' : ''}>EN</button>
+          <span style={{ color: 'rgba(255,255,255,.3)' }}>/</span>
+          <button onClick={() => switchLocale('tr')} className={locale === 'tr' ? 'active' : ''}>TR</button>
+          <span style={{ color: 'rgba(255,255,255,.3)' }}>/</span>
+          <button onClick={() => switchLocale('hu')} className={locale === 'hu' ? 'active' : ''}>HU</button>
+        </div>
       </div>
     </>
   )

@@ -7,6 +7,7 @@ import ProductCard from '../../../components/ProductCard'
 import ShopFooter from '../../../components/ShopFooter'
 import { PRODUCTS, getProductBySlug, getRelatedProducts } from '../../../lib/products'
 import { useCart } from '../../../context/CartContext'
+import { useShopT } from '../../../lib/shopI18n'
 
 function Stars({ rating, large }) {
   return (
@@ -26,6 +27,7 @@ export default function ProductDetail({ product, related }) {
   const [added, setAdded] = useState(false)
   const { addToCart, toggleWishlist, wishlist } = useCart()
   const inWishlist = wishlist.includes(product.id)
+  const t = useShopT()
 
   function handleAdd() {
     addToCart(product, qty)
@@ -40,9 +42,7 @@ export default function ProductDetail({ product, related }) {
         <meta name="description" content={product.description} />
       </Head>
 
-      <div className="announce-bar">
-        Free shipping on orders over $100 &nbsp;·&nbsp; Use code <strong>LAUNCH</strong> for 10% off
-      </div>
+      <div className="announce-bar">{t.announce}</div>
 
       <ShopNav />
       <CartDrawer />
@@ -52,7 +52,7 @@ export default function ProductDetail({ product, related }) {
           <nav className="pd-breadcrumb">
             <Link href="/">Home</Link>
             <span>/</span>
-            <Link href="/shop/products">Products</Link>
+            <Link href="/shop/products">{t.productsTitle}</Link>
             <span>/</span>
             <span>{product.name}</span>
           </nav>
@@ -80,7 +80,7 @@ export default function ProductDetail({ product, related }) {
                 ))}
               </div>
               <div className={`pd-stock ${product.lowStock ? 'low' : 'in'}`}>
-                {product.lowStock ? 'Low stock — order soon' : 'In stock — ships in 2 days'}
+                {product.lowStock ? t.lowStock : t.inStock}
               </div>
             </div>
 
@@ -92,7 +92,7 @@ export default function ProductDetail({ product, related }) {
               <div className="pd-rating">
                 <Stars rating={product.rating} large />
                 <span style={{ fontWeight: 600, color: 'var(--text-d)', marginLeft: '.25rem' }}>{product.rating}</span>
-                <span>({product.reviewCount} reviews)</span>
+                <span>({product.reviewCount} {t.reviews})</span>
               </div>
 
               <div className="pd-price-row">
@@ -114,11 +114,11 @@ export default function ProductDetail({ product, related }) {
               </ul>
 
               {product.lowStock && (
-                <div className="pd-low-stock">⚠️ Only a few left in stock</div>
+                <div className="pd-low-stock">⚠️ {t.lowStock}</div>
               )}
 
               <div className="pd-qty-row">
-                <span className="pd-qty-label">Quantity</span>
+                <span className="pd-qty-label">{t.qty}</span>
                 <div className="pd-qty">
                   <button onClick={() => setQty(q => Math.max(1, q - 1))} aria-label="Decrease">−</button>
                   <span className="pd-qty-num">{qty}</span>
@@ -131,7 +131,7 @@ export default function ProductDetail({ product, related }) {
                   className={`pd-add-btn${added ? ' added' : ''}`}
                   onClick={handleAdd}
                 >
-                  {added ? '✓ Added to Cart' : 'Add to Cart'}
+                  {added ? t.added : t.addToCartBtn}
                 </button>
                 <button
                   className={`pd-wish-btn${inWishlist ? ' active' : ''}`}
@@ -140,14 +140,14 @@ export default function ProductDetail({ product, related }) {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill={inWishlist ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                   </svg>
-                  {inWishlist ? 'Wishlisted' : 'Wishlist'}
+                  {inWishlist ? t.wishlisted : t.wishlistBtn}
                 </button>
               </div>
 
               <div className="pd-trust">
-                <div className="pd-trust-item"><span>🚚</span><span>Free 2-day shipping</span></div>
-                <div className="pd-trust-item"><span>🛡️</span><span>2-year warranty</span></div>
-                <div className="pd-trust-item"><span>↩️</span><span>30-day returns</span></div>
+                <div className="pd-trust-item"><span>🚚</span><span>{t.freeShipping}</span></div>
+                <div className="pd-trust-item"><span>🛡️</span><span>{t.warranty}</span></div>
+                <div className="pd-trust-item"><span>↩️</span><span>{t.returns}</span></div>
               </div>
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function ProductDetail({ product, related }) {
         <section className="related-section">
           <div className="si">
             <div className="sh rev">
-              <span className="eyebrow">You May Also Like</span>
+              <span className="eyebrow">{t.relatedTitle}</span>
               <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>More from our collection.</h2>
             </div>
             <div className="related-grid">

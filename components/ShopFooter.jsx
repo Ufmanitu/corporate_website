@@ -1,13 +1,15 @@
 import Link from 'next/link'
+import { useShopT } from '../lib/shopI18n'
 
 export default function ShopFooter() {
+  const t = useShopT()
   return (
     <footer>
       <div className="fi">
         <div className="ft">
           <div className="fb">
             <Link href="/shop" className="fl" style={{ textDecoration: 'none' }}>NOUX<em>·</em></Link>
-            <p className="ftag">Premium tech accessories engineered for the way you work.</p>
+            <p className="ftag">{t.footerTagline}</p>
             <div className="fsoc">
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -22,52 +24,52 @@ export default function ShopFooter() {
           </div>
 
           <div className="fc">
-            <h4>Shop</h4>
+            <h4>{t.footerShop}</h4>
             <ul>
-              <li><Link href="/shop/products">All Products</Link></li>
-              <li><Link href="/shop/collections">Collections</Link></li>
-              <li><Link href="/shop/products?category=Audio">Audio</Link></li>
-              <li><Link href="/shop/products?category=Workspace">Workspace</Link></li>
+              <li><Link href="/shop/products">{t.allProducts}</Link></li>
+              <li><Link href="/shop/collections">{t.collections}</Link></li>
+              <li><Link href="/shop/products?category=Audio">{t.audio}</Link></li>
+              <li><Link href="/shop/products?category=Workspace">{t.workspace}</Link></li>
             </ul>
           </div>
 
           <div className="fc">
-            <h4>More</h4>
+            <h4>{t.footerMore}</h4>
             <ul>
-              <li><Link href="/shop/products?category=Charging">Charging</Link></li>
-              <li><Link href="/shop/products?category=Storage">Storage</Link></li>
-              <li><Link href="/shop/cart">Your Cart</Link></li>
-              <li><Link href="/shop/checkout">Checkout</Link></li>
+              <li><Link href="/shop/products?category=Charging">{t.charging}</Link></li>
+              <li><Link href="/shop/products?category=Storage">{t.storage}</Link></li>
+              <li><Link href="/shop/cart">{t.yourCart}</Link></li>
+              <li><Link href="/shop/checkout">{t.footerCheckout}</Link></li>
             </ul>
           </div>
 
           <div className="fc">
-            <h4>Company</h4>
+            <h4>{t.footerCompany}</h4>
             <ul>
-              <li><Link href="/shop/about">About NOUX</Link></li>
-              <li><Link href="/shop/contact">Contact Us</Link></li>
-              <li><Link href="/shop/contact">Support</Link></li>
-              <li><Link href="/shop/contact">Wholesale</Link></li>
+              <li><Link href="/shop/about">{t.aboutNoux}</Link></li>
+              <li><Link href="/shop/contact">{t.contactUs}</Link></li>
+              <li><Link href="/shop/contact">{t.support}</Link></li>
+              <li><Link href="/shop/contact">{t.wholesale}</Link></li>
             </ul>
           </div>
 
           <div className="fc">
-            <h4>Policies</h4>
+            <h4>{t.footerPolicies}</h4>
             <ul>
-              <li><Link href="/legal/privacy">Privacy Policy</Link></li>
-              <li><Link href="/legal/terms">Terms of Use</Link></li>
-              <li><Link href="/shop/contact">Returns</Link></li>
-              <li><Link href="/shop/contact">Shipping Info</Link></li>
+              <li><Link href="/legal/privacy">{t.privacy}</Link></li>
+              <li><Link href="/legal/terms">{t.terms}</Link></li>
+              <li><Link href="/shop/contact">{t.returnsLink}</Link></li>
+              <li><Link href="/shop/contact">{t.shippingInfo ?? 'Shipping Info'}</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="fbot">
-          <span className="fcopy">© {new Date().getFullYear()} NOUX. All rights reserved.</span>
+          <span className="fcopy">© {new Date().getFullYear()} NOUX. {t.rights}</span>
           <div className="fleg">
-            <Link href="/legal/privacy">Privacy</Link>
-            <Link href="/legal/terms">Terms</Link>
-            <Link href="/shop/contact">Support</Link>
+            <Link href="/legal/privacy">{t.privacy}</Link>
+            <Link href="/legal/terms">{t.terms}</Link>
+            <Link href="/shop/contact">{t.support}</Link>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useCart } from '../context/CartContext'
+import { useShopT } from '../lib/shopI18n'
 
 function Stars({ rating }) {
   return (
@@ -18,6 +19,7 @@ export default function ProductCard({ product }) {
   const [added, setAdded] = useState(false)
   const { addToCart, toggleWishlist, wishlist } = useCart()
   const inWishlist = wishlist.includes(product.id)
+  const t = useShopT()
 
   function handleAdd(e) {
     e.preventDefault()
@@ -33,9 +35,9 @@ export default function ProductCard({ product }) {
     toggleWishlist(product.id)
   }
 
-  const badge = product.isNew ? { label: 'NEW', color: 'var(--sh-accent)' }
-    : product.isBestseller ? { label: 'BESTSELLER', color: '#E8A847' }
-    : product.originalPrice ? { label: 'SALE', color: '#EF4444' }
+  const badge = product.isNew ? { label: t.new, color: 'var(--sh-accent)' }
+    : product.isBestseller ? { label: t.bestseller, color: '#E8A847' }
+    : product.originalPrice ? { label: t.sale, color: '#EF4444' }
     : null
 
   return (
@@ -86,7 +88,7 @@ export default function ProductCard({ product }) {
           onClick={handleAdd}
           aria-label={`Add ${product.name} to cart`}
         >
-          {added ? '✓ Added' : 'Add to Cart'}
+          {added ? t.added : t.addToCart}
         </button>
       </div>
     </Link>

@@ -4,11 +4,13 @@ import { useRouter } from 'next/router'
 import ShopNav from '../../components/ShopNav'
 import ShopFooter from '../../components/ShopFooter'
 import { useCart } from '../../context/CartContext'
+import { useShopT } from '../../lib/shopI18n'
 
 const COUNTRIES = ['United States', 'United Kingdom', 'Germany', 'France', 'Hungary', 'Turkey', 'Australia', 'Canada', 'Netherlands', 'Sweden', 'Other']
 
 export default function Checkout() {
   const router = useRouter()
+  const t = useShopT()
   const { cart, cartTotal } = useCart()
   const shipping = cartTotal >= 100 ? 0 : 9.99
   const total = cartTotal + shipping
@@ -35,33 +37,31 @@ export default function Checkout() {
   return (
     <>
       <Head>
-        <title>Checkout — NOUX</title>
+        <title>{t.checkoutTitle} — NOUX</title>
       </Head>
 
-      <div className="announce-bar">
-        Free shipping on orders over $100 &nbsp;·&nbsp; Use code <strong>LAUNCH</strong> for 10% off
-      </div>
+      <div className="announce-bar">{t.announce}</div>
 
       <ShopNav />
 
       <section className="checkout-page" style={{ paddingTop: 'calc(3rem + 2.25rem)' }}>
         <div className="si">
-          <h1 style={{ fontFamily: 'var(--ff-h)', fontSize: 'clamp(1.6rem,3.5vw,2.2rem)', fontWeight: 700, color: 'var(--text-d)', marginBottom: '1.5rem' }}>Checkout</h1>
+          <h1 style={{ fontFamily: 'var(--ff-h)', fontSize: 'clamp(1.6rem,3.5vw,2.2rem)', fontWeight: 700, color: 'var(--text-d)', marginBottom: '1.5rem' }}>{t.checkoutTitle}</h1>
 
           <div className="progress-bar">
             <div className="prog-step active">
               <div className="ps-dot">1</div>
-              <span>Shipping</span>
+              <span>{t.stepShipping}</span>
             </div>
             <div className="prog-line" />
             <div className="prog-step">
               <div className="ps-dot">2</div>
-              <span>Payment</span>
+              <span>{t.stepPayment}</span>
             </div>
             <div className="prog-line" />
             <div className="prog-step">
               <div className="ps-dot">3</div>
-              <span>Confirm</span>
+              <span>{t.stepConfirm}</span>
             </div>
           </div>
 
@@ -70,41 +70,41 @@ export default function Checkout() {
               {/* LEFT — Form */}
               <div>
                 <div className="checkout-section">
-                  <h2 className="checkout-section-title">Shipping Information</h2>
+                  <h2 className="checkout-section-title">{t.shippingInfo}</h2>
                   <div className="form-row">
                     <div className="form-group">
-                      <label>First Name</label>
+                      <label>{t.firstName}</label>
                       <input type="text" value={form.firstName} onChange={set('firstName')} placeholder="John" />
                     </div>
                     <div className="form-group">
-                      <label>Last Name</label>
+                      <label>{t.lastName}</label>
                       <input type="text" value={form.lastName} onChange={set('lastName')} placeholder="Doe" />
                     </div>
                   </div>
                   <div className="form-group">
-                    <label>Email Address</label>
+                    <label>{t.email}</label>
                     <input type="email" value={form.email} onChange={set('email')} placeholder="john@example.com" />
                   </div>
                   <div className="form-group">
-                    <label>Phone Number</label>
+                    <label>{t.phone}</label>
                     <input type="tel" value={form.phone} onChange={set('phone')} placeholder="+1 555 000 0000" />
                   </div>
                   <div className="form-group">
-                    <label>Street Address</label>
+                    <label>{t.address}</label>
                     <input type="text" value={form.address} onChange={set('address')} placeholder="123 Main Street" />
                   </div>
                   <div className="form-row">
                     <div className="form-group">
-                      <label>City</label>
+                      <label>{t.city}</label>
                       <input type="text" value={form.city} onChange={set('city')} placeholder="New York" />
                     </div>
                     <div className="form-group">
-                      <label>ZIP / Postal Code</label>
+                      <label>{t.zip}</label>
                       <input type="text" value={form.zip} onChange={set('zip')} placeholder="10001" />
                     </div>
                   </div>
                   <div className="form-group">
-                    <label>Country</label>
+                    <label>{t.country}</label>
                     <select value={form.country} onChange={set('country')}>
                       {COUNTRIES.map(c => <option key={c}>{c}</option>)}
                     </select>
@@ -112,11 +112,11 @@ export default function Checkout() {
                 </div>
 
                 <div className="checkout-section">
-                  <h2 className="checkout-section-title">Payment Information</h2>
+                  <h2 className="checkout-section-title">{t.paymentInfo}</h2>
                   <div className="payment-soon-card">
                     <div className="lock-ico">🔒</div>
-                    <h4>Secure payment powered by Stripe</h4>
-                    <p>Payment processing is coming soon. We'll email you when it goes live.</p>
+                    <h4>{t.paymentSoon}</h4>
+                    <p>{t.paymentNote}</p>
                     <div className="payment-cards">
                       <span className="payment-card-badge">VISA</span>
                       <span className="payment-card-badge">MC</span>
@@ -128,13 +128,13 @@ export default function Checkout() {
 
                 {err && <p className="checkout-err">{err}</p>}
                 <button type="submit" className="checkout-submit" disabled={loading}>
-                  {loading ? 'Placing order…' : 'Place Order →'}
+                  {loading ? '…' : t.placeOrder}
                 </button>
               </div>
 
               {/* RIGHT — Summary */}
               <div className="co-summary-card">
-                <div className="co-summary-title">Order Summary ({cart.reduce((s, i) => s + i.quantity, 0)} items)</div>
+                <div className="co-summary-title">{t.orderSummary} ({cart.reduce((s, i) => s + i.quantity, 0)})</div>
                 {cart.map(({ product, quantity }) => (
                   <div className="co-item" key={product.id}>
                     <img className="co-item-img" src={product.image} alt={product.name} />
@@ -143,19 +143,19 @@ export default function Checkout() {
                   </div>
                 ))}
                 <div className="co-totals">
-                  <div className="co-row"><span>Subtotal</span><span>${cartTotal.toFixed(2)}</span></div>
+                  <div className="co-row"><span>{t.subtotal}</span><span>${cartTotal.toFixed(2)}</span></div>
                   <div className="co-row">
-                    <span>Shipping</span>
+                    <span>{t.shipping}</span>
                     <span style={{ color: shipping === 0 ? '#10B981' : 'inherit' }}>
-                      {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+                      {shipping === 0 ? t.shippingFree : `$${shipping.toFixed(2)}`}
                     </span>
                   </div>
-                  <div className="co-row total"><span>Total</span><span>${total.toFixed(2)}</span></div>
+                  <div className="co-row total"><span>{t.total}</span><span>${total.toFixed(2)}</span></div>
                 </div>
                 <div className="co-trust-badges">
-                  <div className="co-trust-item"><span>🔒</span><span>256-bit SSL encryption</span></div>
-                  <div className="co-trust-item"><span>🛡️</span><span>2-year warranty on all products</span></div>
-                  <div className="co-trust-item"><span>↩️</span><span>30-day free returns</span></div>
+                  <div className="co-trust-item"><span>🔒</span><span>{t.sslNote}</span></div>
+                  <div className="co-trust-item"><span>🛡️</span><span>{t.warranty}</span></div>
+                  <div className="co-trust-item"><span>↩️</span><span>{t.returns}</span></div>
                 </div>
               </div>
             </div>
