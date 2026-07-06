@@ -17,7 +17,7 @@ const navLinks = {
     { href: '/work',     label: 'Çalışmalar' },
     { href: '/clients',  label: 'Müşteriler' },
     { href: '/contact',  label: 'İletişim' },
-    { href: '/shop',     label: 'Shop', isShop: true },
+    { href: '/shop',     label: 'Mağaza', isShop: true },
   ],
   hu: [
     { href: '/services', label: 'Szolgáltatások' },
@@ -25,7 +25,7 @@ const navLinks = {
     { href: '/work',     label: 'Munkáink' },
     { href: '/clients',  label: 'Ügyfeleink' },
     { href: '/contact',  label: 'Kapcsolat' },
-    { href: '/shop',     label: 'Shop', isShop: true },
+    { href: '/shop',     label: 'Bolt', isShop: true },
   ],
 }
 

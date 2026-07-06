@@ -5,9 +5,10 @@ import ShopNav from '../../../components/ShopNav'
 import CartDrawer from '../../../components/CartDrawer'
 import ProductCard from '../../../components/ProductCard'
 import ShopFooter from '../../../components/ShopFooter'
-import { PRODUCTS, getProductBySlug, getRelatedProducts } from '../../../lib/products'
+import { PRODUCTS, getProductBySlug, getRelatedProducts, localizeProduct } from '../../../lib/products'
 import { useCart } from '../../../context/CartContext'
 import { useShopT } from '../../../lib/shopI18n'
+import { useRouter } from 'next/router'
 
 function Stars({ rating, large }) {
   return (
@@ -28,6 +29,8 @@ export default function ProductDetail({ product, related }) {
   const { addToCart, toggleWishlist, wishlist } = useCart()
   const inWishlist = wishlist.includes(product.id)
   const t = useShopT()
+  const { locale } = useRouter()
+  const p = localizeProduct(product, locale)
 
   function handleAdd() {
     addToCart(product, qty)
@@ -38,8 +41,8 @@ export default function ProductDetail({ product, related }) {
   return (
     <>
       <Head>
-        <title>{product.name} — NOUX</title>
-        <meta name="description" content={product.description} />
+        <title>{p.name} — NOUX</title>
+        <meta name="description" content={p.description} />
       </Head>
 
       <div className="announce-bar">{t.announce}</div>
@@ -54,7 +57,7 @@ export default function ProductDetail({ product, related }) {
             <span>/</span>
             <Link href="/shop/products">{t.productsTitle}</Link>
             <span>/</span>
-            <span>{product.name}</span>
+            <span>{p.name}</span>
           </nav>
 
           <div className="pd-grid">
@@ -63,7 +66,7 @@ export default function ProductDetail({ product, related }) {
               <div className="pd-main-img">
                 <img
                   src={product.images[mainImg]}
-                  alt={product.name}
+                  alt={p.name}
                   key={mainImg}
                   style={{ opacity: 1 }}
                 />
@@ -73,7 +76,7 @@ export default function ProductDetail({ product, related }) {
                   <img
                     key={i}
                     src={img}
-                    alt={`${product.name} view ${i + 1}`}
+                    alt={`${p.name} view ${i + 1}`}
                     className={`pd-thumb${mainImg === i ? ' active' : ''}`}
                     onClick={() => setMainImg(i)}
                   />
@@ -87,7 +90,7 @@ export default function ProductDetail({ product, related }) {
             {/* RIGHT — Details */}
             <div className="pd-details">
               <div className="pd-cat">{product.category}</div>
-              <h1 className="pd-name">{product.name}</h1>
+              <h1 className="pd-name">{p.name}</h1>
 
               <div className="pd-rating">
                 <Stars rating={product.rating} large />
@@ -107,10 +110,10 @@ export default function ProductDetail({ product, related }) {
                 )}
               </div>
 
-              <p className="pd-desc">{product.description}</p>
+              <p className="pd-desc">{p.description}</p>
 
               <ul className="pd-features">
-                {product.features.map(f => <li key={f}>{f}</li>)}
+                {p.features.map(f => <li key={f}>{f}</li>)}
               </ul>
 
               {product.lowStock && (

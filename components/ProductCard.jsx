@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useCart } from '../context/CartContext'
 import { useShopT } from '../lib/shopI18n'
 
@@ -20,6 +21,8 @@ export default function ProductCard({ product }) {
   const { addToCart, toggleWishlist, wishlist } = useCart()
   const inWishlist = wishlist.includes(product.id)
   const t = useShopT()
+  const { locale } = useRouter()
+  const displayName = product.translations?.[locale]?.name ?? product.name
 
   function handleAdd(e) {
     e.preventDefault()
@@ -72,7 +75,7 @@ export default function ProductCard({ product }) {
 
       <div className="pc-body">
         <div className="pc-cat">{product.category}</div>
-        <h3 className="pc-name">{product.name}</h3>
+        <h3 className="pc-name">{displayName}</h3>
         <div className="pc-rating">
           <Stars rating={product.rating} />
           <span className="pc-rating-count">({product.reviewCount})</span>
