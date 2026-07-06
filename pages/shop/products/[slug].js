@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import ShopNav from '../../../components/ShopNav'
@@ -6,6 +6,7 @@ import CartDrawer from '../../../components/CartDrawer'
 import ProductCard from '../../../components/ProductCard'
 import ShopFooter from '../../../components/ShopFooter'
 import { PRODUCTS, getProductBySlug, getRelatedProducts, localizeProduct } from '../../../lib/products'
+import { SEED_REVIEWS } from '../../../lib/reviews'
 import { useCart } from '../../../context/CartContext'
 import { useShopT } from '../../../lib/shopI18n'
 import { useRouter } from 'next/router'
@@ -22,6 +23,23 @@ function Stars({ rating, large }) {
   )
 }
 
+function StarPicker({ value, onChange }) {
+  const [hov, setHov] = useState(0)
+  return (
+    <span style={{ fontSize: '1.5rem', cursor: 'pointer', display: 'inline-flex', gap: '2px' }}>
+      {[1,2,3,4,5].map(i => (
+        <span
+          key={i}
+          style={{ color: i <= (hov || value) ? '#E8A847' : '#D1D5DB', transition: 'color .1s' }}
+          onMouseEnter={() => setHov(i)}
+          onMouseLeave={() => setHov(0)}
+          onClick={() => onChange(i)}
+        >★</span>
+      ))}
+    </span>
+  )
+}
+
 export default function ProductDetail({ product, related }) {
   const [mainImg, setMainImg] = useState(0)
   const [qty, setQty] = useState(1)
@@ -32,11 +50,47 @@ export default function ProductDetail({ product, related }) {
   const { locale } = useRouter()
   const p = localizeProduct(product, locale)
 
+  const [reviews, setReviews] = useState([])
+  const [rvName, setRvName] = useState('')
+  const [rvRating, setRvRating] = useState(5)
+  const [rvComment, setRvComment] = useState('')
+  const [rvSuccess, setRvSuccess] = useState(false)
+
+  useEffect(() => {
+    const seed = SEED_REVIEWS[product.slug] ?? []
+    try {
+      const stored = JSON.parse(localStorage.getItem(`noux-reviews-${product.slug}`) || '[]')
+      const combined = [...stored, ...seed].sort((a, b) => b.date.localeCompare(a.date))
+      setReviews(combined)
+    } catch {
+      setReviews(seed)
+    }
+  }, [product.slug])
+
   function handleAdd() {
     addToCart(product, qty)
     setAdded(true)
     setTimeout(() => setAdded(false), 1500)
   }
+
+  function handleReviewSubmit(e) {
+    e.preventDefault()
+    if (!rvName.trim() || !rvComment.trim()) return
+    const newReview = { id: Date.now().toString(), name: rvName.trim(), rating: rvRating, date: new Date().toISOString().slice(0, 10), comment: rvComment.trim() }
+    try {
+      const stored = JSON.parse(localStorage.getItem(`noux-reviews-${product.slug}`) || '[]')
+      const updated = [newReview, ...stored]
+      localStorage.setItem(`noux-reviews-${product.slug}`, JSON.stringify(updated))
+    } catch {}
+    setReviews(prev => [newReview, ...prev])
+    setRvName('')
+    setRvRating(5)
+    setRvComment('')
+    setRvSuccess(true)
+    setTimeout(() => setRvSuccess(false), 3000)
+  }
+
+  const avgRating = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : null
 
   return (
     <>
@@ -89,7 +143,7 @@ export default function ProductDetail({ product, related }) {
 
             {/* RIGHT — Details */}
             <div className="pd-details">
-              <div className="pd-cat">{product.category}</div>
+              <div className="pd-cat">{t[product.category?.toLowerCase()] ?? product.category}</div>
               <h1 className="pd-name">{p.name}</h1>
 
               <div className="pd-rating">
@@ -165,15 +219,98 @@ export default function ProductDetail({ product, related }) {
               <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>{t.relatedMore}</h2>
             </div>
             <div className="related-grid">
-              {related.map((p, i) => (
-                <div key={p.id} className={`rev d${i + 1}`}>
-                  <ProductCard product={p} />
+              {related.map((rp, i) => (
+                <div key={rp.id} className={`rev d${i + 1}`}>
+                  <ProductCard product={rp} />
                 </div>
               ))}
             </div>
           </div>
         </section>
       )}
+
+      {/* ── REVIEWS ── */}
+      <section className="sec-pad" style={{ background: 'var(--dark)' }}>
+        <div className="si">
+          <div className="sh rev" style={{ marginBottom: '2rem' }}>
+            <span className="eyebrow">{t.reviewsTitle}</span>
+            {avgRating && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem', marginTop: '.5rem' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 800, color: '#fff' }}>{avgRating}</span>
+                <Stars rating={parseFloat(avgRating)} large />
+                <span style={{ color: 'rgba(255,255,255,.5)', fontSize: '.9rem' }}>({reviews.length})</span>
+              </div>
+            )}
+          </div>
+
+          {reviews.length === 0 ? (
+            <p style={{ color: 'rgba(255,255,255,.5)', marginBottom: '2rem' }}>{t.reviewsEmpty}</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem' }}>
+              {reviews.map(rv => (
+                <div key={rv.id} style={{ background: 'rgba(255,255,255,.06)', borderRadius: '12px', padding: '1.2rem 1.4rem', border: '1px solid rgba(255,255,255,.08)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '.75rem', marginBottom: '.5rem' }}>
+                    <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--sh-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: '#fff', fontSize: '.95rem', flexShrink: 0 }}>
+                      {rv.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#fff', fontSize: '.95rem' }}>{rv.name}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '.4rem' }}>
+                        <Stars rating={rv.rating} />
+                        <span style={{ color: 'rgba(255,255,255,.35)', fontSize: '.78rem' }}>{rv.date}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p style={{ color: 'rgba(255,255,255,.75)', margin: 0, lineHeight: 1.65, fontSize: '.95rem' }}>{rv.comment}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Review form */}
+          <div style={{ background: 'var(--white)', borderRadius: '16px', padding: '2rem', maxWidth: '560px' }}>
+            <h3 style={{ margin: '0 0 1.25rem', color: 'var(--text-d)', fontSize: '1.1rem', fontWeight: 700 }}>{t.reviewsFormTitle}</h3>
+            {rvSuccess && (
+              <div style={{ background: 'rgba(16,185,129,.12)', border: '1px solid rgba(16,185,129,.3)', borderRadius: '8px', padding: '.75rem 1rem', marginBottom: '1rem', color: '#10B981', fontWeight: 600 }}>
+                ✓ {t.reviewFormSuccess}
+              </div>
+            )}
+            <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '.9rem' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '.82rem', fontWeight: 600, color: 'var(--text-d)', marginBottom: '.3rem', textTransform: 'uppercase', letterSpacing: '.05em' }}>{t.reviewFormName}</label>
+                <input
+                  type="text"
+                  value={rvName}
+                  onChange={e => setRvName(e.target.value)}
+                  required
+                  style={{ width: '100%', padding: '.65rem .9rem', border: '1.5px solid #E5E7EB', borderRadius: '8px', fontSize: '.95rem', fontFamily: 'inherit', boxSizing: 'border-box', outline: 'none' }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '.82rem', fontWeight: 600, color: 'var(--text-d)', marginBottom: '.3rem', textTransform: 'uppercase', letterSpacing: '.05em' }}>{t.reviewFormRating}</label>
+                <StarPicker value={rvRating} onChange={setRvRating} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '.82rem', fontWeight: 600, color: 'var(--text-d)', marginBottom: '.3rem', textTransform: 'uppercase', letterSpacing: '.05em' }}>{t.reviewFormComment}</label>
+                <textarea
+                  value={rvComment}
+                  onChange={e => setRvComment(e.target.value)}
+                  required
+                  rows={4}
+                  placeholder={t.reviewFormCommentPlaceholder}
+                  style={{ width: '100%', padding: '.65rem .9rem', border: '1.5px solid #E5E7EB', borderRadius: '8px', fontSize: '.95rem', fontFamily: 'inherit', resize: 'vertical', boxSizing: 'border-box', outline: 'none' }}
+                />
+              </div>
+              <button
+                type="submit"
+                style={{ alignSelf: 'flex-start', background: 'var(--dark)', color: '#fff', border: 'none', borderRadius: '8px', padding: '.75rem 1.6rem', fontFamily: 'inherit', fontWeight: 700, fontSize: '.95rem', cursor: 'pointer' }}
+              >
+                {t.reviewFormSubmit}
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
 
       <ShopFooter />
     </>

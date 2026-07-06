@@ -1,6 +1,19 @@
 import { useEffect, useRef } from 'react'
 
-export default function Globe({ selectedOffice }) {
+const DEFAULT_OFFICES = [
+  { lat: 51.51,  lon:  -0.13,  name: 'London'    },
+  { lat: 40.71,  lon: -74.01,  name: 'New York'  },
+  { lat:  1.35,  lon: 103.82,  name: 'Singapore' },
+  { lat: 25.20,  lon:  55.27,  name: 'Dubai'     },
+  { lat: 35.68,  lon: 139.69,  name: 'Tokyo'     },
+  { lat:-23.55,  lon: -46.63,  name: 'São Paulo' },
+  { lat:-33.87,  lon: 151.21,  name: 'Sydney'    },
+  { lat: 19.08,  lon:  72.88,  name: 'Mumbai'    },
+  { lat: 47.50,  lon:  19.04,  name: 'Budapest'  },
+  { lat: 41.01,  lon:  28.95,  name: 'Istanbul'  },
+]
+
+export default function Globe({ selectedOffice, locations }) {
   const containerRef = useRef(null)
   const animRef      = useRef(null)
   const rendererRef  = useRef(null)
@@ -86,18 +99,7 @@ export default function Globe({ selectedOffice }) {
         )
       }
 
-      const offices = [
-        { lat: 51.51,  lon:  -0.13,  name: 'London'    },
-        { lat: 40.71,  lon: -74.01,  name: 'New York'  },
-        { lat:  1.35,  lon: 103.82,  name: 'Singapore' },
-        { lat: 25.20,  lon:  55.27,  name: 'Dubai'     },
-        { lat: 35.68,  lon: 139.69,  name: 'Tokyo'     },
-        { lat:-23.55,  lon: -46.63,  name: 'São Paulo' },
-        { lat:-33.87,  lon: 151.21,  name: 'Sydney'    },
-        { lat: 19.08,  lon:  72.88,  name: 'Mumbai'    },
-        { lat: 47.50,  lon:  19.04,  name: 'Budapest'  },
-        { lat: 41.01,  lon:  28.95,  name: 'Istanbul'  },
-      ]
+      const offices = locations ?? DEFAULT_OFFICES
 
       const rings      = []
       const labelItems = []
