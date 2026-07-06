@@ -317,9 +317,11 @@ export default function ProductDetail({ product, related }) {
   )
 }
 
-export async function getStaticPaths() {
+export async function getStaticPaths({ locales }) {
   return {
-    paths: PRODUCTS.map(p => ({ params: { slug: p.slug } })),
+    paths: (locales ?? ['en']).flatMap(locale =>
+      PRODUCTS.map(p => ({ params: { slug: p.slug }, locale }))
+    ),
     fallback: false,
   }
 }
