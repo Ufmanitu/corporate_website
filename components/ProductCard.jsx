@@ -74,7 +74,7 @@ export default function ProductCard({ product }) {
       </div>
 
       <div className="pc-body">
-        <div className="pc-cat">{product.category}</div>
+        <div className="pc-cat">{t[product.category?.toLowerCase()] ?? product.category}</div>
         <h3 className="pc-name">{displayName}</h3>
         <div className="pc-rating">
           <Stars rating={product.rating} />

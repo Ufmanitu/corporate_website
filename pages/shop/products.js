@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ShopNav from '../../components/ShopNav'
 import CartDrawer from '../../components/CartDrawer'
@@ -54,7 +55,7 @@ export default function Products() {
         <div className="ph-bg" />
         <div className="ph-inner">
           <div className="ph-breadcrumb">
-            <a href="/">Home</a><span>/</span><span>Products</span>
+            <Link href="/">{t.breadcrumbHome}</Link><span>/</span><span>{t.breadcrumbProducts}</span>
           </div>
           <h1 className="ph-title">{t.productsTitle}</h1>
           <p className="ph-sub">{t.productsSub}</p>
@@ -71,7 +72,7 @@ export default function Products() {
                 className={`prod-flt-btn${activeCat === cat ? ' active' : ''}`}
                 onClick={() => setActiveCat(cat)}
               >
-                {cat === 'All' ? t.filterAll : cat}
+                {cat === 'All' ? t.filterAll : (t[cat.toLowerCase()] ?? cat)}
               </button>
             ))}
             <input
@@ -101,10 +102,8 @@ export default function Products() {
             </div>
           ) : (
             <div className="products-grid">
-              {filtered.map((p, i) => (
-                <div key={p.id} className={`rev d${(i % 3) + 1}`}>
-                  <ProductCard product={p} />
-                </div>
+              {filtered.map(p => (
+                <ProductCard key={p.id} product={p} />
               ))}
             </div>
           )}

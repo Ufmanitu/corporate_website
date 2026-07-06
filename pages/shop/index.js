@@ -18,9 +18,9 @@ const CATEGORY_KEYS = [
 ]
 
 const testimonials = [
-  { init: 'JM', q: 'The Pro Wireless Headphones changed how I work. Absolute silence during deep focus, effortless toggle back to calls. Worth every cent.', name: 'James M.', role: 'Software Engineer, Berlin' },
-  { init: 'AK', q: 'I bought the laptop stand and keyboard together. My neck pain is gone and my desk looks like a proper setup for the first time. NOUX nailed it.', name: 'Ana K.', role: 'UI Designer, London' },
-  { init: 'RB', q: 'The GaN charger replaced three separate bricks. Travels with me everywhere. Build quality is exceptional for the price.', name: 'Ravi B.', role: 'Product Manager, Singapore' },
+  { init: 'JM', qKey: 'tst1q', name: 'James M.', roleKey: 'tst1role' },
+  { init: 'AK', qKey: 'tst2q', name: 'Ana K.', roleKey: 'tst2role' },
+  { init: 'RB', qKey: 'tst3q', name: 'Ravi B.', roleKey: 'tst3role' },
 ]
 
 export default function Home() {
@@ -284,12 +284,12 @@ export default function Home() {
           <div className="tst-track">
             {testimonials.map((tst, i) => (
               <div key={i} className={`tst-item-h${tstIdx === i ? ' on' : ''}`}>
-                <p className="tst-q-h">"{tst.q}"</p>
+                <p className="tst-q-h">"{t[tst.qKey]}"</p>
                 <div className="tst-author">
                   <div className="tst-avatar">{tst.init}</div>
                   <div>
                     <div className="tst-name">{tst.name}</div>
-                    <div className="tst-role">{tst.role}</div>
+                    <div className="tst-role">{t[tst.roleKey]}</div>
                   </div>
                 </div>
               </div>
