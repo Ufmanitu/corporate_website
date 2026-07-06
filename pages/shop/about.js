@@ -6,9 +6,9 @@ import ShopFooter from '../../components/ShopFooter'
 import { useShopT } from '../../lib/shopI18n'
 
 const team = [
-  { name: 'Mara Voss', role: 'Founder & CEO', bio: 'Former product lead at three hardware startups. Built NOUX after getting frustrated with overpriced, underperforming accessories.', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop' },
-  { name: 'James Okafor', role: 'Head of Product', bio: '10 years in industrial design. James ensures every NOUX product passes the "would I actually use this?" test before it goes to market.', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&auto=format&fit=crop' },
-  { name: 'Priya Nair', role: 'Head of Operations', bio: 'Supply chain and logistics expert. Priya is the reason your order ships the same day and arrives when we say it will.', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80&auto=format&fit=crop' },
+  { name: 'Mara Voss', roleKey: 'teamRole1', bioKey: 'teamBio1', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop' },
+  { name: 'James Okafor', roleKey: 'teamRole2', bioKey: 'teamBio2', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&auto=format&fit=crop' },
+  { name: 'Priya Nair', roleKey: 'teamRole3', bioKey: 'teamBio3', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80&auto=format&fit=crop' },
 ]
 
 const stats = [
@@ -43,7 +43,7 @@ export default function About() {
         <div className="ph-bg" />
         <div className="ph-inner">
           <div className="ph-breadcrumb">
-            <Link href="/">Home</Link><span>›</span><span>{t.navAbout}</span>
+            <Link href="/">{t.breadcrumbHome}</Link><span>›</span><span>{t.navAbout}</span>
           </div>
           <h1 className="ph-title" style={{ whiteSpace: 'pre-line' }}>{t.aboutTitle}</h1>
           <p className="ph-sub">{t.aboutSub}</p>
@@ -110,8 +110,8 @@ export default function About() {
                 </div>
                 <div className="team-body">
                   <div className="team-name">{m.name}</div>
-                  <div className="team-role">{m.role}</div>
-                  <p className="team-bio">{m.bio}</p>
+                  <div className="team-role">{t[m.roleKey]}</div>
+                  <p className="team-bio">{t[m.bioKey]}</p>
                 </div>
               </div>
             ))}

@@ -53,7 +53,7 @@ export default function ProductDetail({ product, related }) {
       <div style={{ paddingTop: '2.25rem', background: 'var(--white)' }}>
         <div className="pd-wrap">
           <nav className="pd-breadcrumb">
-            <Link href="/">Home</Link>
+            <Link href="/">{t.breadcrumbHome}</Link>
             <span>/</span>
             <Link href="/shop/products">{t.productsTitle}</Link>
             <span>/</span>
@@ -162,7 +162,7 @@ export default function ProductDetail({ product, related }) {
           <div className="si">
             <div className="sh rev">
               <span className="eyebrow">{t.relatedTitle}</span>
-              <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>More from our collection.</h2>
+              <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>{t.relatedMore}</h2>
             </div>
             <div className="related-grid">
               {related.map((p, i) => (

@@ -10,11 +10,11 @@ import { useShopT } from '../../lib/shopI18n'
 
 const bestsellers = PRODUCTS.filter(p => p.isBestseller)
 
-const categories = [
-  { name: 'Audio', count: PRODUCTS.filter(p => p.category === 'Audio').length, ico: '🎧', desc: 'Headphones & earbuds' },
-  { name: 'Workspace', count: PRODUCTS.filter(p => p.category === 'Workspace').length, ico: '🖥️', desc: 'Keyboards, stands & more' },
-  { name: 'Charging', count: PRODUCTS.filter(p => p.category === 'Charging').length, ico: '⚡', desc: 'Fast & wireless charging' },
-  { name: 'Storage', count: PRODUCTS.filter(p => p.category === 'Storage').length, ico: '💾', desc: 'Portable drives & SSDs' },
+const CATEGORY_KEYS = [
+  { key: 'Audio', ico: '🎧', tName: 'audio', tDesc: 'catAudioDesc' },
+  { key: 'Workspace', ico: '🖥️', tName: 'workspace', tDesc: 'catWorkspaceDesc' },
+  { key: 'Charging', ico: '⚡', tName: 'charging', tDesc: 'catChargingDesc' },
+  { key: 'Storage', ico: '💾', tName: 'storage', tDesc: 'catStorageDesc' },
 ]
 
 const testimonials = [
@@ -25,6 +25,7 @@ const testimonials = [
 
 export default function Home() {
   const t = useShopT()
+  const categories = CATEGORY_KEYS.map(c => ({ ...c, count: PRODUCTS.filter(p => p.category === c.key).length }))
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -175,23 +176,23 @@ export default function Home() {
             <div className="hero-card"
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
-              <div className="hc-label">Customer Rating</div>
+              <div className="hc-label">{t.hcRatingLabel}</div>
               <div className="hc-val">{(rating / 10).toFixed(1)}<span className="sfx">★</span></div>
-              <div className="hc-desc">Based on 10,000+ reviews</div>
+              <div className="hc-desc">{t.hcRatingDesc}</div>
             </div>
             <div className="hero-card"
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
-              <div className="hc-label">Happy Customers</div>
+              <div className="hc-label">{t.hcCustomersLabel}</div>
               <div className="hc-val">{(customers / 1000).toFixed(0)}<span className="sfx">K+</span></div>
-              <div className="hc-desc">Worldwide and growing daily</div>
+              <div className="hc-desc">{t.hcCustomersDesc}</div>
             </div>
             <div className="hero-card"
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
-              <div className="hc-label">Free Returns</div>
+              <div className="hc-label">{t.hcReturnsLabel}</div>
               <div className="hc-val">30<span className="sfx">-day</span></div>
-              <div className="hc-desc">No questions, hassle-free</div>
+              <div className="hc-desc">{t.hcReturnsDesc}</div>
             </div>
           </div>
         </div>
@@ -206,11 +207,11 @@ export default function Home() {
           </div>
           <div className="cat-grid">
             {categories.map((cat, i) => (
-              <Link key={cat.name} href={`/shop/products?cat=${cat.name}`} className={`cat-tile rev d${i + 1}`}>
+              <Link key={cat.key} href={`/shop/products?cat=${cat.key}`} className={`cat-tile rev d${i + 1}`}>
                 <div className="cat-tile-ico">{cat.ico}</div>
-                <div className="cat-tile-name">{cat.name}</div>
+                <div className="cat-tile-name">{t[cat.tName]}</div>
                 <div className="cat-tile-count">{cat.count} {t.products}</div>
-                <div className="cat-tile-arrow">{t.viewProducts} {cat.name} →</div>
+                <div className="cat-tile-arrow">{t.viewProducts} {t[cat.tName]} →</div>
               </Link>
             ))}
           </div>
@@ -260,8 +261,8 @@ export default function Home() {
       <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh rev">
-            <span className="eyebrow">New Arrivals</span>
-            <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>Just dropped.</h2>
+            <span className="eyebrow">{t.newArrivalsEye}</span>
+            <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>{t.newArrivalsTitle}</h2>
           </div>
           <div className="products-grid">
             {PRODUCTS.filter(p => p.isNew).map((p, i) => (
@@ -277,8 +278,8 @@ export default function Home() {
       <section id="testimonials">
         <div className="tst-inner">
           <div className="sh c rev" style={{ marginBottom: '3rem' }}>
-            <span className="eyebrow">Customer Reviews</span>
-            <h2 className="sec-title" style={{ color: 'var(--white)' }}>Real people, real setups.</h2>
+            <span className="eyebrow">{t.tstEye}</span>
+            <h2 className="sec-title" style={{ color: 'var(--white)' }}>{t.tstTitle}</h2>
           </div>
           <div className="tst-track">
             {testimonials.map((tst, i) => (
@@ -305,7 +306,7 @@ export default function Home() {
       {/* ── NEWSLETTER ── */}
       <section className="newsletter-sec">
         <div className="newsletter-inner">
-          <span className="eyebrow" style={{ color: 'rgba(255,255,255,.65)' }}>Stay in the Loop</span>
+          <span className="eyebrow" style={{ color: 'rgba(255,255,255,.65)' }}>{t.newsletterEye}</span>
           <h2>{t.newsletterTitle}</h2>
           <p>{t.newsletterSub}</p>
           <form className="nl-form" onSubmit={e => e.preventDefault()}>
