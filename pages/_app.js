@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import '../styles/globals.css'
+import '../styles/shop.css'
+import { CartProvider } from '../context/CartContext'
 
 export default function App({ Component, pageProps }) {
   const router = useRouter()
 
-  // Re-run scroll reveals after each page navigation
   useEffect(() => {
     function initReveals() {
       const obs = new IntersectionObserver(
@@ -13,7 +14,7 @@ export default function App({ Component, pageProps }) {
         { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
       )
       document.querySelectorAll('.rev').forEach(el => {
-        el.classList.remove('vis') // reset on nav
+        el.classList.remove('vis')
         obs.observe(el)
       })
       return () => obs.disconnect()
@@ -27,5 +28,9 @@ export default function App({ Component, pageProps }) {
     }
   }, [router])
 
-  return <Component {...pageProps} />
+  return (
+    <CartProvider>
+      <Component {...pageProps} />
+    </CartProvider>
+  )
 }

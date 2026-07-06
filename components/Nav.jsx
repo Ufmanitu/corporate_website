@@ -9,6 +9,7 @@ const navLinks = {
     { href: '/work',     label: 'Work' },
     { href: '/clients',  label: 'Clients' },
     { href: '/contact',  label: 'Contact' },
+    { href: '/shop',     label: 'Shop', isShop: true },
   ],
   tr: [
     { href: '/services', label: 'Hizmetler' },
@@ -16,6 +17,7 @@ const navLinks = {
     { href: '/work',     label: 'Çalışmalar' },
     { href: '/clients',  label: 'Müşteriler' },
     { href: '/contact',  label: 'İletişim' },
+    { href: '/shop',     label: 'Shop', isShop: true },
   ],
   hu: [
     { href: '/services', label: 'Szolgáltatások' },
@@ -23,6 +25,7 @@ const navLinks = {
     { href: '/work',     label: 'Munkáink' },
     { href: '/clients',  label: 'Ügyfeleink' },
     { href: '/contact',  label: 'Kapcsolat' },
+    { href: '/shop',     label: 'Shop', isShop: true },
   ],
 }
 
@@ -58,7 +61,10 @@ export default function Nav() {
         <ul className="nav-links">
           {links.map(l => (
             <li key={l.href}>
-              <Link href={l.href} className={router.pathname === l.href ? 'active' : ''}>
+              <Link
+                href={l.href}
+                className={`${router.pathname === l.href || (l.isShop && router.pathname.startsWith('/shop')) ? 'active' : ''} ${l.isShop ? 'shop-nav-link' : ''}`}
+              >
                 {l.label}
               </Link>
             </li>

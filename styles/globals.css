@@ -19,6 +19,8 @@ a { text-decoration:none; color:inherit }
 .nav-links { display:flex; gap:2.2rem; list-style:none }
 .nav-links a { font-size:.875rem; color:rgba(255,255,255,.55); transition:color .3s; font-weight:400; letter-spacing:.02em }
 .nav-links a:hover, .nav-links a.active { color:#fff; font-weight:500 }
+.shop-nav-link { color:var(--amber) !important; font-weight:600 !important }
+.shop-nav-link:hover { color:#f0b94e !important }
 .nav-right { display:flex; align-items:center; gap:1rem }
 .nav-cta { font-size:.85rem; font-weight:600; color:var(--dark); background:var(--amber); padding:.55rem 1.3rem; border-radius:100px; transition:background .3s,transform .3s }
 .nav-cta:hover { background:#f0b94e; transform:translateY(-1px) }
