@@ -104,7 +104,7 @@ export default function ProductDetail({ product, related }) {
       <ShopNav />
       <CartDrawer />
 
-      <div style={{ paddingTop: '2.25rem', background: 'var(--white)' }}>
+      <div style={{ paddingTop: '7rem', background: 'var(--white)' }}>
         <div className="pd-wrap">
           <nav className="pd-breadcrumb">
             <Link href="/">{t.breadcrumbHome}</Link>
