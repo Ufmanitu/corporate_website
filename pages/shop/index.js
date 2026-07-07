@@ -7,7 +7,7 @@ import ProductCard from '../../components/ProductCard'
 import ShopFooter from '../../components/ShopFooter'
 import AdminBar from '../../components/AdminBar'
 import Editable from '../../components/Editable'
-import { AdminProvider } from '../../context/AdminContext'
+import { AdminProvider, useAdmin } from '../../context/AdminContext'
 import { PRODUCTS } from '../../lib/products'
 import { getShopContent } from '../../lib/shopContent'
 
@@ -44,6 +44,8 @@ export default function ShopHome({ content }) {
 function ShopHomeContent({ content }) {
   const tk = content
   const c = key => content[key] ?? ''
+  const { isAdmin, saveSingle } = useAdmin()
+  const heroEditFlags = useRef({})
   const categories = CATEGORY_KEYS.map(cat => ({ ...cat, count: PRODUCTS.filter(p => p.category === cat.key).length }))
   const canvasRef = useRef(null)
 
@@ -120,6 +122,16 @@ function ShopHomeContent({ content }) {
     return () => clearTimeout(timer)
   }, [])
 
+  useEffect(() => {
+    ;[
+      [wordsRef.current[0], 'heroH1a'],
+      [wordsRef.current[1], 'heroH1b'],
+      [subRef.current,      'heroSub'],
+    ].forEach(([el, key]) => {
+      if (el && !heroEditFlags.current[key]) el.innerHTML = c(key)
+    })
+  }, [content])
+
   function useCountUp(target, duration = 1600, delay = 300, active = false) {
     const [val, setVal] = useState(0)
     useEffect(() => {
@@ -176,10 +188,34 @@ function ShopHomeContent({ content }) {
           <div className="hero-left">
             <Editable tag="span" id="heroEyebrow" content={c('heroEyebrow')} className="shop-hero-eyebrow" />
             <h1 className="hero-h1">
-              <span className="line"><span className="word" ref={el => wordsRef.current[0] = el}>{c('heroH1a')}</span></span>
-              <span className="line"><span className="word" ref={el => wordsRef.current[1] = el}>{c('heroH1b')}</span></span>
+              <span className="line"><span
+                className={`word${isAdmin ? ' editable' : ''}`}
+                ref={el => wordsRef.current[0] = el}
+                data-key="heroH1a"
+                contentEditable={isAdmin || undefined}
+                suppressContentEditableWarning
+                onFocus={() => { heroEditFlags.current.heroH1a = true }}
+                onBlur={isAdmin ? e => { heroEditFlags.current.heroH1a = false; saveSingle('heroH1a', e.currentTarget.innerHTML) } : undefined}
+              /></span>
+              <span className="line"><span
+                className={`word${isAdmin ? ' editable' : ''}`}
+                ref={el => wordsRef.current[1] = el}
+                data-key="heroH1b"
+                contentEditable={isAdmin || undefined}
+                suppressContentEditableWarning
+                onFocus={() => { heroEditFlags.current.heroH1b = true }}
+                onBlur={isAdmin ? e => { heroEditFlags.current.heroH1b = false; saveSingle('heroH1b', e.currentTarget.innerHTML) } : undefined}
+              /></span>
             </h1>
-            <p className="hero-sub" ref={subRef}>{c('heroSub')}</p>
+            <p
+              className={`hero-sub${isAdmin ? ' editable' : ''}`}
+              ref={subRef}
+              data-key="heroSub"
+              contentEditable={isAdmin || undefined}
+              suppressContentEditableWarning
+              onFocus={() => { heroEditFlags.current.heroSub = true }}
+              onBlur={isAdmin ? e => { heroEditFlags.current.heroSub = false; saveSingle('heroSub', e.currentTarget.innerHTML) } : undefined}
+            />
             <div className="hero-btns" ref={btnsRef}>
               <Link href="/shop/products" className="btn-a">{tk.heroCta1}</Link>
               <Link href="/shop/collections" className="btn-b">{tk.heroCta2}</Link>
