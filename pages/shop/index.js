@@ -189,23 +189,23 @@ function ShopHomeContent({ content }) {
             <div className="hero-card"
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
-              <div className="hc-label">{tk.hcRatingLabel}</div>
+              <Editable tag="div" id="hcRatingLabel" content={c('hcRatingLabel')} className="hc-label" />
               <div className="hc-val">{(rating / 10).toFixed(1)}<span className="sfx">★</span></div>
-              <div className="hc-desc">{tk.hcRatingDesc}</div>
+              <Editable tag="div" id="hcRatingDesc" content={c('hcRatingDesc')} className="hc-desc" />
             </div>
             <div className="hero-card"
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
-              <div className="hc-label">{tk.hcCustomersLabel}</div>
+              <Editable tag="div" id="hcCustomersLabel" content={c('hcCustomersLabel')} className="hc-label" />
               <div className="hc-val">{(customers / 1000).toFixed(0)}<span className="sfx">K+</span></div>
-              <div className="hc-desc">{tk.hcCustomersDesc}</div>
+              <Editable tag="div" id="hcCustomersDesc" content={c('hcCustomersDesc')} className="hc-desc" />
             </div>
             <div className="hero-card"
               onMouseMove={e => { const r = e.currentTarget.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5; const y = (e.clientY - r.top) / r.height - .5; e.currentTarget.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(4px)` }}
               onMouseLeave={e => { e.currentTarget.style.transform = '' }}>
-              <div className="hc-label">{tk.hcReturnsLabel}</div>
+              <Editable tag="div" id="hcReturnsLabel" content={c('hcReturnsLabel')} className="hc-label" />
               <div className="hc-val">30<span className="sfx">-day</span></div>
-              <div className="hc-desc">{tk.hcReturnsDesc}</div>
+              <Editable tag="div" id="hcReturnsDesc" content={c('hcReturnsDesc')} className="hc-desc" />
             </div>
           </div>
         </div>
@@ -297,12 +297,12 @@ function ShopHomeContent({ content }) {
           <div className="tst-track">
             {testimonials.map((tst, i) => (
               <div key={i} className={`tst-item-h${tstIdx === i ? ' on' : ''}`}>
-                <p className="tst-q-h">"{tk[tst.qKey]}"</p>
+                <p className="tst-q-h">"<Editable tag="span" id={tst.qKey} content={c(tst.qKey)} />"</p>
                 <div className="tst-author">
                   <div className="tst-avatar">{tst.init}</div>
                   <div>
                     <div className="tst-name">{tst.name}</div>
-                    <div className="tst-role">{tk[tst.roleKey]}</div>
+                    <Editable tag="div" id={tst.roleKey} content={c(tst.roleKey)} className="tst-role" />
                   </div>
                 </div>
               </div>
@@ -319,7 +319,7 @@ function ShopHomeContent({ content }) {
       {/* ── NEWSLETTER ── */}
       <section className="newsletter-sec">
         <div className="newsletter-inner">
-          <span className="eyebrow" style={{ color: 'rgba(255,255,255,.65)' }}>{tk.newsletterEye}</span>
+          <Editable tag="span" id="newsletterEye" content={c('newsletterEye')} className="eyebrow" style={{ color: 'rgba(255,255,255,.65)' }} />
           <Editable tag="h2" id="newsletterTitle" content={c('newsletterTitle')} />
           <Editable tag="p" id="newsletterSub" content={c('newsletterSub')} />
           <form className="nl-form" onSubmit={e => e.preventDefault()}>

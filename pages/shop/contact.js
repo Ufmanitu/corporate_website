@@ -6,7 +6,7 @@ import CartDrawer from '../../components/CartDrawer'
 import ShopFooter from '../../components/ShopFooter'
 import AdminBar from '../../components/AdminBar'
 import Editable from '../../components/Editable'
-import { AdminProvider } from '../../context/AdminContext'
+import { AdminProvider, useAdmin } from '../../context/AdminContext'
 import { getShopContent } from '../../lib/shopContent'
 
 export default function Contact({ content }) {
@@ -20,15 +20,16 @@ export default function Contact({ content }) {
 function ContactContent({ content }) {
   const t = content
   const c = key => content[key] ?? ''
+  const { isAdmin } = useAdmin()
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [sent, setSent] = useState(false)
   const [openFaq, setOpenFaq] = useState(null)
 
-  const faqs = [
-    { q: t.faq1q, a: t.faq1a },
-    { q: t.faq2q, a: t.faq2a },
-    { q: t.faq3q, a: t.faq3a },
-    { q: t.faq4q, a: t.faq4a },
+  const faqKeys = [
+    { qKey: 'faq1q', aKey: 'faq1a' },
+    { qKey: 'faq2q', aKey: 'faq2a' },
+    { qKey: 'faq3q', aKey: 'faq3a' },
+    { qKey: 'faq4q', aKey: 'faq4a' },
   ]
 
   function handleSubmit(e) {
@@ -143,14 +144,14 @@ function ContactContent({ content }) {
               <div className="rev d4">
                 <h4 style={{ fontFamily: 'var(--ff-b)', fontSize: '.7rem', fontWeight: 500, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--mist)', marginBottom: '1rem' }}>{t.faqTitle}</h4>
                 <div className="faq-list">
-                  {faqs.map((f, i) => (
+                  {faqKeys.map((fk, i) => (
                     <div key={i} className={`faq-item${openFaq === i ? ' open' : ''}`}>
-                      <div className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
-                        <span className="faq-q-text">{f.q}</span>
+                      <div className="faq-q" onClick={() => !isAdmin && setOpenFaq(openFaq === i ? null : i)}>
+                        <Editable tag="span" id={fk.qKey} content={c(fk.qKey)} className="faq-q-text" />
                         <span className="faq-arrow">▾</span>
                       </div>
                       <div className="faq-a">
-                        <div className="faq-a-inner">{f.a}</div>
+                        <Editable tag="div" id={fk.aKey} content={c(fk.aKey)} className="faq-a-inner" />
                       </div>
                     </div>
                   ))}

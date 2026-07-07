@@ -83,7 +83,7 @@ function AboutContent({ content }) {
             {stats.map((s, i) => (
               <div key={i} className={`stat-box rev d${i + 1}`}>
                 <div className="stat-num">{s.num}</div>
-                <div className="stat-lbl">{t[s.labelKey]}</div>
+                <Editable tag="div" id={s.labelKey} content={c(s.labelKey)} className="stat-lbl" />
               </div>
             ))}
           </div>

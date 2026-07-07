@@ -5,7 +5,10 @@ import Link from 'next/link'
 import ShopNav from '../../components/ShopNav'
 import CartDrawer from '../../components/CartDrawer'
 import ShopFooter from '../../components/ShopFooter'
-import { useShopT } from '../../lib/shopI18n'
+import AdminBar from '../../components/AdminBar'
+import Editable from '../../components/Editable'
+import { AdminProvider } from '../../context/AdminContext'
+import { getShopContent } from '../../lib/shopContent'
 
 const Globe = dynamic(() => import('../../components/Globe'), { ssr: false })
 
@@ -21,8 +24,17 @@ const WAREHOUSES = [
   { lat: 47.50, lon:  19.04,  name: 'Budapest',       role: 'Central Europe Hub' },
 ]
 
-export default function Locations() {
-  const t = useShopT()
+export default function Locations({ content }) {
+  return (
+    <AdminProvider page="shop_locations">
+      <LocationsContent content={content} />
+    </AdminProvider>
+  )
+}
+
+function LocationsContent({ content }) {
+  const t = content
+  const c = key => content[key] ?? ''
   const [selected, setSelected] = useState(null)
 
   return (
@@ -35,6 +47,7 @@ export default function Locations() {
       <div className="announce-bar">{t.announce}</div>
       <ShopNav />
       <CartDrawer />
+      <AdminBar />
 
       <section className="ph">
         <div className="ph-bg" />
@@ -42,8 +55,8 @@ export default function Locations() {
           <div className="ph-breadcrumb">
             <Link href="/">{t.breadcrumbHome}</Link><span>›</span><span>{t.locationsTitle}</span>
           </div>
-          <h1 className="ph-title">{t.locationsTitle}</h1>
-          <p className="ph-sub">{t.locationsSub}</p>
+          <Editable tag="h1" id="locationsTitle" content={c('locationsTitle')} className="ph-title" />
+          <Editable tag="p" id="locationsSub" content={c('locationsSub')} className="ph-sub" />
           <div className="ph-line" />
         </div>
       </section>
@@ -52,7 +65,6 @@ export default function Locations() {
         <div className="si">
           <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
-            {/* Sidebar — warehouse list */}
             <div style={{ flex: '0 0 340px', minWidth: '260px', display: 'flex', flexDirection: 'column', gap: '.6rem' }}>
               {WAREHOUSES.map((w, i) => {
                 const isActive = selected?.name === w.name
@@ -83,7 +95,6 @@ export default function Locations() {
               })}
             </div>
 
-            {/* Globe */}
             <div style={{ flex: '1 1 420px', minWidth: '300px' }}>
               <div style={{ borderRadius: '16px', overflow: 'hidden', background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.08)' }}>
                 <div style={{ height: '520px' }}>
@@ -107,4 +118,9 @@ export default function Locations() {
       <ShopFooter />
     </>
   )
+}
+
+export async function getServerSideProps({ locale }) {
+  const content = await getShopContent('locations', locale)
+  return { props: { content } }
 }
