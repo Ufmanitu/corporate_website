@@ -12,8 +12,8 @@ body { font-family:var(--ff-b); color:var(--text-d); background:var(--white); ov
 a { text-decoration:none; color:inherit }
 
 /* ── NAV ─────────────────────────────────────────────────────────────────── */
-.nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:1.25rem 3rem; transition:.4s var(--ease) }
-.nav.scrolled { background:rgba(11,25,41,.93); backdrop-filter:blur(18px); border-bottom:1px solid rgba(255,255,255,.07) }
+.nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:1.25rem 3rem; transition:.4s var(--ease); background:rgba(11,25,41,.82); backdrop-filter:blur(14px); border-bottom:1px solid rgba(255,255,255,.06) }
+.nav.scrolled { background:rgba(11,25,41,.97); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,.1) }
 .nav-logo { font-family:var(--ff-h); font-size:1.3rem; font-weight:700; color:var(--white); letter-spacing:-.01em }
 .nav-logo em { color:var(--amber); font-style:normal }
 .nav-links { display:flex; gap:2.2rem; list-style:none }
