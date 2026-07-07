@@ -13,6 +13,7 @@ import { SEED_REVIEWS } from '../../../lib/reviews'
 import { useCart } from '../../../context/CartContext'
 import { useRouter } from 'next/router'
 import { getContentWithDefaults } from '../../../lib/shopContent'
+import SHOP_T from '../../../lib/shopI18n'
 
 function Stars({ rating, large }) {
   return (
@@ -336,13 +337,16 @@ export async function getServerSideProps({ params, locale }) {
   if (!product) return { notFound: true }
   const related = getRelatedProducts(product, 3)
   const p = localizeProduct(product, locale)
-  const defaults = {
-    ...p,
+  const productDefaults = {
+    name: p.name,
+    description: p.description,
     ...p.features.reduce((acc, f, i) => { acc[`feature_${i}`] = f; return acc }, {}),
   }
   const pageKey = locale === 'en'
     ? `shop_product_${product.slug}`
     : `shop_product_${product.slug}_${locale}`
-  const content = await getContentWithDefaults(pageKey, defaults)
+  const productContent = await getContentWithDefaults(pageKey, productDefaults)
+  const shopT = SHOP_T[locale] ?? SHOP_T.en
+  const content = { ...shopT, ...productContent }
   return { props: { product, related, content } }
 }
