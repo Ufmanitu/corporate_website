@@ -264,11 +264,11 @@ function ShopHomeContent({ content }) {
           </div>
           <div className="cat-grid">
             {categories.map((cat, i) => (
-              <Link key={cat.key} href={`/shop/products?cat=${cat.key}`} className={`cat-tile rev d${i + 1}`}>
+              <Link key={cat.key} href={`/shop/products?cat=${cat.key}`} className={`cat-tile rev d${i + 1}`} onClick={isAdmin ? e => e.preventDefault() : undefined}>
                 <div className="cat-tile-ico">{cat.ico}</div>
-                <div className="cat-tile-name">{tk[cat.tName]}</div>
+                <Editable tag="div" id={cat.tName} content={c(cat.tName)} className="cat-tile-name" />
                 <div className="cat-tile-count">{cat.count} {tk.products}</div>
-                <div className="cat-tile-arrow">{tk.viewProducts} {tk[cat.tName]} →</div>
+                <div className="cat-tile-arrow">{tk.viewProducts} {c(cat.tName)} →</div>
               </Link>
             ))}
           </div>
