@@ -577,7 +577,7 @@
 .nl-btn:hover { background: var(--cream); transform: translateY(-1px) }
 
 /* ── PRODUCT DETAIL ───────────────────────────────────────────────────────── */
-.pd-wrap { max-width: 1160px; margin: 0 auto; padding: 3rem 3rem 6rem }
+.pd-wrap { max-width: 1160px; margin: 0 auto; padding: 6rem 3rem 6rem }
 .pd-breadcrumb { display: flex; align-items: center; gap: .5rem; font-size: .78rem; color: rgba(14,31,46,.4); margin-bottom: 2rem }
 .pd-breadcrumb a { color: rgba(14,31,46,.45); text-decoration: none; transition: color .2s }
 .pd-breadcrumb a:hover { color: var(--sh-accent) }
