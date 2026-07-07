@@ -44,7 +44,7 @@ export default function Checkout() {
 
       <ShopNav />
 
-      <section className="checkout-page" style={{ paddingTop: 'calc(3rem + 2.25rem)' }}>
+      <section className="checkout-page" style={{ paddingTop: '7rem' }}>
         <div className="si">
           <h1 style={{ fontFamily: 'var(--ff-h)', fontSize: 'clamp(1.6rem,3.5vw,2.2rem)', fontWeight: 700, color: 'var(--text-d)', marginBottom: '1.5rem' }}>{t.checkoutTitle}</h1>
 

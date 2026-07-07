@@ -31,7 +31,7 @@ export default function Cart() {
       <ShopNav />
       <CartDrawer />
 
-      <section className="cart-page" style={{ paddingTop: 'calc(3rem + 2.25rem)' }}>
+      <section className="cart-page" style={{ paddingTop: '7rem' }}>
         <div className="si">
           <h1 style={{ fontFamily: 'var(--ff-h)', fontSize: 'clamp(1.8rem,4vw,2.6rem)', fontWeight: 700, color: 'var(--text-d)', marginBottom: '.4rem' }}>{t.cartTitle}</h1>
           <p style={{ color: '#9AA5B0', fontSize: '.9rem', marginBottom: '0' }}>{cart.reduce((s, i) => s + i.quantity, 0)} {t.products}</p>
