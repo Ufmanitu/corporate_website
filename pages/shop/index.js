@@ -132,6 +132,14 @@ function ShopHomeContent({ content }) {
     })
   }, [content])
 
+  // Toggle 'editable' class imperatively so React never overwrites
+  // the 'up'/'show' animation classes that were added via classList
+  useEffect(() => {
+    ;[wordsRef.current[0], wordsRef.current[1], subRef.current].forEach(el => {
+      if (el) el.classList.toggle('editable', isAdmin)
+    })
+  }, [isAdmin])
+
   function useCountUp(target, duration = 1600, delay = 300, active = false) {
     const [val, setVal] = useState(0)
     useEffect(() => {
@@ -189,7 +197,7 @@ function ShopHomeContent({ content }) {
             <Editable tag="span" id="heroEyebrow" content={c('heroEyebrow')} className="shop-hero-eyebrow" />
             <h1 className="hero-h1">
               <span className="line"><span
-                className={`word${isAdmin ? ' editable' : ''}`}
+                className="word"
                 ref={el => wordsRef.current[0] = el}
                 data-key="heroH1a"
                 contentEditable={isAdmin || undefined}
@@ -198,7 +206,7 @@ function ShopHomeContent({ content }) {
                 onBlur={isAdmin ? e => { heroEditFlags.current.heroH1a = false; saveSingle('heroH1a', e.currentTarget.innerHTML) } : undefined}
               /></span>
               <span className="line"><span
-                className={`word${isAdmin ? ' editable' : ''}`}
+                className="word"
                 ref={el => wordsRef.current[1] = el}
                 data-key="heroH1b"
                 contentEditable={isAdmin || undefined}
@@ -208,7 +216,7 @@ function ShopHomeContent({ content }) {
               /></span>
             </h1>
             <p
-              className={`hero-sub${isAdmin ? ' editable' : ''}`}
+              className="hero-sub"
               ref={subRef}
               data-key="heroSub"
               contentEditable={isAdmin || undefined}
