@@ -3,7 +3,10 @@ import Link from 'next/link'
 import ShopNav from '../../components/ShopNav'
 import CartDrawer from '../../components/CartDrawer'
 import ShopFooter from '../../components/ShopFooter'
-import { useShopT } from '../../lib/shopI18n'
+import AdminBar from '../../components/AdminBar'
+import Editable from '../../components/Editable'
+import { AdminProvider } from '../../context/AdminContext'
+import { getShopContent } from '../../lib/shopContent'
 
 const team = [
   { name: 'Mara Voss', roleKey: 'teamRole1', bioKey: 'teamBio1', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop' },
@@ -18,15 +21,24 @@ const stats = [
   { num: '30', labelKey: 'statReturns' },
 ]
 
-export default function About() {
-  const t = useShopT()
+const values = [
+  { ico: '⚡', titleKey: 'v1Title', descKey: 'v1Desc' },
+  { ico: '♻️', titleKey: 'v2Title', descKey: 'v2Desc' },
+  { ico: '🎯', titleKey: 'v3Title', descKey: 'v3Desc' },
+  { ico: '🤝', titleKey: 'v4Title', descKey: 'v4Desc' },
+]
 
-  const values = [
-    { ico: '⚡', title: t.v1Title, desc: t.v1Desc },
-    { ico: '♻️', title: t.v2Title, desc: t.v2Desc },
-    { ico: '🎯', title: t.v3Title, desc: t.v3Desc },
-    { ico: '🤝', title: t.v4Title, desc: t.v4Desc },
-  ]
+export default function About({ content }) {
+  return (
+    <AdminProvider page="shop_about">
+      <AboutContent content={content} />
+    </AdminProvider>
+  )
+}
+
+function AboutContent({ content }) {
+  const t = content
+  const c = key => content[key] ?? ''
 
   return (
     <>
@@ -38,6 +50,7 @@ export default function About() {
       <div className="announce-bar">{t.announce}</div>
       <ShopNav />
       <CartDrawer />
+      <AdminBar />
 
       <section className="ph">
         <div className="ph-bg" />
@@ -45,8 +58,8 @@ export default function About() {
           <div className="ph-breadcrumb">
             <Link href="/">{t.breadcrumbHome}</Link><span>›</span><span>{t.navAbout}</span>
           </div>
-          <h1 className="ph-title" style={{ whiteSpace: 'pre-line' }}>{t.aboutTitle}</h1>
-          <p className="ph-sub">{t.aboutSub}</p>
+          <Editable tag="h1" id="aboutTitle" content={c('aboutTitle')} className="ph-title" style={{ whiteSpace: 'pre-line' }} />
+          <Editable tag="p" id="aboutSub" content={c('aboutSub')} className="ph-sub" />
           <div className="ph-line" />
         </div>
       </section>
@@ -54,12 +67,12 @@ export default function About() {
       <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="story-header rev">
-            <span className="eyebrow">{t.storyEye}</span>
-            <h2 className="sec-title" style={{ color: 'var(--text-d)', marginTop: '.6rem' }}>{t.storyTitle}</h2>
+            <Editable tag="span" id="storyEye" content={c('storyEye')} className="eyebrow" />
+            <Editable tag="h2" id="storyTitle" content={c('storyTitle')} className="sec-title" style={{ color: 'var(--text-d)', marginTop: '.6rem' }} />
           </div>
           <div className="story-intro">
-            <p className="rev d1">{t.storyP1}</p>
-            <p className="rev d2">{t.storyP2}</p>
+            <Editable tag="p" id="storyP1" content={c('storyP1')} className="rev d1" />
+            <Editable tag="p" id="storyP2" content={c('storyP2')} className="rev d2" />
           </div>
         </div>
       </section>
@@ -80,15 +93,15 @@ export default function About() {
       <section className="sec-pad" style={{ background: 'var(--cream)' }}>
         <div className="si">
           <div className="sh rev">
-            <span className="eyebrow">{t.valuesEye}</span>
-            <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>{t.valuesTitle}</h2>
+            <Editable tag="span" id="valuesEye" content={c('valuesEye')} className="eyebrow" />
+            <Editable tag="h2" id="valuesTitle" content={c('valuesTitle')} className="sec-title" style={{ color: 'var(--text-d)' }} />
           </div>
           <div className="values-grid">
             {values.map((v, i) => (
               <div key={i} className={`val-card rev d${i + 1}`}>
                 <div className="val-ico">{v.ico}</div>
-                <h3>{v.title}</h3>
-                <p>{v.desc}</p>
+                <Editable tag="h3" id={v.titleKey} content={c(v.titleKey)} />
+                <Editable tag="p" id={v.descKey} content={c(v.descKey)} />
               </div>
             ))}
           </div>
@@ -98,9 +111,9 @@ export default function About() {
       <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="sh c rev">
-            <span className="eyebrow">{t.teamEye}</span>
-            <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>{t.teamTitle}</h2>
-            <p className="sec-sub" style={{ color: 'var(--text-d)' }}>{t.teamSub}</p>
+            <Editable tag="span" id="teamEye" content={c('teamEye')} className="eyebrow" />
+            <Editable tag="h2" id="teamTitle" content={c('teamTitle')} className="sec-title" style={{ color: 'var(--text-d)' }} />
+            <Editable tag="p" id="teamSub" content={c('teamSub')} className="sec-sub" style={{ color: 'var(--text-d)' }} />
           </div>
           <div className="team-grid">
             {team.map((m, i) => (
@@ -110,8 +123,8 @@ export default function About() {
                 </div>
                 <div className="team-body">
                   <div className="team-name">{m.name}</div>
-                  <div className="team-role">{t[m.roleKey]}</div>
-                  <p className="team-bio">{t[m.bioKey]}</p>
+                  <Editable tag="div" id={m.roleKey} content={c(m.roleKey)} className="team-role" />
+                  <Editable tag="p" id={m.bioKey} content={c(m.bioKey)} className="team-bio" />
                 </div>
               </div>
             ))}
@@ -121,8 +134,8 @@ export default function About() {
 
       <section className="cta-sec">
         <div className="cta-inner rev">
-          <h2 className="cta-title">{t.whyTitle}</h2>
-          <p className="cta-sub">{t.whySub}</p>
+          <Editable tag="h2" id="whyTitle" content={c('whyTitle')} className="cta-title" />
+          <Editable tag="p" id="whySub" content={c('whySub')} className="cta-sub" />
           <Link href="/shop/products" className="btn-dark">{t.aboutCta}</Link>
         </div>
       </section>
@@ -130,4 +143,9 @@ export default function About() {
       <ShopFooter />
     </>
   )
+}
+
+export async function getServerSideProps({ locale }) {
+  const content = await getShopContent('about', locale)
+  return { props: { content } }
 }

@@ -4,10 +4,22 @@ import Link from 'next/link'
 import ShopNav from '../../components/ShopNav'
 import CartDrawer from '../../components/CartDrawer'
 import ShopFooter from '../../components/ShopFooter'
-import { useShopT } from '../../lib/shopI18n'
+import AdminBar from '../../components/AdminBar'
+import Editable from '../../components/Editable'
+import { AdminProvider } from '../../context/AdminContext'
+import { getShopContent } from '../../lib/shopContent'
 
-export default function Contact() {
-  const t = useShopT()
+export default function Contact({ content }) {
+  return (
+    <AdminProvider page="shop_contact">
+      <ContactContent content={content} />
+    </AdminProvider>
+  )
+}
+
+function ContactContent({ content }) {
+  const t = content
+  const c = key => content[key] ?? ''
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [sent, setSent] = useState(false)
   const [openFaq, setOpenFaq] = useState(null)
@@ -35,6 +47,7 @@ export default function Contact() {
       <div className="announce-bar">{t.announce}</div>
       <ShopNav />
       <CartDrawer />
+      <AdminBar />
 
       <section className="ph">
         <div className="ph-bg" />
@@ -42,8 +55,8 @@ export default function Contact() {
           <div className="ph-breadcrumb">
             <Link href="/">Home</Link><span>›</span><span>{t.navContact}</span>
           </div>
-          <h1 className="ph-title">{t.contactTitle}</h1>
-          <p className="ph-sub">{t.contactSub}</p>
+          <Editable tag="h1" id="contactTitle" content={c('contactTitle')} className="ph-title" />
+          <Editable tag="p" id="contactSub" content={c('contactSub')} className="ph-sub" />
           <div className="ph-line" />
         </div>
       </section>
@@ -51,11 +64,10 @@ export default function Contact() {
       <section className="sec-pad" style={{ background: 'var(--white)' }}>
         <div className="si">
           <div className="contact-grid">
-            {/* Form */}
             <div>
               <div className="sh rev" style={{ marginBottom: '2rem' }}>
-                <span className="eyebrow">{t.contactFormEye}</span>
-                <h2 className="sec-title" style={{ color: 'var(--text-d)' }}>{t.contactFormTitle}</h2>
+                <Editable tag="span" id="contactFormEye" content={c('contactFormEye')} className="eyebrow" />
+                <Editable tag="h2" id="contactFormTitle" content={c('contactFormTitle')} className="sec-title" style={{ color: 'var(--text-d)' }} />
               </div>
 
               {sent ? (
@@ -97,7 +109,6 @@ export default function Contact() {
               )}
             </div>
 
-            {/* Info panel */}
             <div className="info-panel">
               <div className="info-card rev d2">
                 <h4>{t.contactDetails}</h4>
@@ -129,7 +140,6 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* FAQ */}
               <div className="rev d4">
                 <h4 style={{ fontFamily: 'var(--ff-b)', fontSize: '.7rem', fontWeight: 500, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--mist)', marginBottom: '1rem' }}>{t.faqTitle}</h4>
                 <div className="faq-list">
@@ -154,4 +164,9 @@ export default function Contact() {
       <ShopFooter />
     </>
   )
+}
+
+export async function getServerSideProps({ locale }) {
+  const content = await getShopContent('contact', locale)
+  return { props: { content } }
 }

@@ -27,6 +27,10 @@ export function AdminProvider({ children, page }) {
     }
   }, [router])
 
+  useEffect(() => {
+    document.body.classList.toggle('admin', isAdmin)
+  }, [isAdmin])
+
   const exitAdmin = useCallback(() => {
     setIsAdmin(false)
   }, [])
