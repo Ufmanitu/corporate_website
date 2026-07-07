@@ -5,11 +5,14 @@ import ShopNav from '../../../components/ShopNav'
 import CartDrawer from '../../../components/CartDrawer'
 import ProductCard from '../../../components/ProductCard'
 import ShopFooter from '../../../components/ShopFooter'
+import AdminBar from '../../../components/AdminBar'
+import Editable from '../../../components/Editable'
+import { AdminProvider } from '../../../context/AdminContext'
 import { PRODUCTS, getProductBySlug, getRelatedProducts, localizeProduct } from '../../../lib/products'
 import { SEED_REVIEWS } from '../../../lib/reviews'
 import { useCart } from '../../../context/CartContext'
-import { useShopT } from '../../../lib/shopI18n'
 import { useRouter } from 'next/router'
+import { getContentWithDefaults } from '../../../lib/shopContent'
 
 function Stars({ rating, large }) {
   return (
@@ -40,13 +43,22 @@ function StarPicker({ value, onChange }) {
   )
 }
 
-export default function ProductDetail({ product, related }) {
+export default function ProductDetail({ product, related, content }) {
+  return (
+    <AdminProvider page={`shop_product_${product.slug}`}>
+      <ProductDetailContent product={product} related={related} content={content} />
+    </AdminProvider>
+  )
+}
+
+function ProductDetailContent({ product, related, content }) {
+  const c = key => content[key] ?? ''
+  const t = content
   const [mainImg, setMainImg] = useState(0)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
   const { addToCart, toggleWishlist, wishlist } = useCart()
   const inWishlist = wishlist.includes(product.id)
-  const t = useShopT()
   const { locale } = useRouter()
   const p = localizeProduct(product, locale)
 
@@ -95,14 +107,14 @@ export default function ProductDetail({ product, related }) {
   return (
     <>
       <Head>
-        <title>{p.name} — NOUX</title>
-        <meta name="description" content={p.description} />
+        <title>{c('name')} — NOUX</title>
+        <meta name="description" content={c('description')} />
       </Head>
 
       <div className="announce-bar">{t.announce}</div>
-
       <ShopNav />
       <CartDrawer />
+      <AdminBar />
 
       <div style={{ paddingTop: '7rem', background: 'var(--white)' }}>
         <div className="pd-wrap">
@@ -111,7 +123,7 @@ export default function ProductDetail({ product, related }) {
             <span>/</span>
             <Link href="/shop/products">{t.productsTitle}</Link>
             <span>/</span>
-            <span>{p.name}</span>
+            <span>{c('name')}</span>
           </nav>
 
           <div className="pd-grid">
@@ -120,7 +132,7 @@ export default function ProductDetail({ product, related }) {
               <div className="pd-main-img">
                 <img
                   src={product.images[mainImg]}
-                  alt={p.name}
+                  alt={c('name')}
                   key={mainImg}
                   style={{ opacity: 1 }}
                 />
@@ -130,7 +142,7 @@ export default function ProductDetail({ product, related }) {
                   <img
                     key={i}
                     src={img}
-                    alt={`${p.name} view ${i + 1}`}
+                    alt={`${c('name')} view ${i + 1}`}
                     className={`pd-thumb${mainImg === i ? ' active' : ''}`}
                     onClick={() => setMainImg(i)}
                   />
@@ -144,7 +156,7 @@ export default function ProductDetail({ product, related }) {
             {/* RIGHT — Details */}
             <div className="pd-details">
               <div className="pd-cat">{t[product.category?.toLowerCase()] ?? product.category}</div>
-              <h1 className="pd-name">{p.name}</h1>
+              <Editable tag="h1" id="name" content={c('name')} className="pd-name" />
 
               <div className="pd-rating">
                 <Stars rating={product.rating} large />
@@ -164,10 +176,12 @@ export default function ProductDetail({ product, related }) {
                 )}
               </div>
 
-              <p className="pd-desc">{p.description}</p>
+              <Editable tag="p" id="description" content={c('description')} className="pd-desc" />
 
               <ul className="pd-features">
-                {p.features.map(f => <li key={f}>{f}</li>)}
+                {p.features.map((_, i) => (
+                  <Editable key={i} tag="li" id={`feature_${i}`} content={c(`feature_${i}`)} />
+                ))}
               </ul>
 
               {product.lowStock && (
@@ -317,18 +331,18 @@ export default function ProductDetail({ product, related }) {
   )
 }
 
-export async function getStaticPaths({ locales }) {
-  return {
-    paths: (locales ?? ['en']).flatMap(locale =>
-      PRODUCTS.map(p => ({ params: { slug: p.slug }, locale }))
-    ),
-    fallback: false,
-  }
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params, locale }) {
   const product = getProductBySlug(params.slug)
   if (!product) return { notFound: true }
   const related = getRelatedProducts(product, 3)
-  return { props: { product, related } }
+  const p = localizeProduct(product, locale)
+  const defaults = {
+    ...p,
+    ...p.features.reduce((acc, f, i) => { acc[`feature_${i}`] = f; return acc }, {}),
+  }
+  const pageKey = locale === 'en'
+    ? `shop_product_${product.slug}`
+    : `shop_product_${product.slug}_${locale}`
+  const content = await getContentWithDefaults(pageKey, defaults)
+  return { props: { product, related, content } }
 }

@@ -6,14 +6,26 @@ import ShopNav from '../../components/ShopNav'
 import CartDrawer from '../../components/CartDrawer'
 import ProductCard from '../../components/ProductCard'
 import ShopFooter from '../../components/ShopFooter'
+import AdminBar from '../../components/AdminBar'
+import Editable from '../../components/Editable'
+import { AdminProvider } from '../../context/AdminContext'
 import { PRODUCTS } from '../../lib/products'
-import { useShopT } from '../../lib/shopI18n'
+import { getShopContent } from '../../lib/shopContent'
 
 const CATEGORIES_EN = ['All', 'Audio', 'Workspace', 'Charging', 'Storage']
 
-export default function Products() {
+export default function Products({ content }) {
+  return (
+    <AdminProvider page="shop_products">
+      <ProductsContent content={content} />
+    </AdminProvider>
+  )
+}
+
+function ProductsContent({ content }) {
+  const t = content
+  const c = key => content[key] ?? ''
   const router = useRouter()
-  const t = useShopT()
   const [activeCat, setActiveCat] = useState('All')
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('featured')
@@ -47,9 +59,9 @@ export default function Products() {
       </Head>
 
       <div className="announce-bar">{t.announce}</div>
-
       <ShopNav />
       <CartDrawer />
+      <AdminBar />
 
       <div className="ph" style={{ paddingTop: 'calc(9rem + 2.25rem)' }}>
         <div className="ph-bg" />
@@ -57,8 +69,8 @@ export default function Products() {
           <div className="ph-breadcrumb">
             <Link href="/">{t.breadcrumbHome}</Link><span>/</span><span>{t.breadcrumbProducts}</span>
           </div>
-          <h1 className="ph-title">{t.productsTitle}</h1>
-          <p className="ph-sub">{t.productsSub}</p>
+          <Editable tag="h1" id="productsTitle" content={c('productsTitle')} className="ph-title" />
+          <Editable tag="p" id="productsSub" content={c('productsSub')} className="ph-sub" />
           <div className="ph-line" />
         </div>
       </div>
@@ -113,4 +125,9 @@ export default function Products() {
       <ShopFooter />
     </>
   )
+}
+
+export async function getServerSideProps({ locale }) {
+  const content = await getShopContent('products', locale)
+  return { props: { content } }
 }
