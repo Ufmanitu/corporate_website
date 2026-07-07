@@ -32,6 +32,7 @@ export default function ShopNav() {
   useEffect(() => { setMobileOpen(false) }, [router.pathname])
 
   function switchLocale(l) {
+    document.cookie = `NEXT_LOCALE=${l}; path=/; max-age=31536000; SameSite=Lax`
     router.push({ pathname, query }, asPath, { locale: l })
     setLangOpen(false)
   }
